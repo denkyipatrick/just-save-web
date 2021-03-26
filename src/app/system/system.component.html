@@ -1,0 +1,165 @@
+
+<mat-toolbar class="bg-green-600 text-white flex items-center justify-between">
+    <button mat-icon-button (click)="drawer.toggle()" class="">
+        <mat-icon>menu</mat-icon>
+    </button>
+
+    <span class="block text-center">
+        <p class="text-2xl font-light">{{appName}}</p>
+        <!-- <p class="text-xs font-light">{{appSlogan}}</p> -->
+    </span>
+
+    <span class="flex items-center space-x-4">
+        <!-- <mat-icon>phone</mat-icon>
+        <p class="text-xs font-light">+233 544 703 136</p>
+        <p class="text-xs font-light">+233 544 703 136</p> -->
+    </span>
+</mat-toolbar>
+
+<mat-drawer-container style="width: 100%; height: 90vh;">
+    <mat-drawer #drawer mode="side" opened class="w-3/12">
+      <div class="p-4 bg-gray-100">
+        <div class="flex items-start justify-between">
+          <span class="flex items-start space-x-6">
+            <mat-icon style="font-size: 2.5rem;">account_circle</mat-icon>
+            <span>
+              <p class="m-0 font-medium" style="margin: 0;">
+                {{staff?.firstName}} {{staff?.lastName}}
+              </p>
+              <p class="text-xs">@{{staff?.username}}</p>
+            </span>
+          </span>
+          <button mat-icon-button [matMenuTriggerFor]="profileMenu">
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+
+          <mat-menu #profileMenu>
+            <a mat-menu-item routerLink="settings/personal">
+              <mat-icon>settings</mat-icon>
+              <span>Account Settings</span>
+            </a>
+            <button (click)="signOut()" mat-menu-item>
+              <mat-icon>power_off</mat-icon>  
+              <span>Sign Out</span>
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+
+      <div class="p-2">
+          <ul class="left-nav">
+            <li *ngIf="isMakeOrder" class="mt-2 mb-4">
+              <a mat-raised-button color="primary" 
+                class="w-full text-lefts">
+                <mat-icon>add</mat-icon> &nbsp;
+                <span class="inline-block text-left">NEW ORDER</span>
+              </a>
+            </li>
+            <li *ngIf="isShowDashboard">
+              <a mat-button routerLink="dashboard" routerLinkActive="active">
+                <mat-icon>dashboard</mat-icon> &nbsp; 
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li *ngIf="isViewProducts">
+              <a mat-button routerLink="products" routerLinkActive="active">
+                <mat-icon>style</mat-icon> &nbsp;
+                <span>Products</span>
+              </a>
+            </li>
+            <li *ngIf="isViewStaffs">
+              <a mat-button routerLink="staff" routerLinkActive="active">
+                <mat-icon>recent_actors</mat-icon> &nbsp;
+                <span>Staff</span>
+              </a>
+            </li>
+            <li *ngIf="canViewBranches">
+              <a mat-button routerLink="branches" routerLinkActive="active">
+                <mat-icon>share</mat-icon> &nbsp;
+                <span>Branches</span>
+              </a>
+            </li>
+          </ul>
+      </div>
+
+      <mat-accordion *ngIf="false" multi="true" displayMode="flat">
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon>home</mat-icon> &nbsp;
+                <span>Home</span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+    
+            <a mat-button routerLink="dashboard" 
+              class="flex items-center justify-start w-full text-left">
+              <mat-icon>dashboard</mat-icon> &nbsp;
+              <span>Dashboard</span>
+            </a>
+            <button mat-button>
+              <mat-icon>class</mat-icon> &nbsp;
+              <span>My Classes</span>
+            </button>
+    
+            <!-- <button mat-button (click)="navigate('/join-class', drawer)">
+                  <mat-icon>add_circle</mat-icon> &nbsp;
+                  <span>Add a Class</span>
+                </button> -->
+    
+            <button mat-button>
+              <mat-icon>list</mat-icon> &nbsp;
+              <span>My Sales</span>
+            </button>
+    
+            <button mat-button>
+              <mat-icon>account_circle</mat-icon> &nbsp;
+              <span>My Profile</span>
+            </button>
+          </mat-expansion-panel>
+    
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon>bar_chart</mat-icon> &nbsp;
+                <span>Sales</span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            
+            <button
+              mat-button
+            >
+              <mat-icon>horizontal_split</mat-icon> &nbsp;
+              <span>My Funds</span>
+            </button>
+    
+            <button
+              mat-button
+            >
+              <mat-icon>bar_chart</mat-icon> &nbsp;
+              <span>Sell</span>
+            </button>
+          </mat-expansion-panel>
+    
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon>attach_money</mat-icon> &nbsp;
+                <span>Award Claims</span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+    
+            <button
+              mat-button
+            >
+              <mat-icon>payment</mat-icon> &nbsp;
+              <span>My Special Awards</span>
+            </button>
+          </mat-expansion-panel>
+      </mat-accordion>
+    </mat-drawer>
+    <mat-drawer-content class="w-9/12">
+        <div class="my-2 mx-8">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>

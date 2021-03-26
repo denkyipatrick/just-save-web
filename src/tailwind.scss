@@ -1,0 +1,55 @@
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@tailwind base;
+* {
+    outline: none;
+}
+
+body::-webkit-scrollbar {
+    width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+    background: green;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 20px;
+}
+
+button, a.button {
+    @apply text-white bg-green-700
+}
+
+.primary-color {
+    background-color: indigo;
+    color: white;
+}
+
+.primary-color-dark {
+
+}
+
+.secondary-color {
+}
+
+.header-color {
+    background-color: indigo
+}
+p, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+}
+
+.setup-body {
+    
+}
+
+.setup-button {
+    min-width: 200px;
+    padding: .6rem;
+    @apply bg-blue-700 font-medium rounded-md uppercase text-white;
+}
+
+@tailwind components;
+@tailwind utilities;

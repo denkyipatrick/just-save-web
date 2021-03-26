@@ -1,0 +1,16 @@
+
+<div>
+    <p class="text-lg">{{data?.title || 'Dialog Title'}}</p>
+    <p> {{data?.message || 'Lorem ipsum dolor sit amet consectetur, 
+        adipisicing elit. Nulla, dignissimos reiciendis, 
+        totam dicta amet laborum, suscipit minima quo 
+        magni vel alias enim ipsum accusantium incidunt 
+        facilis asperiores itaque excepturi hic.'}}
+    </p>
+
+    <div class="text-right space-x-4">
+        <button mat-button (click)="submit()">
+            {{data?.okButtonText || 'OK'}}
+        </button>
+    </div>
+</div>

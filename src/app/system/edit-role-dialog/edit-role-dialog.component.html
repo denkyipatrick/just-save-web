@@ -1,0 +1,44 @@
+
+<div style="width: 600px;">
+    <header class="flex items-center justify-between border-b-2 pb-4">
+        <span>            
+            <p class="text-xl">Add or Remove Role</p>
+            <p class="text-xs text-gray-400">
+                Add or remove Roles of {{targetStaff?.firstName}} {{targetStaff?.lastName}} 
+                <span class="text-black">@{{targetStaff?.username}}</span>.
+            </p>
+        </span>
+        <button tabindex="-1" mat-raised-button (click)="close()">
+            <span>CLOSE</span> &nbsp; 
+            <mat-icon>close</mat-icon>
+        </button>
+    </header>
+
+    <section class="py-4 overflow-y-auto" style="height: 400px;">
+        <ul class="grid grid-cols-2 gap-8">
+            <li *ngFor="let roleGroup of roleGroups">
+                <p class="capitalize font-medium" style="margin-bottom: 1rem;">
+                    {{roleGroup?.group}} Management
+                </p>
+                <ul>
+                    <li *ngFor="let role of roleGroup?.roles" class="mb-2">
+                        <mat-checkbox 
+                            #checkbox 
+                            class="secondary-color"
+                            [checked]="doesStaffHasRole(role?.id)"
+                            (change)="toggleStaffRole(role.id, checkbox.checked)">
+                            {{role?.displayName}}
+                        </mat-checkbox>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- <ul class="grid grid-cols-2 gap-8">
+            <li *ngFor="let roleGroup of roleGroups">
+                <p class="capitalize font-medium">{{roleGroup}} Management</p>
+                <div style="height: 100px;"></div>
+            </li>
+        </ul> -->
+    </section>
+</div>

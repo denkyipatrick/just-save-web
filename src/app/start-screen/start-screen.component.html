@@ -1,0 +1,71 @@
+
+<section style="width: 100vw; height: 100vh;"
+    class="bg-gray-100 flex items-center justify-center">
+
+    <section>
+        <div *ngIf="fetchingCompany" style="height: 30px;">
+            <p class="text-center">Loading Please Wait...</p>
+            <mat-progress-bar mode="indeterminate" [value]="80"></mat-progress-bar>
+        </div>
+
+        <div *ngIf="errorFetchingCompany" class="text-center">
+            <p class="text-lg">Loading Failed</p>
+            <p style="color: rgb(211, 41, 41)" class="text-sm font-medium">
+                There has been an error
+            </p>
+        </div>
+
+        <span *ngIf="!fetchingCompany && !errorFetchingCompany">
+            <section *ngIf="showSetupSection" class="text-center space-y-8">
+                <span class="block mb-12">
+                    <p class="text-gray-900 text-5xl  antialiased">
+                        Welcome
+                    </p>
+                    <p class="text-base font-medium text-gray-800">
+                        Hi there, welcome to your store management system
+                    </p>
+                </span>
+        
+                <span class="space-y-2">
+                    <p class="text-gray-700">
+                        Follow the steps on the next pages to setup for your business needs.
+                    </p>
+                    <a matRipple routerLink="/setup/company" 
+                        class="inline-block setup-button">
+                        SETUP Application
+                    </a>
+                </span>
+            </section>
+        
+            <section *ngIf="showLoginSection" class="text-center space-y-8">
+                <div class="block mb-12">
+                    <p class="text-gray-900 text-4xl  antialiased">
+                        {{company?.name}}
+                    </p>
+                    <p class="text-gray-900 text-3xl  antialiased">
+                        Welcome Back!
+                    </p>
+                </div>
+        
+                <div class="space-y-2">
+                    <a matRipple routerLink="../sign-in" 
+                        class="inline-block setup-button">
+                        Login
+                    </a>
+                </div>
+            </section>
+        </span>    
+            
+        <div style="margin-top: 100px;" class="text-center space-y-4">
+            <p class="text-xs font-medium text-gray-400">
+                <span>From </span>
+                <span class="text-gray-600">Ait</span>
+                <span class="text-gray-900">Syndicated</span><br />
+                <a>https://www.aitsyndicated.com</a>
+            </p>
+            <a *ngIf="showLoginSection" routerLink="../setup/company" 
+                class="text-xs text-gray-700 font-medium">New Setup</a>
+        </div>
+    </section>
+
+</section>

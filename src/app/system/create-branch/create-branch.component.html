@@ -1,0 +1,50 @@
+<div class="flex items-start justify-between space-x-8">
+    <form [formGroup]="form" class="w-1/2"
+        autocomplete="off" (ngSubmit)="createBranch()">
+        <span class="flex items-center space-x-4">
+            <app-back-button></app-back-button>
+            <h2>Create New Branch</h2>
+        </span>
+        <mat-card class="space-y-6">
+            <div>
+                <mat-form-field class="w-full">
+                    <mat-label>Branch</mat-label>
+                    <input matInput 
+                        required
+                        formControlName="name" />
+                    <mat-hint>Like Adum, Alabar, Asawase, Asafo</mat-hint>
+                    <mat-error>This field is required.</mat-error>
+                </mat-form-field>
+            </div>
+        
+            <div>
+                <mat-form-field class="w-full" appearance="outline">
+                    <mat-label>Branch Address</mat-label>
+                    <textarea 
+                        matInput 
+                        rows="5" 
+                        required
+                        formControlName="address"></textarea>
+                    <mat-hint>
+                        Use any public place which is closer to your store.
+                    </mat-hint>
+                    <mat-error>The branch address is required.</mat-error>
+                </mat-form-field>
+            </div>
+        
+            <div class="text-center">
+                <button mat-raised-button color="primary">
+                    CREATE BRANCH
+                </button>
+            </div>
+        </mat-card>
+    </form>
+    
+    <div class="w-1/2" style="margin-left: 1rem;">
+        <p class="text-xl">New Branches</p>
+        <p *ngIf="!createdBranches?.length"
+            class="text-gray-400">The branches you create will be shown here temporarily.</p>
+        <app-branch-list *ngIf="createdBranches?.length" [fetchBranchesFromNetwork]="false" 
+            [branches]="createdBranches"></app-branch-list>
+    </div>
+</div>

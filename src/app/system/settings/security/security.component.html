@@ -1,0 +1,36 @@
+
+<div>
+    <p class="text-xl font-normal">Security Settings</p>
+    
+    <div class="mt-8">
+        <form [formGroup]="form" (ngSubmit)="changePassword()">
+            <p class="">Change Password</p>
+            <div class="space-y-2">
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Current Password</mat-label>
+                    <input matInput type="password" required formControlName="currentPassword" />
+                    <mat-error>Enter your current password.</mat-error>
+                </mat-form-field>
+    
+                <span class="space-x-4 flex items-center justify-between">
+                    <mat-form-field appearance="outline" class="w-1/2">
+                        <mat-label>New Password</mat-label>
+                        <input matInput type="password" required formControlName="newPassword" />
+                        <mat-error>Enter your new password.</mat-error>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline" class="w-1/2">
+                        <mat-label>New Password (Again)</mat-label>
+                        <input matInput type="password" required formControlName="confirmedPassword" />
+                        <mat-error>Please confirm your new password.</mat-error>
+                    </mat-form-field>
+                </span>
+            </div>
+    
+            <div class="text-center mt-4">
+                <button mat-raised-button color="primary">CHANGE PASSWORD</button>
+            </div>
+        </form>
+    </div>
+    
+</div>

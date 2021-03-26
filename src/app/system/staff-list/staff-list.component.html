@@ -1,0 +1,41 @@
+
+<!-- <mat-card> -->
+    <div class="w-full lg:w-3/4">
+        <div class="flex items-center justify-between">
+            <p class="text-3xl font-light">Staff List</p>
+            <a routerLink="../add-staff" mat-raised-button color="primary">
+                <mat-icon>add</mat-icon>
+                <span>Add Staff</span>
+            </a>
+        </div>
+    
+        <div class="my-4">
+            <ul class="grid grid-cols-3 gap-4">
+                <li *ngFor="let staff of staffList">
+                    <a  [routerLink]="'./' + staff?.username">
+                        <mat-card matRipple>
+                            <div class="text-center">
+                                <img src="../../../assets/svg/account_circle-black-48dp.svg" 
+                                    class="block mx-auto" />
+                                
+                                <p class="text-lg my-0">{{staff?.firstName}} {{staff?.lastName}}</p>
+                                <p class="text-xs text-gray-400 my-0">@{{staff?.username}}</p>
+                                <span *ngIf="false" class="flex items-center justify-center text-gray-500 space-x-2">
+                                    <a [routerLink]="'./' + staff?.username" mat-icon-button>
+                                        <mat-icon>visibility</mat-icon>
+                                    </a>
+                                    <button *ngIf="viewerHasEditStaffRole" mat-icon-button>
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <!-- <a *ngIf="viewerHasDeleteStaffRole" mat-icon-button>
+                                        <mat-icon>delete</mat-icon>
+                                    </a> -->
+                                </span>
+                            </div>
+                        </mat-card>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+<!-- </mat-card> -->

@@ -1,0 +1,12 @@
+
+<div class="flex items-center justify-between">
+    <p class="w-1/2 text-lg">Branch</p>
+    <p class="w-1/2 text-lg">Address</p>
+</div>
+<ul>
+    <li *ngFor="let branch of branches" class="flex items-center 
+        justify-between border-b-2" style="padding: .5rem 0;">
+        <p class="w-1/2">{{branch?.name}}</p>
+        <p class="w-1/2">{{branch?.address}}</p>
+    </li>
+</ul>

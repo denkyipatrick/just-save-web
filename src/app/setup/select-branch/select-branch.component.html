@@ -1,0 +1,67 @@
+
+<section class="flex items-start justify-between space-x-8 px-4">
+    <section style="width: 500px;" class="border-r-2">
+        <section class="">
+            <span class="flex items-center justify-start space-x-8 mb-8">
+                <mat-icon class="text-blue-700">verified</mat-icon> &nbsp; &nbsp; 
+                <p class="font-medium text-lg text-gray-600" style="margin: 0;">
+                    Welcome To
+                </p>    
+            </span>
+        </section>
+    
+        <section class="text-left">
+            <div class="">
+                <p class="text-gray-900 text-3xl  antialiased">
+                    {{company?.name}}
+                </p>
+                <p style="margin: 0" class="text-gray-500 text-xs">Public ID</p>
+                <p class="text-gray-900 font-medium antialiased">
+                    {{company?.publicId}}
+                </p>
+            </div>            
+        </section>
+        
+    </section>
+
+    <section style="width: 500px;" class="text-left">
+        <header>
+            <p class="text-xl">Select or Create Branch</p>
+            <p class="text-sm text-gray-600">
+                Kindly be informed that you can only use this 
+                installation in a single branch. Select the name of 
+                this branch below or create a new one.
+            </p>
+        </header>
+
+        <section class="mt-4">
+            <form [formGroup]="form" 
+                (ngSubmit)="branchSelected()"
+                class="flex items-center justify-between space-x-4">
+                <mat-form-field appearance="outline" class="w-full" style="font-size: .85rem;">
+                    <mat-label>Select Installation Branch</mat-label>
+                    <mat-select formControlName="branchId">
+                        <mat-option *ngFor="let branch of branches" [value]="branch?.id">
+                            {{branch?.name}}, 
+                            <span class='text-xs text-gray-400'>{{branch?.address}}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button matRipple 
+                    class="setup-button py-3" 
+                    [class.disabled]="!enableNextButton"
+                    style="margin-top: -20px; width: 100px;">NEXT</button>
+            </form>
+
+            <span class="block mt-10">
+                <p class="text-base">New Branch</p>
+                <p class="text-gray-500 text-sm">
+                    You cannot create a new branch from this page.<br />
+                    Contact your <span class="text-black font-medium">Administrator</span> 
+                    to create a new branch and then pick it from the 
+                    list of branches above.
+                </p>
+            </span>
+        </section>
+    </section>
+</section>

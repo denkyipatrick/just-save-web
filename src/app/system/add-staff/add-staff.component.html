@@ -1,0 +1,67 @@
+
+<div>
+    <form [formGroup]="form" (ngSubmit)="createStaff()" 
+        autocomplete="off" style="width: 450px;" class="space-y-4">
+
+        <span class="flex items-center space-x-7">
+            <app-back-button></app-back-button>
+            <h2>Add Staff</h2>
+        </span>
+
+        <mat-card>
+            <div>
+                <span class="flex items-center space-x-4">
+                    <mat-form-field class="w-full">
+                        <mat-label>First Name</mat-label>
+                        <input matInput required formControlName="firstName" autocomplete="off" />
+                    </mat-form-field>
+                    
+                    <mat-form-field class="w-full">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput required formControlName="lastName" autocomplete="off"/>
+                    </mat-form-field>
+                </span>
+            </div>
+    
+            <div>
+                <span class="flex items-center space-x-4">
+                    <mat-form-field class="w-full">
+                        <mat-label>Username</mat-label>
+                        <input matInput required formControlName="username" />
+                    </mat-form-field>
+                    
+                    <mat-form-field class="w-full">
+                        <mat-label>Password</mat-label>
+                        <input matInput required formControlName="password" />
+                    </mat-form-field>
+                </span>
+            </div>
+
+            <div>
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Select Brach for Staff</mat-label>
+                    <mat-select required formControlName="branchId">
+                        <mat-option *ngFor="let branch of branches" [value]="branch?.id">
+                            <span>{{branch?.name}}</span>, 
+                            <span class="text-gray-400 text-xs">{{branch?.address}}</span>
+                        </mat-option>
+                    </mat-select>
+                    <mat-hint>
+                        Put this staff in any branch. But it is recommended to put 
+                        him/her in this branch.
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+            
+            <div class="text-center mt-4">
+                <button mat-raised-button 
+                    color="primary"
+                    class="inline-block space-x-2">
+                    <span>CREATE STAFF</span> &nbsp; 
+                    <mat-icon>arrow_forward</mat-icon>
+                </button>
+            </div>
+
+        </mat-card>
+    </form>
+</div>

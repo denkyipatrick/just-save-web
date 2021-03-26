@@ -1,0 +1,93 @@
+
+<div style="width: 600px; max-width: 100%;">
+    <mat-card>
+        <mat-card-content>
+            <div>
+                <button mat-icon-button class="bg-gray-200" (click)="goBack()">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
+    
+            <div>
+                <form [formGroup]="form" (ngSubmit)="saveProduct()" autocomplete="off">
+                    <p class="text-xl text-center mt-4">Add Product</p>
+
+                    <span class="space-y-4">
+                        <div class="relative">
+                            <mat-form-field appearance="fill" class="w-full">
+                                <mat-label>Product Key / Lookup Key</mat-label>
+                                <input #lookupTextbox matInput required formControlName="lookupKey" 
+                                    class="uppercase"
+                                    (keyup)="lookupProduct(lookupTextbox.value)" />
+                                <mat-hint>
+                                    Every product must have a unique key to prevent duplicates 
+                                    in other branches.
+                                </mat-hint>
+                                <mat-error>This field is required.</mat-error>
+                            </mat-form-field>
+
+                            <div *ngIf="lookedUpProducts?.length && showLookedUpProductsWindow" 
+                                style="max-height: 300px; width: 100%;"
+                                class="w-full absolute left-0 border-2
+                                bg-gray-50 z-50 rounded-md shadow-xl">
+                                <span class="inline-block p-4">
+                                    <p class="text-lg font-light" style="margin-bottom: 0;">Select Product</p>
+                                    <p class="text-xs text-gray-600" style="margin-bottom: 0;">
+                                        Select the product that already exists to prevent 
+                                        duplicates in other branches.
+                                    </p>
+                                </span>
+                                <ul>
+                                    <li matRipple *ngFor="let lookedUpProduct of lookedUpProducts" 
+                                        (click)="selectLookedUpProduct(lookedUpProduct)"
+                                        class="p-4 border-b-2 cursor-pointer 
+                                            hover:bg-gray-200">
+                                        <span class="bg-green-200">({{lookedUpProduct?.lookupKey}})</span> 
+                                        {{lookedUpProduct?.name}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <mat-form-field class="w-full">
+                                <mat-label>Product Name</mat-label>
+                                <input matInput required formControlName="name" />
+                            <mat-error>This field is required.</mat-error>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4">
+                            <mat-form-field class="w-full">
+                                <mat-label>Cost Price</mat-label>
+                                <input matInput type="number" 
+                                    required formControlName="costPrice" />
+                                <mat-error>This field is required.</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="w-full">
+                                <mat-label>Selling Price</mat-label>
+                                <input matInput type="number" 
+                                    required formControlName="sellingPrice" />
+                                <mat-error>This field is required.</mat-error>
+                            </mat-form-field>
+                            
+                            <mat-form-field class="w-full">
+                                <mat-label>Quantity</mat-label>
+                                <input matInput type="number" 
+                                    required formControlName="quantity" />
+                                <mat-error>This field is required.</mat-error>
+                            </mat-form-field>
+                        </div>
+        
+                        <div class="text-center">
+                            <button class="primary-color" mat-raised-button>
+                                <span>Add Product</span>
+                            </button>
+                        </div>
+                    </span>
+    
+                </form>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

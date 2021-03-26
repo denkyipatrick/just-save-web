@@ -1,0 +1,54 @@
+
+<!-- <mat-toolbar color="primary"></mat-toolbar> -->
+
+<span style="height: 100vh;" class="flex flex-col bg-gray-100">
+  <mat-toolbar style="height: 80px;" 
+    class="bg-green-600 text-white flex items-center justify-center">
+    <span class="block text-center">
+        <p class="text-xl font-light">{{appName}}</p>
+        <!-- <p class="text-xs font-light">{{appSlogan}}</p> -->
+    </span>
+  </mat-toolbar>
+  
+  <div class="self-stretch"> 
+      <div style="width: 500px; margin: 0 auto; padding-top: 50px;">
+          <form [formGroup]="form" (ngSubmit)="signIn()" 
+            class="bg-white p-6 shadow-2xl transition-shadow rounded-2xl"
+            style="width: 400px; margin: 0 auto;">
+            <span class="text-center">
+              <!-- <p class="text-xs text-gray-500 font-medium">{{appName}}</p> -->
+              <p class="text-2xl font-normal">Staff Sign In</p>
+            </span>
+            <span class="block my-6 space-y-2">
+              <div>
+                  <mat-form-field appearance="outline">
+                      <mat-label>Username</mat-label>
+                      <input matInput required formControlName="username" />
+                      <mat-error>Please enter your username</mat-error>
+                  </mat-form-field>
+              </div>
+          
+              <div>
+                <mat-form-field appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput required 
+                      type="password"
+                      formControlName="password" />
+                    <mat-error>Please enter your password</mat-error>
+                </mat-form-field>
+              </div>
+            </span>
+  
+            <div *ngIf="isSignInError">
+              <p class="text-red-500 font-medium text-center py-4">Error Message: {{networkErrorMessage}}</p>
+            </div>
+        
+            <div class="text-center">
+              <button mat-raised-button class="button">SIGN IN</button>
+            </div>
+        
+          </form>
+      </div>
+      
+    </div>
+</span>

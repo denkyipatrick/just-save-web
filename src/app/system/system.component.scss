@@ -1,0 +1,11 @@
+.left-nav {
+    li {
+        a {
+            width: 100%;
+            text-align: left;
+        }
+        a.active {
+            background-color: rgba(219, 219, 219, 0.418);
+        }
+    }
+}

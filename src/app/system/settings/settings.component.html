@@ -1,0 +1,32 @@
+
+<span class="block" style="height: 85vh;">
+    <header>
+        <span class="flex items-center space-x-4">
+            <!-- <app-back-button></app-back-button> &nbsp;  -->
+            <p class="text-3xl font-light" style="margin: 0;">Account Settings</p>
+        </span>    
+    </header>
+    
+    <div class="w-full m-4 flex items-stretch justify-start">
+        <section class="w-1/4 h-full border-r-2">
+            <nav>
+                <ul class="pr-2">
+                    <li>
+                        <a mat-button 
+                            routerLink="personal"
+                            routerLinkActive="active-link">Personal</a>
+                    </li>
+                    <li>
+                        <a mat-button 
+                            routerLink="security"
+                            routerLinkActive="active-link">Security</a>
+                    </li>
+                </ul>
+            </nav>
+        </section>
+        <section class="w-2/4 h-full ml-4" style="height: 100px;">
+            <router-outlet></router-outlet>
+        </section>
+    </div>
+    
+</span>

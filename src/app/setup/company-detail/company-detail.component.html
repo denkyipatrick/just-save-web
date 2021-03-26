@@ -1,0 +1,31 @@
+
+<section style="width: 600px;" class="mx-auto relative">
+    <section class="">
+        <span class="flex items-center justify-start space-x-8 mb-8">
+            <mat-icon class="text-blue-700">verified</mat-icon> &nbsp; &nbsp; 
+            <p class="font-medium text-lg text-gray-600" style="margin: 0;">
+                Welcome To
+            </p>
+
+        </span>
+    </section>
+
+    <section class="text-left">
+        <div class="border-b-2 mb-8">
+            <p class="text-gray-900 text-4xl  antialiased">
+                {{company?.name}}
+            </p>
+        </div>
+        
+    </section>
+
+    <section class="flex items-center justify-between">        
+        <div class="text-left">
+            <p style="margin: 0" class="text-gray-500 text-xs">Public ID</p>
+            <p class="text-gray-900 font-medium antialiased">
+                {{company?.publicId}}
+            </p>
+        </div>
+        <a routerLink="../select-branch" class="setup-button w-auto">NEXT</a>
+    </section>
+</section>

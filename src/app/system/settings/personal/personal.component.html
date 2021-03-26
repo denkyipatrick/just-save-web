@@ -1,0 +1,57 @@
+
+<div>
+    <p class="text-xl font-normal">Personal Settings</p>
+    <div class="mt-4 border-b-2 pb-2">
+        <span class="flex items-center justify-between mb-4">
+            <p class="m-0" style="margin: 0;">Name</p>
+            <!-- <button mat-raised-button (click)="toggleShowNameForm()">
+                <span>Edit</span> &nbsp; 
+                <mat-icon>edit</mat-icon>
+            </button> -->
+        </span>
+
+        <!-- <span>
+            <form 
+                *ngIf="isShowNameForm"
+                [formGroup]="form" 
+                (ngSubmit)="changeName()"
+                class="bg-gray-100 p-4 my-4">
+                <p>Change your name</p>
+                <section class="flex space-x-4">
+                    <mat-form-field class="w-full">
+                        <mat-label>First Name</mat-label>
+                        <input matInput required formControlName="firstName" />
+                        <mat-error>Enter your first name</mat-error>
+                    </mat-form-field>
+                    
+                    <mat-form-field class="w-full">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput required formControlName="lastName" />
+                        <mat-error>Enter your last name</mat-error>
+                    </mat-form-field>
+                </section>
+
+                <section class="text-center">
+                    <button mat-raised-button class="primary-color">
+                        CHANGE NAME
+                    </button>
+                </section>
+            </form>
+        </span> -->
+
+        <span>
+            <p class="text-xs text-gray-500">@{{staff?.username}}</p>
+            <p class="text-lg">{{staff?.firstName}} {{staff?.lastName}}</p>
+        </span>
+    </div>
+    <div class="mt-4 pb-2">
+        <span class="flex items-center justify-between mb-4">
+            <p class="m-0" style="margin: 0;">Branch</p>            
+        </span>
+
+        <span>
+            <p class="text-lg">{{staff?.branch?.name}}</p>
+            <p class="text-xs text-gray-500">{{staff?.branch?.address}}</p>
+        </span>
+    </div>
+</div>
