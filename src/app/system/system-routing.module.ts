@@ -1,3 +1,4 @@
+import { NewOrderComponent } from './new-order/new-order.component';
 import { StaffDetailComponent } from './staff-detail/staff-detail.component';
 import { BranchesComponent } from './branches/branches.component';
 import { CreateBranchComponent } from './create-branch/create-branch.component';
@@ -24,6 +25,7 @@ const routes: Routes = [
     { path: 'products', component: ProductsComponent },
     { path: 'products/:id', component: ProductDetailComponent },
     { path: 'add-product', component: AddProductComponent },
+    { path: 'new-order', component: NewOrderComponent },
     { path: 'settings', loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule) },
   ]}
 ];

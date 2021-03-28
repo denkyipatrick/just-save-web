@@ -1,9 +1,9 @@
 <div class="flex items-start justify-between space-x-8">
     <form [formGroup]="form" class="w-1/2"
         autocomplete="off" (ngSubmit)="createBranch()">
-        <span class="flex items-center space-x-4">
-            <app-back-button></app-back-button>
-            <h2>Create New Branch</h2>
+        <span class="flex items-center space-x-4 mb-4">
+            <app-back-button></app-back-button> &nbsp; 
+            <h2 style="margin: 0;">Create New Branch</h2>
         </span>
         <mat-card class="space-y-6">
             <div>
@@ -33,7 +33,7 @@
             </div>
         
             <div class="text-center">
-                <button mat-raised-button color="primary">
+                <button mat-raised-button class="primary-button-color">
                     CREATE BRANCH
                 </button>
             </div>

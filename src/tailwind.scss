@@ -4,26 +4,41 @@
     outline: none;
 }
 
-body::-webkit-scrollbar {
-    width: 12px;
+.ellipsize {
+    @apply overflow-ellipsis whitespace-nowrap overflow-hidden;
 }
 
-body::-webkit-scrollbar-track {
-    background: green;
+.slim-scrollbar::-webkit-scrollbar {
+    width: 8px;
 }
 
-body::-webkit-scrollbar-thumb {
-    background: black;
+.slim-scrollbar::-webkit-scrollbar-track {
+    background: rgb(245, 245, 245);
+}
+
+.slim-scrollbar::-webkit-scrollbar-thumb {
     border-radius: 20px;
+    @apply bg-gray-300;
 }
 
 button, a.button {
-    @apply text-white bg-green-700
+}
+
+.red-text, red-bg {
+   color: rgb(236, 75, 75)
+}
+
+.toolbar-primary-color {
+    @apply bg-blue-700 text-white;
 }
 
 .primary-color {
     background-color: indigo;
     color: white;
+}
+
+.primary-button-color {
+    @apply bg-blue-700 text-white;
 }
 
 .primary-color-dark {

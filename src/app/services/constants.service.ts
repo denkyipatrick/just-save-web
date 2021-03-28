@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ConstantsService {
-  SERVER_URL: string = 'https://lollandscreditunion.com:4900/api';
-  // SERVER_URL: string = 'http://localhost:4900/api';
+  // SERVER_URL: string = 'https://lollandscreditunion.com:4900/api';
+  SERVER_URL: string = 'http://localhost:4900/api';
 
   STAFF_URL: string;
   ROLES_URL: string;
@@ -13,6 +13,7 @@ export class ConstantsService {
   PRODUCTS_URL: string;
   COMPANIES_URL: string;
   STAFF_ROLES_URL: string;
+  BRANCH_PRODUCTS_URL: string;
 
   constructor() {
     this.STAFF_URL = `${this.SERVER_URL}/staff`;
@@ -21,5 +22,6 @@ export class ConstantsService {
     this.PRODUCTS_URL = `${this.SERVER_URL}/products`;
     this.COMPANIES_URL = `${this.SERVER_URL}/companies`;
     this.STAFF_ROLES_URL = `${this.SERVER_URL}/staffroles`;
+    this.BRANCH_PRODUCTS_URL = `${this.SERVER_URL}/branchproducts`;
   }
 }

@@ -57,7 +57,8 @@ export class AddProductComponent implements OnInit {
     this.form.patchValue({
       name: product?.name,
       lookupKey: product?.lookupKey,
-      unitPrice: product?.unitPrice
+      costPrice: product?.costPrice,
+      sellingPrice: product?.sellingPrice
     });
   }
 

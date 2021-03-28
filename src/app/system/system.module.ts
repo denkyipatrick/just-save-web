@@ -39,6 +39,8 @@ import { BranchListComponent } from './branch-list/branch-list.component';
 import { StaffDetailComponent } from './staff-detail/staff-detail.component';
 import { EditRoleDialogComponent } from './edit-role-dialog/edit-role-dialog.component';
 import { CustomComponentsModule } from '../custom-components/custom-components.module';
+import { NewOrderComponent } from './new-order/new-order.component';
+import { EditProductQuantityDialogComponent } from './edit-product-quantity-dialog/edit-product-quantity-dialog.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,7 @@ import { CustomComponentsModule } from '../custom-components/custom-components.m
     CreateBranchComponent, 
     BranchListComponent, 
     StaffDetailComponent, 
-    EditRoleDialogComponent
+    EditRoleDialogComponent, NewOrderComponent, EditProductQuantityDialogComponent
   ],
   imports: [
     CommonModule,

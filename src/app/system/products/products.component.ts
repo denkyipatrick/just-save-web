@@ -35,7 +35,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     this.canStaffCreateProduct = this.staffService.staff.roles
       .find(role => role.id === 'add-product') ? true : false;
       
-    this.tableColumns = ['key', 'name', 'sellingPrice', 'quantity', 'total', 'actions']
+    this.tableColumns = ['key', 'name', 'sellingPrice', 'quantity', 'actions']
     this.dataSource = new MatTableDataSource(this.products);
   }
 

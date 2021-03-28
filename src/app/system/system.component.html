@@ -1,5 +1,8 @@
 
-<mat-toolbar class="bg-green-600 text-white flex items-center justify-between">
+<mat-toolbar style="height: 10vh;" 
+  class="toolbar-primary-color 
+    flex items-center 
+    justify-between">
     <button mat-icon-button (click)="drawer.toggle()" class="">
         <mat-icon>menu</mat-icon>
     </button>
@@ -16,7 +19,7 @@
     </span>
 </mat-toolbar>
 
-<mat-drawer-container style="width: 100%; height: 90vh;">
+<mat-drawer-container style="width: 100vw; height: 90vh;">
     <mat-drawer #drawer mode="side" opened class="w-3/12">
       <div class="p-4 bg-gray-100">
         <div class="flex items-start justify-between">
@@ -49,8 +52,8 @@
       <div class="p-2">
           <ul class="left-nav">
             <li *ngIf="isMakeOrder" class="mt-2 mb-4">
-              <a mat-raised-button color="primary" 
-                class="w-full text-lefts">
+              <a routerLink="new-order" mat-raised-button 
+                class="w-full text-lefts primary-button-color">
                 <mat-icon>add</mat-icon> &nbsp;
                 <span class="inline-block text-left">NEW ORDER</span>
               </a>
@@ -157,8 +160,9 @@
           </mat-expansion-panel>
       </mat-accordion>
     </mat-drawer>
-    <mat-drawer-content class="w-9/12">
-        <div class="my-2 mx-8">
+    <mat-drawer-content class="h-full slim-scrollbar">
+        <div class="h-full py-2 px-4 bg-gray-50 
+          overflow-y-auto slim-scrollbar relative">
             <router-outlet></router-outlet>
         </div>
     </mat-drawer-content>

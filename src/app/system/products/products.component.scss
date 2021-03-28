@@ -1,13 +1,13 @@
 table {
     tr.body-row {
-        button { visibility: hidden; }
+        button, a.button { visibility: hidden; }
         
         &:nth-child(even){
             background: rgb(247, 247, 247);
         }
         &:hover {
             background: rgb(231, 231, 231);
-            button {
+            button, a.button {
                 visibility: visible;
             }
         }

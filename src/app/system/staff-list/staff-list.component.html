@@ -1,9 +1,9 @@
 
 <!-- <mat-card> -->
-    <div class="w-full lg:w-3/4">
+    <div class="w-full 2xl:w-3/4">
         <div class="flex items-center justify-between">
             <p class="text-3xl font-light">Staff List</p>
-            <a routerLink="../add-staff" mat-raised-button color="primary">
+            <a routerLink="../add-staff" mat-raised-button class="primary-button-color">
                 <mat-icon>add</mat-icon>
                 <span>Add Staff</span>
             </a>
@@ -18,7 +18,7 @@
                                 <img src="../../../assets/svg/account_circle-black-48dp.svg" 
                                     class="block mx-auto" />
                                 
-                                <p class="text-lg my-0">{{staff?.firstName}} {{staff?.lastName}}</p>
+                                <p class="text-lg my-0 ellipsize">{{staff?.firstName}} {{staff?.lastName}}</p>
                                 <p class="text-xs text-gray-400 my-0">@{{staff?.username}}</p>
                                 <span *ngIf="false" class="flex items-center justify-center text-gray-500 space-x-2">
                                     <a [routerLink]="'./' + staff?.username" mat-icon-button>

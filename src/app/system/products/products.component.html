@@ -16,17 +16,13 @@
         </div>
 
         <a *ngIf="canStaffCreateProduct"
-            class="button"
-            routerLink="../add-product" mat-raised-button color="primary">
+            class="button primary-button-color"
+            routerLink="../add-product" mat-raised-button>
             <mat-icon>add</mat-icon>
             <span>Add Product</span>
         </a>
     </div>
-    <table mat-table [dataSource]="dataSource" matSort class="w-full">
-        <!-- <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let product">{{product.id}}</td>
-        </ng-container> -->
+    <table mat-table [dataSource]="dataSource" [fixedLayout]="false" matSort class="w-full">
         <ng-container matColumnDef="key">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Lookup Key</th>
             <td mat-cell *matCellDef="let product" class="uppercase">{{product.lookupKey}}</td>
@@ -34,8 +30,10 @@
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
             <td mat-cell *matCellDef="let product">
-                <p style="margin: 0; font-size: .8rem;" 
-                    class="font-medium text-gray-800">{{product.name}}</p>
+                <p style="margin: 0; font-size: .8rem; margin-right: 1rem;" 
+                    class="font-medium text-gray-800">
+                    {{product.name}}
+                </p>
                 <ul *ngIf="isShowMultipleBranches" class="flex items-center">
                     <li *ngFor="let productBranch of product?.productBranches">
                         <p style="margin: 0" 
@@ -52,34 +50,34 @@
         </ng-container>
         <ng-container matColumnDef="sellingPrice">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit Price</th>
-            <td mat-cell *matCellDef="let product">
+            <td mat-cell *matCellDef="let product" style="min-width: 120px;">
                 <span class="text-gray-600 font-medium">GHC </span> 
                 <span class="font-medium text-gray-900">{{product?.sellingPrice?.toFixed(2)}}</span>
             </td>
         </ng-container>
         <ng-container matColumnDef="quantity">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>In Stock</th>
-            <td mat-cell *matCellDef="let product">
+            <td mat-cell *matCellDef="let product" style="min-width: 120px;">
                 <span class="font-medium">
                     {{product?.quantity}}
                 </span>
             </td>
         </ng-container>
-        <ng-container matColumnDef="total">
+        <!-- <ng-container matColumnDef="total">
             <th mat-header-cell *matHeaderCellDef>Amount</th>
             <td mat-cell *matCellDef="let product">
                 GHC {{(product?.quantity * product?.sellingPrice)?.toFixed(2)}}
             </td>
-        </ng-container>
+        </ng-container> -->
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let product">
-                <button mat-icon-button (click)="deleteProduct(product, $event)">
+            <td mat-cell *matCellDef="let product" style="min-width: 120px;">
+                <button mat-icon-button class="button" (click)="deleteProduct(product, $event)">
                     <mat-icon>delete</mat-icon>
                 </button>
-                <button mat-icon-button>
+                <a class="button" [routerLink]="'./' + product.id" mat-icon-button>
                     <mat-icon>edit</mat-icon>
-                </button>
+                </a>
             </td>
         </ng-container>
     
