@@ -1,12 +1,11 @@
+import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConstantsService {
-  // SERVER_URL: string = 'https://lollandscreditunion.com:4900/api';
-  SERVER_URL: string = 'http://localhost:4900/api';
-
+  SERVER_URL: string;
   STAFF_URL: string;
   ROLES_URL: string;
   BRANCHES_URL: string;
@@ -16,6 +15,7 @@ export class ConstantsService {
   BRANCH_PRODUCTS_URL: string;
 
   constructor() {
+    this.SERVER_URL = environment.apiUrl;
     this.STAFF_URL = `${this.SERVER_URL}/staff`;
     this.ROLES_URL = `${this.SERVER_URL}/roles`;
     this.BRANCHES_URL = `${this.SERVER_URL}/branches`;

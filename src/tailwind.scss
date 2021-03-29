@@ -29,7 +29,8 @@ button, a.button {
 }
 
 .toolbar-primary-color {
-    @apply bg-blue-700 text-white;
+    background: #673ab7;
+    color: white;
 }
 
 .primary-color {
@@ -38,7 +39,8 @@ button, a.button {
 }
 
 .primary-button-color {
-    @apply bg-blue-700 text-white;
+    background: #673ab7;
+    color: white;
 }
 
 .primary-color-dark {

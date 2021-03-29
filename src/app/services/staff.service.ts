@@ -18,6 +18,8 @@ export class StaffService {
     private constantsService: ConstantsService) {
       this.branchId = localStorage.getItem('branchId');
       this.staff = JSON.parse(sessionStorage.getItem('staff'));
+
+      // console.log(localStorage.getItem('branchId'))
   }
 
   signIn(data: object): Observable<Staff> {
