@@ -7,8 +7,8 @@ export class Staff {
 
     constructor(
         public branchId: string,
-        public username: string, 
-        public lastName: string, 
+        public username: string,
+        public lastName: string,
         public firstName: string) {
     }
 }

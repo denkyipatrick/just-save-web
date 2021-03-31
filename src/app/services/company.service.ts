@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Product } from './../models/product';
 import { Company } from './../models/company';
 import { Branch } from './../models/branch';
@@ -17,19 +18,19 @@ export class CompanyService {
     this.company = JSON.parse(localStorage.getItem('company'));
   }
 
-  fetchCompany(id: string) {
+  fetchCompany(id: string): Observable<Company> {
     return this.http.get<Company>(`${this.constants.COMPANIES_URL}/${id}`);
   }
 
-  fetchBranchProducts(branchId: string) {
+  fetchBranchProducts(branchId: string): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.constants.BRANCHES_URL}/${branchId}/products`);
   }
 
-  fetchCompanyProducts() {
+  fetchCompanyProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.constants.COMPANIES_URL}/${this.companyId}/products`);
   }
 
-  fetchBranches() {
+  fetchBranches(): Observable<Branch[]> {
     return this.http.get<Branch[]>(`${this.constants.COMPANIES_URL}/${this.companyId}/branches`);
   }
 }

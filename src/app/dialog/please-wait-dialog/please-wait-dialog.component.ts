@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PleaseWaitDialogComponent implements OnInit {
 
-  constructor(private MatDialogRef: MatDialogRef<PleaseWaitDialogComponent>) { }
+  constructor(private dialogRef: MatDialogRef<PleaseWaitDialogComponent>) { }
 
   ngOnInit(): void {
   }

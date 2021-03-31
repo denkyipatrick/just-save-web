@@ -9,7 +9,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class OkDialogComponent implements OnInit {
   @Output() ok: EventEmitter<null>;
 
-  constructor(private dialogRef: MatDialogRef<OkDialogComponent>, 
+  constructor(
+    private dialogRef: MatDialogRef<OkDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       this.ok = new EventEmitter();
     }
@@ -17,9 +18,9 @@ export class OkDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  submit() {
-    this.ok.emit()
-    this.dialogRef.close()
+  submit(): void {
+    this.ok.emit();
+    this.dialogRef.close();
   }
 
 }

@@ -37,7 +37,7 @@ export class StaffDetailComponent implements OnInit {
       this.roleGroups = [];
       this.targetStaffRoleGroups = [];
       this.loggedInStaff = this.staffService.staff;
-      
+
       this.form = new FormGroup({
         lastName: new FormControl(),
         firstName: new FormControl()
@@ -46,7 +46,7 @@ export class StaffDetailComponent implements OnInit {
       if (this.loggedInStaff.roles.find(role => role.id === 'edit-staff-role')) {
         this.doesLoggedInStaffHasEditRole = true;
       }
-      
+
       if (this.loggedInStaff.roles.find(role => role.id === 'edit-staff-name')) {
         this.canViewerEditName = true;
       }
@@ -54,17 +54,17 @@ export class StaffDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
-      this.usernameRouteParameter = params['username'];
+      this.usernameRouteParameter = params.username;
     });
 
     this.fetchStaff();
   }
-  
-  toggleShowNameForm() {
+
+  toggleShowNameForm(): void {
     this.isShowNameForm = !this.isShowNameForm;
   }
 
-  changeName() {
+  changeName(): void {
     if (this.form.invalid) {
       return;
     }
@@ -76,28 +76,28 @@ export class StaffDetailComponent implements OnInit {
       this.targetStaff.lastName = staff.lastName;
       this.targetStaff.firstName = staff.firstName;
 
-      if (this.targetStaff.username == this.staffService.staff.username) {
+      if (this.targetStaff.username === this.staffService.staff.username) {
         this.staffService.staff.lastName = staff.lastName;
         this.staffService.staff.firstName = staff.firstName;
-        
+
         sessionStorage.setItem('staff', JSON.stringify(this.staffService.staff));
         localStorage.setItem('staff', JSON.stringify(this.staffService.staff));
-      }      
-      
+      }
+
       this.form.reset();
       this.isShowNameForm = false;
 
       this.snackBar.open('Name changed', 'CLOSE', {
         duration: 5000
       });
-      
+
       dialogRef.close();
     }, error => {
       dialogRef.close();
     });
   }
 
-  editRole() {
+  editRole(): void {
     const dialog = this.dialogOpener.open(EditRoleDialogComponent, {
       disableClose: true,
       data: {
@@ -108,16 +108,16 @@ export class StaffDetailComponent implements OnInit {
     .componentInstance;
 
     dialog.addRole
-    .subscribe(input => {
-      console.log(input);
+    .subscribe(selectedRoleId => {
+      console.log(selectedRoleId);
       this.staffService
-      .addStaffRole({staffUsername: this.targetStaff.username, roleId: input['roleId']})
+      .addStaffRole({staffUsername: this.targetStaff.username, roleId: selectedRoleId})
       .subscribe(role => {
         this.targetStaff.roles.push(role);
         this.processStaffRoles();
         this.snackBar.open('Role Added', 'CLOSE', { duration: 5000 });
 
-        if (this.targetStaff.username == this.staffService.staff.username) {
+        if (this.targetStaff.username === this.staffService.staff.username) {
           this.staffService.staff.roles.push(role);
           sessionStorage.setItem('staff', JSON.stringify(this.staffService.staff));
         }
@@ -129,28 +129,28 @@ export class StaffDetailComponent implements OnInit {
     });
 
     dialog.removeRole
-    .subscribe(input => {
+    .subscribe(selectedRoleId => {
       this.staffService
-      .removeStaffRole(this.targetStaff.username, input['roleId'])
+      .removeStaffRole(this.targetStaff.username, selectedRoleId)
       .subscribe(deletedRole => {
         this.targetStaff.roles = this.targetStaff.roles
           .filter(role => role.id !== deletedRole.id);
 
         this.processStaffRoles();
         this.snackBar.open('Role Removed', 'CLOSE', { duration: 5000 });
-        
-        if (this.targetStaff.username == this.staffService.staff.username) {
+
+        if (this.targetStaff.username === this.staffService.staff.username) {
           this.staffService.staff.roles = this.targetStaff.roles;
           sessionStorage.setItem('staff', JSON.stringify(this.staffService.staff));
         }
 
       }, error => {
         this.snackBar.open('Unable to remove role.', 'CLOSE', { duration: 5000 });
-      })
+      });
     });
   }
 
-  processStaffRoles() {
+  processStaffRoles(): void {
     this.targetStaffRoleGroups = this.targetStaff.roles.map(role => role.group)
     .filter((group, index, self) => self.indexOf(group) === index);
 
@@ -159,11 +159,11 @@ export class StaffDetailComponent implements OnInit {
 
     this.roleGroups = [];
     this.roleGroupNames.forEach(group => {
-      this.roleGroups.push(new RoleGroup(group, this.targetStaff.roles.filter(role => role.group == group)));
+      this.roleGroups.push(new RoleGroup(group, this.targetStaff.roles.filter(role => role.group === group)));
     });
   }
 
-  fetchStaff() {
+  fetchStaff(): void {
     this.staffService.fetchStaff(this.usernameRouteParameter)
     .subscribe(staff => {
       this.targetStaff = staff;

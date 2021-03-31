@@ -9,9 +9,10 @@ import { PleaseWaitDialogComponent } from './please-wait-dialog/please-wait-dial
 
 @NgModule({
   declarations: [
-    OkCancelDialogComponent, 
-    OkDialogComponent, 
-    PleaseWaitDialogComponent],
+    OkCancelDialogComponent,
+    OkDialogComponent,
+    PleaseWaitDialogComponent
+  ],
   imports: [
     CommonModule,
     MatDialogModule,

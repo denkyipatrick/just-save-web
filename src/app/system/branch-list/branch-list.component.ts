@@ -10,7 +10,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class BranchListComponent implements OnInit {
   @Input() branches: Branch[];
-  @Input() fetchBranchesFromNetwork: boolean = true;
+  @Input() fetchBranchesFromNetwork = true;
 
   constructor(private companyService: CompanyService) { }
 

@@ -16,12 +16,12 @@ import { MatDialog } from '@angular/material/dialog';
 export class AddProductComponent implements OnInit {
   form: FormGroup;
   lookedUpProducts: Product[];
-  showLookedUpProductsWindow: boolean = true;
+  showLookedUpProductsWindow = true;
 
   constructor(
     private utilityService: UtilityService,
     private staffService: StaffService,
-    private dialogOpener: MatDialog, 
+    private dialogOpener: MatDialog,
     private matSnackBar: MatSnackBar) {
     this.form = new FormGroup({
       name: new FormControl(),
@@ -36,11 +36,11 @@ export class AddProductComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  goBack() {
+  goBack(): void {
     history.back();
   }
 
-  lookupProduct(lookupKey: string) {
+  lookupProduct(lookupKey: string): void {
     this.showLookedUpProductsWindow = true;
 
     this.utilityService.lookupProduct(lookupKey)
@@ -51,7 +51,7 @@ export class AddProductComponent implements OnInit {
     });
   }
 
-  selectLookedUpProduct(product: Product) {
+  selectLookedUpProduct(product: Product): void {
     this.showLookedUpProductsWindow = false;
 
     this.form.patchValue({
@@ -62,12 +62,12 @@ export class AddProductComponent implements OnInit {
     });
   }
 
-  saveProduct() {
+  saveProduct(): void {
     if (this.form.invalid) { return; }
 
     this.dialogOpener.open(OkCancelDialogComponent, {
       data: {
-        title: "Add Product",
+        title: 'Add Product',
         message: 'Are you sure you want to add this product to your store?',
         okButtonText: 'YES',
         cancelButtonText: 'NO'
@@ -84,7 +84,7 @@ export class AddProductComponent implements OnInit {
       .subscribe(product => {
         dialogRef.close();
         this.form.reset();
-        // localStorage.setItem('products', JSON.stringify(products));    
+        // localStorage.setItem('products', JSON.stringify(products));
         this.matSnackBar.open('Product Added Successfully', 'CLOSE', {
           duration: 5000
         });
@@ -92,7 +92,7 @@ export class AddProductComponent implements OnInit {
         dialogRef.close();
         console.error(error);
 
-        switch(error.status) {
+        switch (error.status) {
           case 0: {
             break;
           }
@@ -100,7 +100,7 @@ export class AddProductComponent implements OnInit {
             this.dialogOpener.open(OkCancelDialogComponent, {
               data: {
                 title: 'Product Already Exists',
-                message: `${this.form.value['name']} is already in this branch. Edit product instead`,
+                message: `${this.form.value.name} is already in this branch. Edit product instead`,
                 okButtonText: 'OK, EDIT',
                 cancelButtonText: 'FORGET'
               }
@@ -109,7 +109,7 @@ export class AddProductComponent implements OnInit {
             .ok
             .subscribe(() => {
 
-            })
+            });
             break;
           }
           case 500: {
@@ -120,8 +120,8 @@ export class AddProductComponent implements OnInit {
           }
         }
       });
-    })
-    
+    });
+
   }
 
 }

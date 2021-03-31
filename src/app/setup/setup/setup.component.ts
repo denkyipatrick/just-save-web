@@ -11,7 +11,7 @@ export class SetupComponent implements OnInit {
   constructor(private titleService: Title) { }
 
   ngOnInit(): void {
-    this.titleService.setTitle("Setup - JustSave | Store Management System");
+    this.titleService.setTitle('Setup - JustSave | Store Management System');
   }
 
 }

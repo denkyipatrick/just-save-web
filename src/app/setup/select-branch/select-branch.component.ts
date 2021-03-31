@@ -39,24 +39,24 @@ export class SelectBranchComponent implements OnInit {
       this.enableNextButton = true;
 
       this.form.patchValue({
-        'branchId': branches[0]?.id
-      })
+        branchId: branches[0]?.id
+      });
     }, error => {
       console.log(error);
     });
   }
 
-  branchSelected() {
-    this.staffService.branchId = this.form.value['branchId'];
+  branchSelected(): void {
+    this.staffService.branchId = this.form.value.branchId;
     localStorage.setItem('setup-stage', 'completed');
-    localStorage.setItem('branchId', this.form.value['branchId']);
+    localStorage.setItem('branchId', this.form.value.branchId);
 
     const dialogRef = this.dialogOpener.open(PleaseWaitDialogComponent, {
       disableClose: true
     });
 
     const randomNumber = Math.floor(Math.random() * 10000);
-    
+
     setTimeout(() => {
       this.router.navigate(['../done'], { relativeTo: this.route });
       dialogRef.close();

@@ -25,7 +25,7 @@ export class StartScreenComponent implements OnInit {
     this.setupStage = localStorage.getItem('setup-stage');
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     if (!this.company) {
       this.showSetupSection = true;
     } else {
@@ -39,7 +39,7 @@ export class StartScreenComponent implements OnInit {
         if (this.company.id !== company.id) {
           this.showSetupSection = true;
         } else {
-          switch(this.setupStage) {
+          switch (this.setupStage) {
             case 'completed': {
               this.showLoginSection = true;
               break;
@@ -52,10 +52,10 @@ export class StartScreenComponent implements OnInit {
       }, error => {
         this.fetchingCompany = false;
 
-        switch(error.status) {
+        switch (error.status) {
           case 0: {
             this.errorFetchingCompany = true;
-            this.networkErrorMessage = "Please check your network and try again.";
+            this.networkErrorMessage = 'Please check your network and try again.';
             break;
           }
           case 404: {

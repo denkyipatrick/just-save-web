@@ -1,3 +1,4 @@
+import { Role } from './../../models/role';
 import { Staff } from './../../models/staff';
 import { RoleGroup } from '../../models/rolegroup';
 import { UtilityService } from './../../services/utility.service';
@@ -10,8 +11,8 @@ import { Component, Inject, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./edit-role-dialog.component.scss']
 })
 export class EditRoleDialogComponent implements OnInit {
-  @Output() addRole: EventEmitter<object>;
-  @Output() removeRole: EventEmitter<object>;
+  @Output() addRole: EventEmitter<string>;
+  @Output() removeRole: EventEmitter<string>;
 
   targetStaff: Staff;
   roleGroups: RoleGroup[];
@@ -30,7 +31,7 @@ export class EditRoleDialogComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.targetStaff = this.data['staff'];
+    this.targetStaff = this.data.staff;
 
     this.utilityService.fetchSystemRoles()
     .subscribe(roles => {
@@ -38,29 +39,26 @@ export class EditRoleDialogComponent implements OnInit {
         .filter((group, index, self) => self.indexOf(group) === index);
 
       this.roleGroupNames.forEach(group => {
-        this.roleGroups.push(new RoleGroup(group, roles.filter(role => role.group == group)));
+        this.roleGroups.push(new RoleGroup(group, roles.filter(role => role.group === group)));
       });
     }, error => {
       console.error(error);
-    })
+    });
   }
 
-  toggleStaffRole(roleId: string, isChecked: boolean) {
-    console.log(roleId);
+  toggleStaffRole(roleId: string, isChecked: boolean): void {
     if (isChecked) {
-      this.addRole.emit({roleId: roleId});
+      this.addRole.emit(roleId);
     } else {
-      this.removeRole.emit({roleId: roleId});
+      this.removeRole.emit(roleId);
     }
   }
 
-  doesStaffHasRole(roleId: string) {
-    return this.targetStaff.roles.find(role => role.id == roleId) ? true : false;
+  doesStaffHasRole(roleId: string): boolean {
+    return this.targetStaff.roles.find(role => role.id === roleId) ? true : false;
   }
 
-
-
-  close() {
+  close(): void {
     this.dialogRef.close();
   }
 

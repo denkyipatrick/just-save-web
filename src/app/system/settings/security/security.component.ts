@@ -19,13 +19,13 @@ export class SecurityComponent implements OnInit {
       newPassword: new FormControl(),
       currentPassword: new FormControl(),
       confirmedPassword: new FormControl()
-    })
+    });
   }
 
   ngOnInit(): void {
   }
 
-  changePassword() {
+  changePassword(): void {
     if (this.form.invalid) {
       return;
     }
@@ -42,7 +42,7 @@ export class SecurityComponent implements OnInit {
       const dialogRef = this.dialogOpener.open(PleaseWaitDialogComponent, {
         disableClose: true
       });
-  
+
       this.staffService.changePassword(this.staffService.staff.username, this.form.value)
       .subscribe(staff => {
         dialogRef.close();

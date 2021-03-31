@@ -7,7 +7,7 @@ export class BranchProduct {
 
     constructor(
         public branchId: string,
-        public productId: string, 
+        public productId: string,
         public quantity: number = 10
         ) {
     }

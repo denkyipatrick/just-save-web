@@ -24,7 +24,7 @@ export class EditProductQuantityDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<EditProductQuantityDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
     ) {
-      this.done = new EventEmitter()
+      this.done = new EventEmitter();
     }
 
   ngOnInit(): void {
@@ -33,35 +33,35 @@ export class EditProductQuantityDialogComponent implements OnInit {
     this.productQuantity = this.branchProduct.quantity;
   }
 
-  quantityTyped(value: string) {
+  quantityTyped(value: string): void {
     console.log(value);
     this.productQuantity = +value;
   }
 
-  incrementQuantity() {
+  incrementQuantity(): void {
     this.productQuantity++;
   }
 
-  decrementQuantity() {
+  decrementQuantity(): void {
     this.productQuantity--;
   }
 
-  close() {
+  close(): void {
     this.dialogRef.close();
   }
 
-  updateQuantity(newQuantity: number) {
+  updateQuantity(newQuantity: number): void {
     this.updatingQuantity = true;
     this.errorUpdatingQuantity  = false;
 
     this.branchService.updateBranchProductQuantity(
-      this.branchProduct.branchId, 
-      this.branchProduct.productId, 
+      this.branchProduct.branchId,
+      this.branchProduct.productId,
       newQuantity
     )
     .subscribe(branchProduct => {
       this.updatingQuantity = false;
-      
+
       this.done.emit(branchProduct);
       this.dialogRef.close();
     }, error => {
@@ -70,5 +70,4 @@ export class EditProductQuantityDialogComponent implements OnInit {
       console.log(error);
     });
   }
-
 }

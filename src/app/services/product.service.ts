@@ -1,9 +1,8 @@
 import { Product } from './../models/product';
-import { Company } from '../models/company';
-import { Branch } from '../models/branch';
 import { ConstantsService } from './constants.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +10,14 @@ import { Injectable } from '@angular/core';
 export class ProductService {
   constructor(private constants: ConstantsService, private http: HttpClient) {
   }
-  
-  changeName(productId: string, newName: string) {
+
+  changeName(productId: string, newName: string): Observable<Product> {
     return this.http.put<Product>(`${this.constants.PRODUCTS_URL}/${productId}/change-name`, {
       name: newName
     });
   }
 
-  changePrice(productId: string, data: any) {
+  changePrice(productId: string, data: any): Observable<Product> {
     return this.http.put<Product>(`${this.constants.PRODUCTS_URL}/${productId}/change-price`, data);
   }
 }

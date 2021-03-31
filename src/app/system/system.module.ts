@@ -44,19 +44,19 @@ import { EditProductQuantityDialogComponent } from './edit-product-quantity-dial
 
 @NgModule({
   declarations: [
-    SystemComponent, 
-    DashboardComponent, 
-    ProductsComponent, 
-    UsersComponent, 
-    UserDetailComponent, 
-    ProductDetailComponent, 
-    AddProductComponent, 
+    SystemComponent,
+    DashboardComponent,
+    ProductsComponent,
+    UsersComponent,
+    UserDetailComponent,
+    ProductDetailComponent,
+    AddProductComponent,
     StaffListComponent,
     AddStaffComponent,
-    BranchesComponent, 
-    CreateBranchComponent, 
-    BranchListComponent, 
-    StaffDetailComponent, 
+    BranchesComponent,
+    CreateBranchComponent,
+    BranchListComponent,
+    StaffDetailComponent,
     EditRoleDialogComponent, NewOrderComponent, EditProductQuantityDialogComponent
   ],
   imports: [

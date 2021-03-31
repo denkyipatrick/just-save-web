@@ -6,8 +6,8 @@ export class Product {
     productBranches: BranchProduct[];
 
     constructor(
-        public id: string, 
-        public name: string, 
+        public id: string,
+        public name: string,
         public lookupKey: string,
         public quantity: number = 0,
         public unitPrice: number = 0,

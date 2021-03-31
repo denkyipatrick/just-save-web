@@ -9,7 +9,6 @@ import { Title } from '@angular/platform-browser';
 })
 export class AppComponent {
   constructor(private utilityService: UtilityService, private titleService: Title) {
-    this.titleService.setTitle(this.utilityService.appName + " " + "Management System");
-    // localStorage.setItem('branchId', '04e3d409-47c6-4de6-b3f5-50435cf0d965');
+    this.titleService.setTitle(this.utilityService.appName + ' Management System');
   }
 }

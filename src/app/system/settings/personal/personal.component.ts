@@ -31,11 +31,11 @@ export class PersonalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  toggleShowNameForm() {
+  toggleShowNameForm(): void {
     this.isShowNameForm = !this.isShowNameForm;
   }
 
-  changeName() {
+  changeName(): void {
     if (this.form.invalid) {
       return;
     }
@@ -48,10 +48,10 @@ export class PersonalComponent implements OnInit {
     //   this.staff.firstName = staff.firstName;
     //   this.staffService.staff.lastName = staff.lastName;
     //   this.staffService.staff.firstName = staff.firstName;
-      
+
     //   sessionStorage.setItem('staff', JSON.stringify(this.staffService.staff));
     //   localStorage.setItem('staff', JSON.stringify(this.staffService.staff));
-      
+
     //   dialogRef.close();
     //   this.isShowNameForm = false;
     //   // this.form.patchValue({

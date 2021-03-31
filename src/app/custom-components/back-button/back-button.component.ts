@@ -12,7 +12,7 @@ export class BackButtonComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  goBack() {
+  goBack(): void {
     history.back();
   }
 

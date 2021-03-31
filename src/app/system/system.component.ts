@@ -23,15 +23,15 @@ export class SystemComponent implements OnInit {
   isShowDashboard: boolean;
 
   constructor(
-    private StaffService: StaffService, 
+    private staffService: StaffService,
     private utilityService: UtilityService,
     private dialogOpener: MatDialog,
     private router: Router
     ) {
-    this.staff = this.StaffService.staff;
+    this.staff = this.staffService.staff;
     this.appName = this.utilityService.appName;
     this.appSlogan = this.utilityService.appSlogan;
-    
+
     if (this.staff.roles.find(role => role.id === 'make-order')) {
       this.isMakeOrder = true;
     }
@@ -39,15 +39,15 @@ export class SystemComponent implements OnInit {
     if (this.staff.roles.find(role => role.id === 'view-dashboard')) {
       this.isShowDashboard = true;
     }
-    
+
     if (this.staff.roles.find(role => role.id === 'view-staff')) {
       this.isViewStaffs = true;
     }
-    
+
     if (this.staff.roles.find(role => role.id === 'view-product')) {
       this.isViewProducts = true;
     }
-    
+
     if (this.staff.roles.find(role => role.id === 'view-branch')) {
       this.canViewBranches = true;
     }
@@ -59,7 +59,7 @@ export class SystemComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  signOut() {
+  signOut(): void {
     const dialogRef = this.dialogOpener.open(PleaseWaitDialogComponent, {
       disableClose: true
     });

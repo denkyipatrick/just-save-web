@@ -7,10 +7,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./ok-cancel-dialog.component.scss']
 })
 export class OkCancelDialogComponent implements OnInit {
-  @Output() ok: EventEmitter<null>
-  @Output() cancel: EventEmitter<null>
+  @Output() ok: EventEmitter<null>;
+  @Output() cancel: EventEmitter<null>;
 
-  constructor(private dialogRef: MatDialogRef<OkCancelDialogComponent>, 
+  constructor(
+    private dialogRef: MatDialogRef<OkCancelDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       this.ok = new EventEmitter();
       this.cancel = new EventEmitter();
@@ -19,12 +20,12 @@ export class OkCancelDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  submit() {
+  submit(): void {
     this.ok.emit();
     this.dialogRef.close();
   }
 
-  close() {
+  close(): void {
     this.cancel.emit();
     this.dialogRef.close();
   }

@@ -19,7 +19,7 @@ import { FinishComponent } from './finish/finish.component';
 
 @NgModule({
   declarations: [
-    SetupComponent, 
+    SetupComponent,
     CompanySetupComponent, CompanyDetailComponent, SelectBranchComponent, FinishComponent
   ],
   imports: [

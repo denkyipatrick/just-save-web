@@ -15,7 +15,7 @@ const modules = [
   MatMenuModule,
   MatToolbarModule,
   MatFormFieldModule
-]
+];
 
 @NgModule({
   imports: modules,

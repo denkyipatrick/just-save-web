@@ -36,20 +36,18 @@ export class ProductDetailComponent implements OnInit {
   changeProductPriceNetworkErrorMessage: string;
 
   constructor(
-    private staffService: StaffService, 
+    private staffService: StaffService,
     private productService: ProductService,
     private activatedRoute: ActivatedRoute,
     private dialogOpener: MatDialog,
     private snackBar: MatSnackBar
     ) {
-      console.log(this.staffService.staff);
-
       this.staffBranchId = this.staffService.staff.branchId;
-      if(this.staffService.staff.roles.find(role => role.id == 'edit-product')) {
+      if (this.staffService.staff.roles.find(role => role.id === 'edit-product')) {
         this.hasEditProductRole = true;
       }
 
-      if (this.staffService.staff.roles.find(role => role.id == 'edit-product-price')) {
+      if (this.staffService.staff.roles.find(role => role.id === 'edit-product-price')) {
         this.hasEditProductPriceRole = true;
       }
 
@@ -65,27 +63,27 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
-      this.productIdParam = params['id']
+      this.productIdParam = params.id;
     });
 
     this.fetchProduct();
   }
 
-  toggleChangeNameForm() {
+  toggleChangeNameForm(): void {
     this.showChangeNameForm = !this.showChangeNameForm;
   }
 
-  toggleChangePriceForm() {
+  toggleChangePriceForm(): void {
     this.showChangePriceForm = !this.showChangePriceForm;
   }
 
-  clearNameTextBox() {
+  clearNameTextBox(): void {
     this.changeNameForm.patchValue({
       name: ''
     });
   }
 
-  fetchProduct() {
+  fetchProduct(): void {
     this.staffService.fetchProduct(this.productIdParam)
     .subscribe(product => {
       this.product = product;
@@ -99,16 +97,16 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  changeProductPrice() {
+  changeProductPrice(): void {
     if (this.changePriceForm.invalid) { return; }
 
     this.dialogOpener.open(OkCancelDialogComponent, {
       data: {
-        title: "Want To Change Price?",
-        message: "The new price will affect the price of this product in all branches. " + 
-        "Would you like to continue?",
-        okButtonText: "YES, CHANGE PRICE",
-        cancelButtonText: "DON'T CHANGE"
+        title: 'Want To Change Price?',
+        message: 'The new price will affect the price of this product in all branches. ' +
+        'Would you like to continue?',
+        okButtonText: 'YES, CHANGE PRICE',
+        cancelButtonText: 'DON\'T CHANGE'
       }
     })
     .componentInstance
@@ -125,22 +123,22 @@ export class ProductDetailComponent implements OnInit {
 
         this.dialogOpener.open(OkDialogComponent, {
           data: {
-            title: "Price Updated",
-            message: "The price has been updated in all branches.",
+            title: 'Price Updated',
+            message: 'The price has been updated in all branches.',
             okButtonText: 'OK'
           }
         })
         .afterClosed()
         .subscribe(() => {
           this.showChangePriceForm = false;
-        })
+        });
       }, error => {
         this.isChangingProductPrice = false;
 
         this.dialogOpener.open(OkCancelDialogComponent, {
           data: {
-            title: "Operation Failed",
-            message: "We were unable to change product price",
+            title: 'Operation Failed',
+            message: 'We were unable to change product price',
             okButtonText: 'TRY AGAIN',
             cancelButtonText: 'CLOSE DIALOG'
           }
@@ -154,14 +152,14 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  changeProductName() {
+  changeProductName(): void {
     if (this.changeNameForm.invalid) { return; }
 
     this.dialogOpener.open(OkCancelDialogComponent, {
       data: {
-        title: "Change Product Name?",
-        message: "This will change the name in all branches. " + 
-        "Do you want to continue with this? ",
+        title: 'Change Product Name?',
+        message: 'This will change the name in all branches. ' +
+        'Do you want to continue with this? ',
         okButtonText: 'YES, CONTINUE',
         cancelButtonText: 'NO, STOP'
       }
@@ -171,31 +169,33 @@ export class ProductDetailComponent implements OnInit {
     .subscribe(() => {
       this.isChangingProductName = true;
 
-      this.productService.changeName(this.product.id, this.changeNameForm.value['name'])
+      this.productService.changeName(this.product.id, this.changeNameForm.value.name)
       .subscribe(product => {
         this.showChangeNameForm = false;
         this.isChangingProductName = false;
         this.changeNameForm.reset();
 
         this.product.name = product.name;
-        this.snackBar.open("Name Changed", "CLOSE", {
+        this.snackBar.open('Name Changed', 'CLOSE', {
           duration: 10000
         });
       }, error => {
         this.isChangingProductName = true;
 
-        switch(error.status) {
+        switch (error.status) {
           case 0: {
-            this.changeNameNetworkErrorMessage = 
-              "Unable to connect. Check your network and try again.";
+            this.changeNameNetworkErrorMessage =
+              'Unable to connect. Check your network and try again.';
+            break;
           }
           case 500: {
-            this.changeNameNetworkErrorMessage = "An unexpected error has occurred. " + 
-            "Contact your admin if this keeps coming.";
+            this.changeNameNetworkErrorMessage = 'An unexpected error has occurred. ' +
+            'Contact your admin if this keeps coming.';
+            break;
           }
           default: {
-            this.changeNameNetworkErrorMessage = "An unknown error has occurred. " + 
-            "Contact your admin if this keeps coming.";
+            this.changeNameNetworkErrorMessage = 'An unknown error has occurred. ' +
+            'Contact your admin if this keeps coming.';
           }
         }
         console.error(error);
@@ -204,13 +204,13 @@ export class ProductDetailComponent implements OnInit {
 
   }
 
-  editProductQuantity(branchProduct: BranchProduct) {
-    branchProduct.product = this.product;
-    
+  editProductQuantity(inputtedBranchProduct: BranchProduct): void {
+    inputtedBranchProduct.product = this.product;
+
     this.dialogOpener.open(EditProductQuantityDialogComponent, {
       disableClose: false,
       data: {
-        branchProduct: branchProduct
+        inputtedBranchProduct
       }
     })
     .componentInstance
@@ -219,19 +219,19 @@ export class ProductDetailComponent implements OnInit {
       let newTotalProducts = 0;
 
       this.product.productBranches = this.product.productBranches.map(productBranch => {
-        if ( (productBranch.productId + productBranch.branchId) == 
+        if ( (productBranch.productId + productBranch.branchId) ===
           (branchProduct.productId + branchProduct.branchId) ) {
-            productBranch.quantity = branchProduct.quantity
+            productBranch.quantity = branchProduct.quantity;
         }
 
-        newTotalProducts += productBranch.quantity
+        newTotalProducts += productBranch.quantity;
 
         return productBranch;
       });
 
       this.product.quantity = newTotalProducts;
-      this.snackBar.open('Quantity Updated', 'OK', { duration: 5000 })
-    })
+      this.snackBar.open('Quantity Updated', 'OK', { duration: 5000 });
+    });
   }
 
 }

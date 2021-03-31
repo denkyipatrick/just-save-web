@@ -25,9 +25,9 @@ export class SignInComponent implements OnInit {
 
   constructor(
     private companyService: CompanyService,
-    private staffService: StaffService, 
+    private staffService: StaffService,
     private utilityService: UtilityService,
-    private dialogOpener: MatDialog, 
+    private dialogOpener: MatDialog,
     private router: Router) {
     this.form = new FormGroup({
       username: new FormControl(),
@@ -45,12 +45,12 @@ export class SignInComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  signIn() {
+  signIn(): void {
     if (this.form.invalid) {
       return;
     }
 
-    this.form.patchValue({ 'branchId': this.staffService.branchId });
+    this.form.patchValue({ branchId: this.staffService.branchId });
 
     this.isSignInError = false;
     const dialogRef = this.dialogOpener.open(PleaseWaitDialogComponent, {
@@ -64,7 +64,7 @@ export class SignInComponent implements OnInit {
       this.staffService.staff = staff;
       this.staffService.branchId = staff.branch.id;
       this.companyService.companyId = staff.branch.company.id;
-      
+
       // localStorage.setItem('branchId', JSON.stringify(staff.branch.id));
       // localStorage.setItem('companyId', JSON.stringify(staff.branch.company.id));
 
@@ -75,17 +75,17 @@ export class SignInComponent implements OnInit {
       dialogRef.close();
       this.isSignInError = true;
 
-      switch(error.status) {
+      switch (error.status) {
         case 0: {
-          this.networkErrorMessage = "Please check your internet connection.";
+          this.networkErrorMessage = 'Please check your internet connection.';
           break;
         }
         case 404: {
-          this.networkErrorMessage = "Username or password is not correct.";
+          this.networkErrorMessage = 'Username or password is not correct.';
           break;
         }
         case 500: {
-          this.networkErrorMessage = "An unexpected error has occurred. Please try again later.";
+          this.networkErrorMessage = 'An unexpected error has occurred. Please try again later.';
         }
       }
     });

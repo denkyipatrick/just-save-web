@@ -21,21 +21,21 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   canStaffCreateProduct: boolean;
 
   tableColumns: string[];
-  dataSource: MatTableDataSource<Product>
+  dataSource: MatTableDataSource<Product>;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    private staffService: StaffService, 
+    private staffService: StaffService,
     private companyService: CompanyService,
     private router: Router, private route: ActivatedRoute) {
     this.isShowMultipleBranches = JSON.parse(localStorage.getItem('show-products-from-all-branches'));
 
     this.canStaffCreateProduct = this.staffService.staff.roles
       .find(role => role.id === 'add-product') ? true : false;
-      
-    this.tableColumns = ['key', 'name', 'sellingPrice', 'quantity', 'actions']
+
+    this.tableColumns = ['key', 'name', 'sellingPrice', 'quantity', 'actions'];
     this.dataSource = new MatTableDataSource(this.products);
   }
 
@@ -43,59 +43,59 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     this.fetchProducts();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     // this.dataSource.sort = this.sort;
     // this.dataSource.paginator = this.paginator;
   }
 
-  viewProduct(row: Product) {
+  viewProduct(row: Product): void {
     this.router.navigate(['./', row.id], { relativeTo: this.route });
   }
 
-  searchProduct(query: string) {
-    this.dataSource.filter = query
+  searchProduct(query: string): void {
+    this.dataSource.filter = query;
   }
 
-  toggleShowMultipleBranches() {
+  toggleShowMultipleBranches(): void {
     this.isShowMultipleBranches = !this.isShowMultipleBranches;
     this.fetchProducts();
 
-    localStorage.setItem('show-products-from-all-branches', 
+    localStorage.setItem('show-products-from-all-branches',
       JSON.stringify(this.isShowMultipleBranches));
   }
 
-  fetchProducts() {    
+  fetchProducts(): void {
     if (this.isShowMultipleBranches) {
       this.fetchCompanyProducts();
     } else {
       this.fetchBranchProducts();
     }
   }
-  
-  fetchBranchProducts() {
+
+  fetchBranchProducts(): void {
     this.companyService.fetchBranchProducts(this.staffService.branchId)
     .subscribe(products => {
       this.products = products;
       this.dataSource = new MatTableDataSource(products);
-      
+
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-    })
+    });
   }
 
-  fetchCompanyProducts() {
+  fetchCompanyProducts(): void {
     this.companyService.fetchCompanyProducts()
     .subscribe(products => {
       this.products = products;
       this.dataSource = new MatTableDataSource(products);
-      
+
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-    })
+    });
   }
 
-  deleteProduct(product: Product, event: Event) {
-    event.stopPropagation()
+  deleteProduct(product: Product, event: Event): void {
+    event.stopPropagation();
   }
 
 }

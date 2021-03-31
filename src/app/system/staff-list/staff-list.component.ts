@@ -12,12 +12,12 @@ export class StaffListComponent implements OnInit {
   viewerHasEditStaffRole: boolean;
   viewerHasDeleteStaffRole: boolean;
 
-  constructor(private StaffService: StaffService) {
-    if (this.StaffService.staff.roles.find(role => role.id === 'edit-staff')) {
+  constructor(private staffService: StaffService) {
+    if (this.staffService.staff.roles.find(role => role.id === 'edit-staff')) {
       this.viewerHasEditStaffRole = true;
     }
 
-    if (this.StaffService.staff.roles.find(role => role.id === 'delete-staff')) {
+    if (this.staffService.staff.roles.find(role => role.id === 'delete-staff')) {
       this.viewerHasDeleteStaffRole = true;
     }
   }
@@ -26,8 +26,8 @@ export class StaffListComponent implements OnInit {
     this.fetchStaff();
   }
 
-  fetchStaff() {
-    this.StaffService.fetchAllStaff()
+  fetchStaff(): void {
+    this.staffService.fetchAllStaff()
     .subscribe(staffList => {
       console.log(staffList);
       this.staffList = staffList;

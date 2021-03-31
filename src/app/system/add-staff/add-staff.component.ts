@@ -22,26 +22,26 @@ export class AddStaffComponent implements OnInit {
   isErrorCreatingStaff: boolean;
 
   constructor(
-    private staffService: StaffService, 
+    private staffService: StaffService,
     private companyService: CompanyService,
     private dialogOpener: MatDialog,
     private router: Router,
     private activatedRoute: ActivatedRoute
-    ) {      
+    ) {
     this.form = new FormGroup({
       branchId: new FormControl(this.staffService.branchId),
       username: new FormControl(),
       password: new FormControl(),
       lastName: new FormControl(),
       firstName: new FormControl()
-    })
+    });
   }
 
   ngOnInit(): void {
     this.fetchBranches();
   }
 
-  fetchBranches() {
+  fetchBranches(): void {
     this.companyService.fetchBranches()
     .subscribe(branches => {
       console.log(branches);
@@ -51,7 +51,7 @@ export class AddStaffComponent implements OnInit {
     });
   }
 
-  createStaff() {
+  createStaff(): void {
     if (this.form.invalid) {
       return;
     }
@@ -59,7 +59,7 @@ export class AddStaffComponent implements OnInit {
     this.dialogOpener.open(OkCancelDialogComponent, {
       data: {
         title: 'Create Staff',
-        message: `Are you sure you want to add ${this.form.value['firstName']} as a staff?`
+        message: `Are you sure you want to add ${this.form.value.firstName} as a staff?`
       }
     })
     .componentInstance
@@ -67,7 +67,7 @@ export class AddStaffComponent implements OnInit {
     .subscribe(() => {
       // this.isCreatingStaff = true;
       // this.isErrorCreatingStaff = false;
-      
+
       const dialogRef = this.dialogOpener.open(PleaseWaitDialogComponent, {
         disableClose: true
       });
@@ -75,28 +75,28 @@ export class AddStaffComponent implements OnInit {
       this.staffService.createStaff(this.form.value)
       .subscribe(staff => {
         dialogRef.close();
-        
+
         this.dialogOpener.open(OkDialogComponent, {
           disableClose: true,
           data: {
             title: `${staff?.firstName} is Added`,
-            message: `You have successfully added ` + 
-            `${staff?.firstName} ${staff?.lastName} to your staff list. ` + 
+            message: `You have successfully added ` +
+            `${staff?.firstName} ${staff?.lastName} to your staff list. ` +
             `You can add more features to ${staff?.firstName}'s account on the next page.`,
             okButtonText: 'CONTINUE'
           }
         })
         .componentInstance
         .ok.subscribe(() => {
-          this.router.navigate([`../staff`, staff.username], 
+          this.router.navigate([`../staff`, staff.username],
           { relativeTo: this.activatedRoute });
         });
-        
+
       }, error => {
         dialogRef.close();
 
         console.error(error);
-        switch(error.status) {
+        switch (error.status) {
 
         }
       });

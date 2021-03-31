@@ -19,7 +19,7 @@ export class CompanySetupComponent implements OnInit {
   isFetchingCompany: boolean;
 
   constructor(
-    private companyService: CompanyService, 
+    private companyService: CompanyService,
     private matSnackBar: MatSnackBar,
     private dialogOpener: MatDialog,
     private router: Router,
@@ -33,10 +33,10 @@ export class CompanySetupComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  fetchCompany() {
+  fetchCompany(): void {
     this.isFetchingCompany = true;
 
-    this.companyService.fetchCompany(this.form.value['id'])
+    this.companyService.fetchCompany(this.form.value.id)
     .subscribe(company => {
       this.showOverlay = true;
       this.isFetchingCompany = false;
@@ -51,30 +51,30 @@ export class CompanySetupComponent implements OnInit {
       localStorage.setItem('setup-stage', 'product-detail');
 
       this.companyService.companyId = company.id;
-      
-      
+
+
       const randomNumber = Math.floor(Math.random() * 10000);
       setTimeout(() => {
-        this.router.navigate(['../company-detail'], { relativeTo: this.route });        
+        this.router.navigate(['../company-detail'], { relativeTo: this.route });
       }, randomNumber);
 
     }, error => {
       this.isFetchingCompany = false;
       console.log(error);
 
-      switch(error.status) {
+      switch (error.status) {
         case 0: {
           this.matSnackBar.open('You are offline', 'OK', {
             duration: 10000
-          })
+          });
           break;
         }
         case 404: {
           this.dialogOpener.open(OkDialogComponent, {
             data: {
-              title: "Wrong ID",
-              message: "The ID you have entered is not in our system. " + 
-              "Check it well and try again.",
+              title: 'Wrong ID',
+              message: 'The ID you have entered is not in our system. ' +
+              'Check it well and try again.',
               okButtonText: 'OK'
             }
           });
@@ -83,8 +83,8 @@ export class CompanySetupComponent implements OnInit {
         case 500: {
           this.dialogOpener.open(OkCancelDialogComponent, {
             data: {
-              title: "Unexpected Error",
-              message: "An unexpected error has occurred. Please try again later.",
+              title: 'Unexpected Error',
+              message: 'An unexpected error has occurred. Please try again later.',
               okButtonText: 'TRY AGAIN',
               cancelButtonText: 'CLOSE'
             }
@@ -92,8 +92,8 @@ export class CompanySetupComponent implements OnInit {
           .componentInstance
           .ok
           .subscribe(() => {
-            this.fetchCompany()
-          })
+            this.fetchCompany();
+          });
         }
       }
     });

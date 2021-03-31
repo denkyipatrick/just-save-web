@@ -1,8 +1,8 @@
 
-export class Company {    
+export class Company {
     constructor(
-        public id: string, 
-        public name: string, 
+        public id: string,
+        public name: string,
         public publicId: string) {
     }
 }
