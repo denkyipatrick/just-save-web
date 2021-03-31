@@ -1,3 +1,4 @@
+import { CompanyService } from './../../services/company.service';
 import { Branch } from './../../models/branch';
 import { UtilityService } from './../../services/utility.service';
 import { Component, Input, OnInit } from '@angular/core';
@@ -11,13 +12,12 @@ export class BranchListComponent implements OnInit {
   @Input() branches: Branch[];
   @Input() fetchBranchesFromNetwork: boolean = true;
 
-  constructor(private utilityService: UtilityService) { }
+  constructor(private companyService: CompanyService) { }
 
   ngOnInit(): void {
     if (this.fetchBranchesFromNetwork) {
-      this.utilityService.fetchBranches()
+      this.companyService.fetchBranches()
       .subscribe(branches => {
-        console.log(branches);
         this.branches = branches;
       }, error => {
         console.log(error);
