@@ -38,17 +38,16 @@ export class StaffService {
     return this.http.get<Staff[]>(`${this.constantsService.BRANCHES_URL}/${this.branchId}/staffs`);
   }
 
-  fetchStaff(username: string): Observable<Staff> {
-    return this.http.get<Staff>(`${this.constantsService.STAFF_URL}/${username}`);
+  fetchStaff(staffId: string): Observable<Staff> {
+    return this.http.get<Staff>(`${this.constantsService.STAFF_URL}/${staffId}`);
   }
 
   addStaffRole(data: any): Observable<Role> {
     return this.http.post<Role>(`${this.constantsService.STAFF_ROLES_URL}`, data);
   }
 
-  removeStaffRole(staffUsername: string, roleId: string): Observable<Role> {
-    return this.http.delete<Role>(`${this.constantsService.STAFF_ROLES_URL}/` +
-    `${staffUsername}/${roleId}`);
+  removeStaffRole(staffRoleId: string): Observable<Role> {
+    return this.http.delete<Role>(`${this.constantsService.STAFF_ROLES_URL}/${staffRoleId}`);
   }
 
   changeName(username: string, data: any): Observable<Staff> {

@@ -12,7 +12,7 @@
         <div class="my-4">
             <ul class="grid grid-cols-3 gap-4">
                 <li *ngFor="let staff of staffList">
-                    <a  [routerLink]="'./' + staff?.username">
+                    <a  [routerLink]="'./' + staff?.id">
                         <mat-card matRipple>
                             <div class="text-center">
                                 <img src="../../../assets/svg/account_circle-black-48dp.svg" 
@@ -21,7 +21,7 @@
                                 <p class="text-lg my-0 ellipsize">{{staff?.firstName}} {{staff?.lastName}}</p>
                                 <p class="text-xs text-gray-400 my-0">@{{staff?.username}}</p>
                                 <span *ngIf="false" class="flex items-center justify-center text-gray-500 space-x-2">
-                                    <a [routerLink]="'./' + staff?.username" mat-icon-button>
+                                    <a [routerLink]="'./' + staff?.id" mat-icon-button>
                                         <mat-icon>visibility</mat-icon>
                                     </a>
                                     <button *ngIf="viewerHasEditStaffRole" mat-icon-button>

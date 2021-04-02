@@ -111,7 +111,7 @@ export class StaffDetailComponent implements OnInit {
     .subscribe(selectedRoleId => {
       console.log(selectedRoleId);
       this.staffService
-      .addStaffRole({staffUsername: this.targetStaff.username, roleId: selectedRoleId})
+      .addStaffRole({staffId: this.targetStaff.id, roleId: selectedRoleId})
       .subscribe(role => {
         this.targetStaff.roles.push(role);
         this.processStaffRoles();
@@ -121,7 +121,6 @@ export class StaffDetailComponent implements OnInit {
           this.staffService.staff.roles.push(role);
           sessionStorage.setItem('staff', JSON.stringify(this.staffService.staff));
         }
-
       }, error => {
         console.error(error);
         this.snackBar.open('Unable to add role.', 'CLOSE', { duration: 5000 });
@@ -130,8 +129,10 @@ export class StaffDetailComponent implements OnInit {
 
     dialog.removeRole
     .subscribe(selectedRoleId => {
+      console.log(selectedRoleId);
       this.staffService
-      .removeStaffRole(this.targetStaff.username, selectedRoleId)
+      // .removeStaffRole(this.targetStaff.username, selectedRoleId)
+      .removeStaffRole(selectedRoleId)
       .subscribe(deletedRole => {
         this.targetStaff.roles = this.targetStaff.roles
           .filter(role => role.id !== deletedRole.id);

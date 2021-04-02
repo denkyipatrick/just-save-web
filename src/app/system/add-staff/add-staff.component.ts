@@ -30,6 +30,7 @@ export class AddStaffComponent implements OnInit {
     ) {
     this.form = new FormGroup({
       branchId: new FormControl(this.staffService.branchId),
+      companyId: new FormControl(this.companyService.company.id),
       username: new FormControl(),
       password: new FormControl(),
       lastName: new FormControl(),
@@ -88,7 +89,7 @@ export class AddStaffComponent implements OnInit {
         })
         .componentInstance
         .ok.subscribe(() => {
-          this.router.navigate([`../staff`, staff.username],
+          this.router.navigate([`../staff`, staff.id],
           { relativeTo: this.activatedRoute });
         });
 

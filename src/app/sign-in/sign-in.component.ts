@@ -32,7 +32,8 @@ export class SignInComponent implements OnInit {
     this.form = new FormGroup({
       username: new FormControl(),
       password: new FormControl(),
-      branchId: new FormControl()
+      branchId: new FormControl(),
+      companyId: new FormControl(this.companyService.company.id)
     });
 
     this.appName = this.utilityService.appName;
@@ -62,12 +63,11 @@ export class SignInComponent implements OnInit {
       console.log(staff);
 
       this.staffService.staff = staff;
-      this.staffService.branchId = staff.branch.id;
-      this.companyService.companyId = staff.branch.company.id;
+      this.staffService.branchId = staff.staffBranch.branch.id;
+      this.companyService.companyId = staff.staffBranch.branch.company.id;
 
-      // localStorage.setItem('branchId', JSON.stringify(staff.branch.id));
-      // localStorage.setItem('companyId', JSON.stringify(staff.branch.company.id));
-
+      // localStorage.setItem('branchId', JSON.stringify(staff.staffBranch.branch.id));
+      localStorage.setItem('staff', JSON.stringify(staff));
       sessionStorage.setItem('staff', JSON.stringify(staff));
       this.router.navigate(['system/products']);
       dialogRef.close();

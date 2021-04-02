@@ -50,7 +50,10 @@ export class EditRoleDialogComponent implements OnInit {
     if (isChecked) {
       this.addRole.emit(roleId);
     } else {
-      this.removeRole.emit(roleId);
+      const role = this.targetStaff.roles.find(role => role.id === roleId);
+
+      console.log(role);
+      this.removeRole.emit(role['NewStaffRole']['id']);
     }
   }
 

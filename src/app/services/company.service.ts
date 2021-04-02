@@ -5,6 +5,7 @@ import { Branch } from './../models/branch';
 import { ConstantsService } from './constants.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Staff } from '../models/staff';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,14 @@ export class CompanyService {
   constructor(private constants: ConstantsService, private http: HttpClient) {
     this.companyId = localStorage.getItem('companyId');
     this.company = JSON.parse(localStorage.getItem('company'));
+  }
+
+  createStaff(data: any): Observable<Staff> {
+    return this.http.post<Staff>(`${this.constants.STAFF_URL}`, data);
+  }
+  
+  createBranch(branch: Branch): Observable<Branch> {
+    return this.http.post<Branch>(`${this.constants.BRANCHES_URL}`, branch);
   }
 
   fetchCompany(id: string): Observable<Company> {
