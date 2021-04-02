@@ -52,7 +52,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit Price</th>
             <td mat-cell *matCellDef="let product" style="min-width: 120px;">
                 <span class="text-gray-600 font-medium">GHC </span> 
-                <span class="font-medium text-gray-900">{{product?.sellingPrice?.toFixed(2)}}</span>
+                <span class="font-medium text-gray-900">{{(product?.sellingPrice || 0)?.toFixed(2)}}</span>
             </td>
         </ng-container>
         <ng-container matColumnDef="quantity">
