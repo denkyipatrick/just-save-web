@@ -210,7 +210,7 @@ export class ProductDetailComponent implements OnInit {
     this.dialogOpener.open(EditProductQuantityDialogComponent, {
       disableClose: false,
       data: {
-        inputtedBranchProduct
+        branchProduct: inputtedBranchProduct
       }
     })
     .componentInstance

@@ -165,7 +165,8 @@
                                     </span>
                                 </p>
                             </div>
-                            <button *ngIf="(productBranch?.branch?.id == staffBranchId) && hasEditProductRole"
+                            <!-- *ngIf="(productBranch?.branch?.id == staffBranchId) && hasEditProductRole" -->
+                            <button 
                                 style="background: rgba(219, 235, 255, 0.623);" 
                                 mat-button color="primary"
                                 (click)="editProductQuantity(productBranch)">
