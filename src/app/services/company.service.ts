@@ -1,3 +1,4 @@
+import { Order } from './../models/order';
 import { Observable } from 'rxjs';
 import { Product } from './../models/product';
 import { Company } from './../models/company';
@@ -41,5 +42,9 @@ export class CompanyService {
 
   fetchBranches(): Observable<Branch[]> {
     return this.http.get<Branch[]>(`${this.constants.COMPANIES_URL}/${this.companyId}/branches`);
+  }
+
+  fetchOrders() {
+    return this.http.get<Order[]>(`${this.constants.COMPANIES_URL}/${this.companyId}/orders`)
   }
 }

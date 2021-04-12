@@ -1,5 +1,5 @@
 
-<mat-toolbar style="height: 10vh;" color="primary"
+<mat-toolbar style="height: 64px;" color="primary"
   class="toolbar-primary-color 
     flex items-center 
     justify-between">
@@ -8,7 +8,7 @@
     </button>
 
     <span class="block text-center">
-        <p class="text-2xl font-light">{{appName}}</p>
+        <p class="text-2xl font-light" style="margin: 0;">{{appName}}</p>
         <!-- <p class="text-xs font-light">{{appSlogan}}</p> -->
     </span>
 
@@ -19,7 +19,7 @@
     </span>
 </mat-toolbar>
 
-<mat-drawer-container style="width: 100vw; height: 90vh;">
+<mat-drawer-container style="width: 100vw; height: calc(100vh - 64px);">
     <mat-drawer #drawer mode="side" opened class="w-3/12">
       <div class="p-4 bg-gray-100">
         <div class="flex items-start justify-between">
@@ -51,7 +51,7 @@
 
       <div class="p-2">
           <ul class="left-nav">
-            <li *ngIf="isMakeOrder" class="mt-2 mb-4">
+            <li *ngIf="!isMakeOrder" class="mt-2 mb-4">
               <a routerLink="new-order" mat-raised-button 
                 class="w-full text-lefts primary-button-color">
                 <mat-icon>add</mat-icon> &nbsp;
@@ -83,6 +83,18 @@
               </a>
             </li>
           </ul>
+      </div>
+
+      <div class="border-t my-4">
+        <ul class="left-nav">
+          <li>
+            <a mat-button routerLink="orders" routerLinkActive="active">
+              <mat-icon>history</mat-icon> &nbsp; 
+              <span>Order History</span>
+            </a>
+          </li>
+        </ul>
+
       </div>
 
       <mat-accordion *ngIf="false" multi="true" displayMode="flat">

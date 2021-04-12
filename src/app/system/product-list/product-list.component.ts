@@ -1,29 +1,34 @@
-import { CompanyService } from './../../services/company.service';
 import { StaffService } from './../../services/staff.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { CompanyService } from './../../services/company.service';
 import { Product } from './../../models/product';
-import { AfterViewInit, Component, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss']
+  selector: 'app-product-list',
+  templateUrl: './product-list.component.html',
+  styleUrls: ['./product-list.component.scss']
 })
-export class ProductsComponent implements OnInit, AfterViewInit {
+export class ProductListComponent implements OnInit {
   products: Product[];
   isFetchingProducts: boolean;
   isErrorFetchingProducts: boolean;
 
-  isShowMultipleBranches: boolean;
   canStaffCreateProduct: boolean;
+  isShowMultipleBranches: boolean;
+  
+  @Input() showActionButtons: boolean;
+  @Input() canCreateProduct: boolean;
 
   tableColumns: string[];
   dataSource: MatTableDataSource<Product>;
+  @Output() productSelected: EventEmitter<Product>;
 
-  @Output() productSelected: EventEmitter<Product>
+  @Input() showTablePaginatorFirstLastButtons: boolean;
+  @Input() tablePaginatorPageSizeOptions: number[] = [5, 25, 100];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -51,8 +56,9 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     // this.dataSource.paginator = this.paginator;
   }
 
-  viewProduct(row: Product): void {
-    this.router.navigate(['./', row.id], { relativeTo: this.route });
+  viewProduct(selectedProduct: Product): void {
+    this.productSelected.emit(selectedProduct);
+    // this.router.navigate(['./', selectedProduct.id], { relativeTo: this.route });
   }
 
   searchProduct(query: string): void {
@@ -74,6 +80,14 @@ export class ProductsComponent implements OnInit, AfterViewInit {
       this.fetchBranchProducts();
     }
   }
+  
+  refreshProducts() {
+    this.fetchProducts();
+  }
+
+  onEditProductQuantity(itemId: string) {
+    this.viewProduct(this.products.find(product => product.id === itemId));
+  }
 
   fetchBranchProducts(): void {
     this.companyService.fetchBranchProducts(this.staffService.branchId)
@@ -89,6 +103,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   fetchCompanyProducts(): void {
     this.companyService.fetchCompanyProducts()
     .subscribe(products => {
+      console.log(products);
       this.products = products;
       this.dataSource = new MatTableDataSource(products);
 
@@ -100,5 +115,4 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   deleteProduct(product: Product, event: Event): void {
     event.stopPropagation();
   }
-
 }

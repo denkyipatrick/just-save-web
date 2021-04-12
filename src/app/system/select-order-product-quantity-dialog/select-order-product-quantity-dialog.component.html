@@ -1,0 +1,73 @@
+
+<section style="width: 600px; max-width: 100%;">
+    <header class="mb-4">
+        <section class="flex items-center justify-between space-x-4">
+            <p class="text-lg">Select Item Quantity</p>
+            <button tabindex="-1" mat-button color="warn" class="border" (click)="closeDialog()">
+                <mat-icon>close</mat-icon> &nbsp; <span>CLOSE</span>
+            </button>
+        </section>
+    </header>
+
+    <section>        
+        <form [formGroup]="form" (ngSubmit)="addProduct()">
+            <div class="space-y-1 pb-2">
+                <span class="block pb-2 border-b">
+                    <p class="text-gray-500 text-xs">LookupKey: 
+                        <span class="text-red-600 font-medium">
+                            {{product?.lookupKey}}
+                        </span>
+                    </p>
+    
+                    <p class="font-medium">{{product?.name}}</p>
+                </span>
+
+                <p class="text-xs font-medium mt-2">
+                    Selected Branch: <span class="text-blue-800">
+                        {{selectedProductBranch?.branch?.name}}
+                    </span>,
+                    Available Quantity: <span class="text-blue-800">
+                        {{selectedProductBranch?.quantity}} items
+                    </span>
+                </p>
+            </div>            
+            <div class="flex items-center 
+                justify-between 
+                space-x-6 mt-4">
+                <mat-form-field appearance="outline" class="text-xs">
+                    <mat-label>Branch</mat-label>
+                    <mat-select required #branchSelect formControlName="selectedBranchId"
+                        (selectionChange)="branchChanged(branchSelect.value)">
+                        <mat-option *ngFor="let productBranch of productBranches" 
+                            [value]="productBranch.branch.id">
+                            {{productBranch?.branch?.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline" class="text-xs">
+                    <mat-label>Type Quantity</mat-label>
+                    <input matInput required value="1" type="number" 
+                        #quantityTextbox 
+                        autocomplete="off"
+                        formControlName="quantity" />
+                    <mat-error *ngIf="quantityTextbox.value > selectedProductBranch?.quantity">
+                        The quantity you have specified.
+                    </mat-error>
+                </mat-form-field>
+        
+                <button mat-raised-button color="primary" style="margin-top: -1rem;">
+                    ADD PRODUCT <mat-icon>chevron_right</mat-icon>
+                </button>
+            </div>
+
+            
+        </form>
+        <div>
+            <p class="text-red-600 text-xs">
+                {{formErrorMessage}}
+            </p>
+        </div>
+    </section>
+
+</section>

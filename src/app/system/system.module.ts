@@ -41,6 +41,11 @@ import { EditRoleDialogComponent } from './edit-role-dialog/edit-role-dialog.com
 import { CustomComponentsModule } from '../custom-components/custom-components.module';
 import { NewOrderComponent } from './new-order/new-order.component';
 import { EditProductQuantityDialogComponent } from './edit-product-quantity-dialog/edit-product-quantity-dialog.component';
+import { ProductListComponent } from './product-list/product-list.component';
+import { SelectOrderProductQuantityDialogComponent } from './select-order-product-quantity-dialog/select-order-product-quantity-dialog.component';
+import { OrdersComponent } from './orders/orders.component';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
+import { NewOrderInsufficientOrderItemsDialogComponent } from './new-order-insufficient-order-items-dialog/new-order-insufficient-order-items-dialog.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +62,14 @@ import { EditProductQuantityDialogComponent } from './edit-product-quantity-dial
     CreateBranchComponent,
     BranchListComponent,
     StaffDetailComponent,
-    EditRoleDialogComponent, NewOrderComponent, EditProductQuantityDialogComponent
+    EditRoleDialogComponent,
+    NewOrderComponent,
+    EditProductQuantityDialogComponent,
+    ProductListComponent,
+    SelectOrderProductQuantityDialogComponent,
+    OrdersComponent,
+    OrderDetailComponent,
+    NewOrderInsufficientOrderItemsDialogComponent
   ],
   imports: [
     CommonModule,

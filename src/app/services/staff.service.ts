@@ -1,3 +1,5 @@
+import { Order } from './../models/order';
+import { CartItem } from './../models/cartitem';
 import { Staff } from './../models/staff';
 import { Role } from './../models/role';
 import { Product } from './../models/product';
@@ -70,5 +72,13 @@ export class StaffService {
 
   fetchProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.constantsService.PRODUCTS_URL}`);
+  }
+
+  startOrder(data: any) {
+    return this.http.post<Order>(`${this.constantsService.ORDERS_URL}`, data);
+  }
+
+  fetchOrderDetail(orderId: any) {
+    return this.http.get<Order>(`${this.constantsService.ORDERS_URL}/${orderId}`)
   }
 }

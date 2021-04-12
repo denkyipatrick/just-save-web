@@ -1,3 +1,5 @@
+import { OrderDetailComponent } from './order-detail/order-detail.component';
+import { OrdersComponent } from './orders/orders.component';
 import { NewOrderComponent } from './new-order/new-order.component';
 import { StaffDetailComponent } from './staff-detail/staff-detail.component';
 import { BranchesComponent } from './branches/branches.component';
@@ -23,6 +25,8 @@ const routes: Routes = [
     { path: 'branches', component: BranchesComponent },
     { path: 'create-branch', component: CreateBranchComponent },
     { path: 'products', component: ProductsComponent },
+    { path: 'orders', component: OrdersComponent },
+    { path: 'orders/:orderId', component: OrderDetailComponent },
     { path: 'products/:id', component: ProductDetailComponent },
     { path: 'add-product', component: AddProductComponent },
     { path: 'new-order', component: NewOrderComponent },

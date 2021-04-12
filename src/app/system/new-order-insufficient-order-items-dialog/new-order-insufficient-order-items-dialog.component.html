@@ -1,0 +1,28 @@
+
+<section>
+    <span class="block border-b pb-2 mb-2">
+        <p class='text-lg font-medium'>Order Aborted</p>
+        <p>
+            The order has been aborted due to insufficient product quantities.
+        </p>
+
+    </span>
+
+    <div class="text-xs">
+        <p class="font-medium">Insufficient Quantity Products</p>
+        <ul class="list-disc list-inside">
+            <li *ngFor="let item of items" class="text-red-600">
+                {{item?.productName}}, (In Stock: {{item?.availableQuantity}})
+            </li>
+        </ul>
+    </div>
+
+    <div class="text-right mt-4 space-x-4">
+        <button mat-button color="warn" (click)="closeDialog()">
+            CLOSE
+        </button>
+        <button mat-raised-button color="primary">
+            CLEAR ITEMS
+        </button>
+    </div>
+</section>
