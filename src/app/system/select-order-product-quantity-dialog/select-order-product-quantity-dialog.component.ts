@@ -72,13 +72,13 @@ export class SelectOrderProductQuantityDialogComponent implements OnInit {
 
     const typedQuantity = this.form.value['quantity'];
 
-    // if (typedQuantity > this.selectedProductBranch.quantity) {
-    //   this.formErrorMessage = `${this.selectedProductBranch?.branch.name} ` + 
-    //   `branch does not have ${typedQuantity} of this product. ` + 
-    //   `This branch only has ${this.selectedProductBranch.quantity}. ` +
-    //   `Try other branches or reduce the quantity.`;
-    //   return;
-    // }
+    if (typedQuantity > this.selectedProductBranch.quantity) {
+      this.formErrorMessage = `${this.selectedProductBranch?.branch.name} ` + 
+      `branch does not have ${typedQuantity} of this product. ` + 
+      `This branch only has ${this.selectedProductBranch.quantity}. ` +
+      `Try other branches or reduce the quantity.`;
+      return;
+    }
 
     const branchProduct = new BranchProduct(
       this.selectedProductBranch.branch.id,
