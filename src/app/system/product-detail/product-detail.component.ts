@@ -20,6 +20,9 @@ export class ProductDetailComponent implements OnInit {
   product: Product;
   productIdParam: string;
 
+  isFetchingProduct: boolean;
+  isErrorFetchingProduct: boolean;
+
   staffBranchId: string;
   showChangeNameForm: boolean;
   showChangePriceForm: boolean;
@@ -59,7 +62,7 @@ export class ProductDetailComponent implements OnInit {
         costPrice: new FormControl(),
         sellingPrice: new FormControl()
       });
-    }
+  }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -84,8 +87,12 @@ export class ProductDetailComponent implements OnInit {
   }
 
   fetchProduct(): void {
+    this.isFetchingProduct = true;
+    this.isErrorFetchingProduct = false;
+
     this.staffService.fetchProduct(this.productIdParam)
     .subscribe(product => {
+      this.isFetchingProduct = false;
       this.product = product;
 
       this.changePriceForm.patchValue({
@@ -93,6 +100,9 @@ export class ProductDetailComponent implements OnInit {
         sellingPrice: product.sellingPrice
       });
     }, error => {
+      this.isFetchingProduct = false;
+      this.isErrorFetchingProduct = true;
+      
       console.log(error);
     });
   }

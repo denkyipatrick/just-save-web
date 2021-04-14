@@ -37,7 +37,9 @@ export class OrderDetailComponent implements OnInit {
 
       const orderDate = new Date(this.order.createdAt);
       this.orderDateString = `${orderDate.toDateString()} ` + 
-      `${orderDate.getHours()}:${orderDate.getMinutes()}:${orderDate.getSeconds()} (24HR Time)`;
+      `${orderDate.getHours().toString().padStart(2, '0')}:` + 
+      `${orderDate.getMinutes().toString().padStart(2, '0')}:` + 
+      `${orderDate.getSeconds().toString().padStart(2, '0')} (24HR Time)`;
 
       this.order.items.forEach(item => {
         this.orderAmount += item.quantityOrdered * item.orderItemSellingPrice

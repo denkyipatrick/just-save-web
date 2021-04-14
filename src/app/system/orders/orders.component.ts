@@ -13,6 +13,9 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class OrdersComponent implements OnInit {
   orders: Order[];
+  isFetchingOrders: boolean;
+  isErrorFetchingOrders: boolean;
+
   tableColumns: string[];
   dataSource: MatTableDataSource<Order>;
   
@@ -41,21 +44,26 @@ export class OrdersComponent implements OnInit {
   }
 
   fetchCompanyOrders() {
+    this.isFetchingOrders = true;
+    this.isErrorFetchingOrders = false;
+
     this.companyService.fetchOrders()
     .subscribe(orders => {
       console.log(orders);
+      this.isFetchingOrders = false;
+
       this.orders = orders.map(order => {
         order.simpleDate = new Date(order.createdAt).toDateString();
 
         return order;
       });
-
-
-
       this.dataSource = new MatTableDataSource(orders);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-    })
+    }, error => {
+      this.isFetchingOrders = false;
+      this.isErrorFetchingOrders = true;
+    });
   }
 
 }

@@ -1,3 +1,4 @@
+import { LoaderModule } from './../loader/loader.module';
 import { AddStaffComponent } from './add-staff/add-staff.component';
 import { StaffListComponent } from './staff-list/staff-list.component';
 import { StaffModule } from './staff/staff.module';
@@ -74,6 +75,7 @@ import { NewOrderInsufficientOrderItemsDialogComponent } from './new-order-insuf
   imports: [
     CommonModule,
     StaffModule,
+    LoaderModule,
     CustomComponentsModule,
     MatTableModule,
     MatButtonModule,

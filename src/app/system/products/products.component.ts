@@ -76,24 +76,40 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   }
 
   fetchBranchProducts(): void {
+    this.isFetchingProducts = true;
+    this.isErrorFetchingProducts = false;
+
     this.companyService.fetchBranchProducts(this.staffService.branchId)
     .subscribe(products => {
+      this.isFetchingProducts = false;
+
       this.products = products;
       this.dataSource = new MatTableDataSource(products);
 
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+    }, error => {
+      this.isFetchingProducts = false;
+      this.isErrorFetchingProducts = true;
     });
   }
 
   fetchCompanyProducts(): void {
+    this.isFetchingProducts = true;
+    this.isErrorFetchingProducts = false;
+
     this.companyService.fetchCompanyProducts()
     .subscribe(products => {
+      this.isFetchingProducts = false;
+
       this.products = products;
       this.dataSource = new MatTableDataSource(products);
 
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+    }, error => {
+      this.isFetchingProducts = false;
+      this.isErrorFetchingProducts = true;
     });
   }
 

@@ -39,7 +39,7 @@ export class SelectOrderProductQuantityDialogComponent implements OnInit {
     const staffBranchId = this.staffService.branchId;
     this.productBranches = this.product.productBranches;
     this.selectedProductBranch = this.product.productBranches.find(productBranch => 
-      productBranch.branchId === staffBranchId);
+      productBranch.branchId === staffBranchId) || this.product.productBranches[0];
 
     console.log(this.selectedProductBranch);
 

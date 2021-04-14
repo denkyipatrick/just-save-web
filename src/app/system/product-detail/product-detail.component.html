@@ -1,5 +1,10 @@
 
-<section>
+<app-loader 
+    *ngIf="isFetchingProduct"
+    loaderText="Loading Product...">
+</app-loader>
+
+<section *ngIf="!isFetchingProduct && !isErrorFetchingProduct">
     <span class="flex items-start space-x-4">
         <app-back-button></app-back-button> &nbsp; 
         <section class="space-y-8 w-full">

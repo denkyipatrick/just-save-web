@@ -1,5 +1,10 @@
 
-<div class="mat-elevation-z8 rounded-md">
+<app-loader 
+    *ngIf="isFetchingProducts"
+    loaderText="Loading Products...">
+</app-loader>
+<section *ngIf="!isFetchingProducts && !isErrorFetchingProducts" 
+    class="mat-elevation-z8 rounded-md">
     <div class="p-4 space-x-4 flex items-start justify-between">
         <div>
             <mat-form-field appearance="outline" style="font-size: .9rem;">
@@ -87,4 +92,4 @@
             (click)="viewProduct(row)"></tr>
     </table>
     <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 1000]" showFirstLastButtons></mat-paginator>
-</div>
+</section>
