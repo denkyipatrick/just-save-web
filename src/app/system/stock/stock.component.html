@@ -1,0 +1,13 @@
+<header>
+    <button mat-raised-button (click)="createStock()">
+        Create Stock
+    </button>
+</header>
+<section>
+    <p>Stock List</p>
+    <ul>
+        <li *ngFor="let stock of stocks">
+            {{stock?.id}}, isOpened: {{stock?.isOpened}}, Date: {{stock?.createdAt}}
+        </li>
+    </ul>
+</section>

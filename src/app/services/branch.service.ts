@@ -1,3 +1,4 @@
+import { Stock } from './../models/stock';
 import { Observable } from 'rxjs';
 import { BranchProduct } from './../models/branchproduct';
 import { HttpClient } from '@angular/common/http';
@@ -12,6 +13,12 @@ export class BranchService {
     private constants: ConstantsService,
     private http: HttpClient) {
   }
+
+  fetchBranchStockHistory(branchId: string) {
+    return this.http.get<Stock[]>(`${this.constants.BRANCHES_URL}/${branchId}/stocks`);
+  }
+
+  createBranchStock
 
   updateBranchProductQuantity(
     branchId: string,

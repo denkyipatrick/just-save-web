@@ -74,11 +74,11 @@ export class ProductListComponent implements OnInit {
   }
 
   fetchProducts(): void {
-    if (this.isShowMultipleBranches) {
+    // if (this.isShowMultipleBranches) {
       this.fetchCompanyProducts();
-    } else {
-      this.fetchBranchProducts();
-    }
+    // } else {
+      // this.fetchBranchProducts();
+    // }
   }
   
   refreshProducts() {

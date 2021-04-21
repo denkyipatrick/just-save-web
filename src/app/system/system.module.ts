@@ -47,6 +47,9 @@ import { SelectOrderProductQuantityDialogComponent } from './select-order-produc
 import { OrdersComponent } from './orders/orders.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { NewOrderInsufficientOrderItemsDialogComponent } from './new-order-insufficient-order-items-dialog/new-order-insufficient-order-items-dialog.component';
+import { StockComponent } from './stock/stock.component';
+import { CreateStockDialogComponent } from './create-stock-dialog/create-stock-dialog.component';
+import { StockDetailComponent } from './stock-detail/stock-detail.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +73,10 @@ import { NewOrderInsufficientOrderItemsDialogComponent } from './new-order-insuf
     SelectOrderProductQuantityDialogComponent,
     OrdersComponent,
     OrderDetailComponent,
-    NewOrderInsufficientOrderItemsDialogComponent
+    NewOrderInsufficientOrderItemsDialogComponent,
+    StockComponent,
+    CreateStockDialogComponent,
+    StockDetailComponent
   ],
   imports: [
     CommonModule,

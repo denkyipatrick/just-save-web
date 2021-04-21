@@ -20,7 +20,7 @@
 </mat-toolbar>
 
 <mat-drawer-container style="width: 100vw; height: calc(100vh - 64px);">
-    <mat-drawer #drawer mode="side" opened class="w-3/12">
+    <mat-drawer #drawer mode="side" opened class="w-3/12 slim-scrollbar">
       <div class="p-4 bg-gray-100">
         <div class="flex items-start justify-between">
           <span class="flex items-start space-x-6">
@@ -58,117 +58,78 @@
                 <span class="inline-block text-left">NEW ORDER</span>
               </a>
             </li>
-            <li *ngIf="isShowDashboard">
-              <a mat-button routerLink="dashboard" routerLinkActive="active">
-                <mat-icon>dashboard</mat-icon> &nbsp; 
-                <span>Dashboard</span>
-              </a>
-            </li>
-            <li *ngIf="isViewProducts">
-              <a mat-button routerLink="products" routerLinkActive="active">
-                <mat-icon>style</mat-icon> &nbsp;
-                <span>Products</span>
-              </a>
-            </li>
-            <li *ngIf="isViewStaffs">
-              <a mat-button routerLink="staff" routerLinkActive="active">
-                <mat-icon>recent_actors</mat-icon> &nbsp;
-                <span>Staff</span>
-              </a>
-            </li>
-            <li *ngIf="canViewBranches">
-              <a mat-button routerLink="branches" routerLinkActive="active">
-                <mat-icon>share</mat-icon> &nbsp;
-                <span>Branches</span>
-              </a>
-            </li>
           </ul>
       </div>
 
-      <div class="border-t my-4">
-        <ul class="left-nav">
-          <li>
-            <a mat-button routerLink="orders" routerLinkActive="active">
-              <mat-icon>history</mat-icon> &nbsp; 
-              <span>Order History</span>
-            </a>
-          </li>
-        </ul>
-
-      </div>
-
-      <mat-accordion *ngIf="false" multi="true" displayMode="flat">
+      <mat-accordion *ngIf="true" multi="true" displayMode="flat">
           <mat-expansion-panel expanded>
             <mat-expansion-panel-header>
               <mat-panel-title>
-                <mat-icon>home</mat-icon> &nbsp;
-                <span>Home</span>
+                <mat-icon class="mat-icon-outlined">apartment</mat-icon> &nbsp;
+                <span>Management</span>
               </mat-panel-title>
             </mat-expansion-panel-header>
-    
-            <a mat-button routerLink="dashboard" 
-              class="flex items-center justify-start w-full text-left">
-              <mat-icon>dashboard</mat-icon> &nbsp;
-              <span>Dashboard</span>
-            </a>
-            <button mat-button>
-              <mat-icon>class</mat-icon> &nbsp;
-              <span>My Classes</span>
-            </button>
-    
-            <!-- <button mat-button (click)="navigate('/join-class', drawer)">
-                  <mat-icon>add_circle</mat-icon> &nbsp;
-                  <span>Add a Class</span>
-                </button> -->
-    
-            <button mat-button>
-              <mat-icon>list</mat-icon> &nbsp;
-              <span>My Sales</span>
-            </button>
-    
-            <button mat-button>
-              <mat-icon>account_circle</mat-icon> &nbsp;
-              <span>My Profile</span>
-            </button>
+            <ul class="left-nav">
+              <li *ngIf="isShowDashboard">
+                <a mat-button routerLink="dashboard" routerLinkActive="active">
+                  <mat-icon>dashboard</mat-icon> &nbsp; 
+                  <span>Dashboard</span>
+                </a>
+              </li>
+              <li *ngIf="canViewBranches">
+                <a mat-button routerLink="branches" routerLinkActive="active">
+                  <mat-icon>meeting_room</mat-icon> &nbsp;
+                  <span>Branches</span>
+                </a>
+              </li>
+              <li *ngIf="isViewStaffs">
+                <a mat-button routerLink="staff" routerLinkActive="active">
+                  <mat-icon>group</mat-icon> &nbsp;
+                  <span>Staff Members</span>
+                </a>
+              </li>
+            </ul>    
+          </mat-expansion-panel>
+
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon class="material-icons-outlined">inventory_outline</mat-icon> &nbsp;
+                <span>Inventory</span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ul class="left-nav">
+              <li>
+                <a mat-button routerLink="stocks" routerLinkActive="active">
+                  <mat-icon class="material-icons-outlined">inventory_2</mat-icon> &nbsp;
+                  <span>Stock</span>
+                </a>
+              </li>
+              <li *ngIf="isViewProducts">
+                <a mat-button routerLink="products" routerLinkActive="active">
+                  <mat-icon class="material-icons-outlined">style</mat-icon> &nbsp;
+                  <span>Products</span>
+                </a>
+              </li>
+            </ul>    
           </mat-expansion-panel>
     
           <mat-expansion-panel expanded>
             <mat-expansion-panel-header>
               <mat-panel-title>
-                <mat-icon>bar_chart</mat-icon> &nbsp;
+                <mat-icon>point_of_sale</mat-icon> &nbsp;
                 <span>Sales</span>
               </mat-panel-title>
             </mat-expansion-panel-header>
-            
-            <button
-              mat-button
-            >
-              <mat-icon>horizontal_split</mat-icon> &nbsp;
-              <span>My Funds</span>
-            </button>
-    
-            <button
-              mat-button
-            >
-              <mat-icon>bar_chart</mat-icon> &nbsp;
-              <span>Sell</span>
-            </button>
-          </mat-expansion-panel>
-    
-          <mat-expansion-panel expanded>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <mat-icon>attach_money</mat-icon> &nbsp;
-                <span>Award Claims</span>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-    
-            <button
-              mat-button
-            >
-              <mat-icon>payment</mat-icon> &nbsp;
-              <span>My Special Awards</span>
-            </button>
+
+            <ul class="left-nav">
+              <li>
+                <a mat-button routerLink="orders" routerLinkActive="active">
+                  <mat-icon>history</mat-icon> &nbsp; 
+                  <span>Sales History</span>
+                </a>
+              </li>
+            </ul>
           </mat-expansion-panel>
       </mat-accordion>
     </mat-drawer>

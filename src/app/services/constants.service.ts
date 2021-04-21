@@ -9,6 +9,7 @@ export class ConstantsService {
   STAFF_URL: string;
   ROLES_URL: string;
   ORDERS_URL: string;
+  STOCKS_URL: string;
   BRANCHES_URL: string;
   PRODUCTS_URL: string;
   COMPANIES_URL: string;
@@ -20,6 +21,7 @@ export class ConstantsService {
     this.STAFF_URL = `${this.SERVER_URL}/staff`;
     this.ROLES_URL = `${this.SERVER_URL}/roles`;
     this.ORDERS_URL = `${this.SERVER_URL}/orders`;
+    this.STOCKS_URL = `${this.SERVER_URL}/stocks`;
     this.BRANCHES_URL = `${this.SERVER_URL}/branches`;
     this.PRODUCTS_URL = `${this.SERVER_URL}/products`;
     this.COMPANIES_URL = `${this.SERVER_URL}/companies`;

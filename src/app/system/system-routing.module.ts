@@ -1,3 +1,5 @@
+import { StockDetailComponent } from './stock-detail/stock-detail.component';
+import { StockComponent } from './stock/stock.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { OrdersComponent } from './orders/orders.component';
 import { NewOrderComponent } from './new-order/new-order.component';
@@ -30,6 +32,8 @@ const routes: Routes = [
     { path: 'products/:id', component: ProductDetailComponent },
     { path: 'add-product', component: AddProductComponent },
     { path: 'new-order', component: NewOrderComponent },
+    { path: 'stocks', component: StockComponent },
+    { path: 'stocks/:id', component: StockDetailComponent },
     { path: 'settings', loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule) },
   ]}
 ];

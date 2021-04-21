@@ -1,0 +1,40 @@
+
+<section class="flex flex-col items-center space-y-4">
+    <div class="w-full text-red-500 font-medium self-start 
+        flex items-center justify-between">
+        <span class="flex items-center text-blue-600 space-x-2">
+            <mat-icon class="material-icons-outlined">inventory</mat-icon>
+            <p>Inventory Management</p>
+        </span>
+        <button tabindex="-1" mat-icon-button class="bg-red-50"
+            (click)="close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <span class="text-center">
+        <h2>Create A New Stock</h2>
+        <p class="text-gray-500 text-sm">
+            A new stock will be added to your stock history.<br />
+            You can add any item to your newly created stock.
+        </p>
+    </span>
+
+    <div style="width: 100px; height: 100px; border-radius: 100%;" 
+        class="relative mx-auto flex items-center justify-center bg-gray-200">
+        <mat-icon class="material-icons-outlined">inventory_2</mat-icon>
+    </div>
+
+    <div class="flex items-center justify-center">
+        <button tabindex="-1" mat-raised-button 
+            (click)="createStock()"
+            color="primary" 
+            [disabled]="isCreating"
+            class="inline-block my-2 mr-2">
+            CONTINUE &nbsp; 
+            <mat-icon>chevron_right</mat-icon>
+        </button> &nbsp; 
+        <mat-spinner *ngIf="isCreating" 
+            [diameter]="20" class="absolute justify-self-end"></mat-spinner>
+    </div>
+</section>

@@ -1,3 +1,4 @@
+import { Stock } from './../models/stock';
 import { Order } from './../models/order';
 import { CartItem } from './../models/cartitem';
 import { Staff } from './../models/staff';
@@ -26,6 +27,10 @@ export class StaffService {
 
   signIn(data: object): Observable<Staff> {
     return this.http.post<Staff>(`${this.constantsService.STAFF_URL}/auth`, data);
+  }
+
+  createBranchStock(data: any) {
+    return this.http.post<Stock>(`${this.constantsService.STOCKS_URL}`, data);
   }
 
   createBranch(branch: Branch): Observable<Branch> {
