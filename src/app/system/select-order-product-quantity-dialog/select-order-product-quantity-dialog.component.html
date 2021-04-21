@@ -1,42 +1,67 @@
 
 <section style="width: 600px; max-width: 100%;">
     <header class="mb-4">
+        <section class="w-full text-red-500 font-medium self-start 
+        flex items-center justify-between">
+            <span class="flex items-center text-blue-600 space-x-2">
+                <mat-icon class="material-icons-outlined">point_of_sale</mat-icon>
+                <p>Sales</p>
+            </span>
+            <button tabindex="-1" mat-icon-button class="bg-red-50"
+                (click)="closeDialog()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </section>
         <section class="flex items-center justify-between space-x-4">
             <p class="text-lg">Select Item Quantity</p>
-            <button tabindex="-1" mat-button color="warn" class="border" (click)="closeDialog()">
+            <!-- <button tabindex="-1" mat-button color="warn" class="border" (click)="closeDialog()">
                 <mat-icon>close</mat-icon> &nbsp; <span>CLOSE</span>
-            </button>
+            </button> -->
         </section>
     </header>
 
     <section>        
         <form [formGroup]="form" (ngSubmit)="addProduct()">
-            <div class="space-y-1 pb-2">
-                <span class="block pb-2 border-b">
-                    <p class="text-gray-500 text-xs">LookupKey: 
-                        <span class="text-red-600 font-medium">
-                            {{product?.lookupKey}}
-                        </span>
-                    </p>
-    
-                    <p class="font-medium">{{product?.name}}</p>
+            <div class="space-y-3 pb-2">
+                <span class="flex items-start justify-between border-b">
+                    <div class="space-y-1 font-medium">
+                        <p>
+                            <span class="text-lg">
+                                {{product?.name}}
+                            </span>
+                        </p>
+                        <p>
+                            Unit Price: 
+                            <span class="text-red-600">
+                                GHC {{product?.sellingPrice?.toFixed(2)}}
+                            </span>
+                        </p>
+
+                    </div>
+
+                    <div class="text-right">
+                        <p class="text-gray-500 text-xs">LookupKey</p>
+                        <p class="uppercase">{{product?.lookupKey}}</p>
+                    </div>
                 </span>
 
                 <p class="text-xs font-medium mt-2">
-                    Selected Branch: <span class="text-blue-800">
+                    Branch: 
+                    <span class="text-blue-800">
                         {{selectedProductBranch?.branch?.name}}
                     </span>,
-                    Available Quantity: <span class="text-blue-800">
-                        {{selectedProductBranch?.quantity}} items
+                    Available Quantity: 
+                    <span class="text-blue-800">
+                        {{selectedProductBranch?.quantity}} 
+                        <span *ngIf="selectedProductBranch?.quantity == 1">item</span>
+                        <span *ngIf="selectedProductBranch?.quantity > 1">items</span>
                     </span>
                 </p>
             </div>            
-            <div class="flex items-center 
-                justify-between 
-                space-x-6 mt-4">
-                <mat-form-field appearance="outline" class="text-xs">
+            <div class="grid grid-cols-3 gap-4 mt-4">
+                <mat-form-field appearance="outline" class="w-full text-xs">
                     <mat-label>Branch</mat-label>
-                    <mat-select required #branchSelect formControlName="selectedBranchId"
+                    <mat-select tabindex="-1" required #branchSelect formControlName="selectedBranchId"
                         (selectionChange)="branchChanged(branchSelect.value)">
                         <mat-option *ngFor="let productBranch of productBranches" 
                             [value]="productBranch.branch.id">
@@ -45,29 +70,40 @@
                     </mat-select>
                 </mat-form-field>
                 
-                <mat-form-field appearance="outline" class="text-xs">
+                <mat-form-field appearance="outline" class="w-full text-xs">
+                    <mat-label>Price Sold</mat-label>
+                    <input tabindex="-1" matInput required value="1" type="number" 
+                        #priceSoldTextbox 
+                        autocomplete="off"
+                        formControlName="priceSold" />
+                    <span matPrefix>¢</span>
+                    <mat-error *ngIf="priceSoldTextbox.value > selectedProductBranch?.quantity">
+                        The quantity you have specified.
+                    </mat-error>
+                </mat-form-field>  
+                
+                <mat-form-field appearance="outline" class="w-full text-xs">
                     <mat-label>Type Quantity</mat-label>
                     <input matInput required value="1" type="number" 
                         #quantityTextbox 
                         autocomplete="off"
                         formControlName="quantity" />
-                    <mat-error *ngIf="quantityTextbox.value > selectedProductBranch?.quantity">
+                    <mat-error *ngIf="+quantityTextbox.value > selectedProductBranch?.quantity">
                         The quantity you have specified.
                     </mat-error>
-                </mat-form-field>
-        
-                <button mat-raised-button color="primary" style="margin-top: -1rem;">
-                    ADD PRODUCT <mat-icon>chevron_right</mat-icon>
+                </mat-form-field>      
+            </div>
+            <div class="flex items-start justify-between space-x-6">
+                <p class="text-red-600 text-xs w-9/12">
+                    {{formErrorMessage}}
+                </p>
+                
+                <button mat-raised-button color="primary">
+                    ADD PRODUCT 
+                    <mat-icon>chevron_right</mat-icon>
                 </button>
             </div>
-
-            
         </form>
-        <div>
-            <p class="text-red-600 text-xs">
-                {{formErrorMessage}}
-            </p>
-        </div>
     </section>
 
 </section>

@@ -34,17 +34,15 @@ export class SelectOrderProductQuantityDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.product = this.data?.product;
-    console.log(this.product);
 
     const staffBranchId = this.staffService.branchId;
     this.productBranches = this.product.productBranches;
     this.selectedProductBranch = this.product.productBranches.find(productBranch => 
       productBranch.branchId === staffBranchId) || this.product.productBranches[0];
 
-    console.log(this.selectedProductBranch);
-
     this.form = new FormGroup({
       quantity: new FormControl(),
+      priceSold: new FormControl(this.product.sellingPrice),
       selectedBranchId: new FormControl(
         this.selectedProductBranch.branchId
       )
@@ -96,11 +94,9 @@ export class SelectOrderProductQuantityDialogComponent implements OnInit {
       this.product.costPrice,
       this.product.sellingPrice
     );
-
-    const cartItemQuantity = this.form.value['quantity']
     
     this.accept.emit(
-      new CartItem(cartItemQuantity, branchProduct)
+      new CartItem(this.form.value['quantity'], this.form.value['priceSold'], branchProduct)
     );
 
     this.dialogRef.close();

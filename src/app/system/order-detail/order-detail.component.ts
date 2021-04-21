@@ -42,7 +42,9 @@ export class OrderDetailComponent implements OnInit {
       `${orderDate.getSeconds().toString().padStart(2, '0')} (24HR Time)`;
 
       this.order.items.forEach(item => {
-        this.orderAmount += item.quantityOrdered * item.orderItemSellingPrice
+        this.orderAmount += item.salePrice > 0 ? 
+          item.quantityOrdered * item.salePrice :
+          item.quantityOrdered * item.orderItemSellingPrice
       });
     }, error => {
       console.log(error);

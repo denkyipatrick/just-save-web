@@ -46,7 +46,8 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Order Price</th>
                 <td mat-cell *matCellDef="let orderItem" class="">
                     <span class="font-medium text-gray-800">GHC</span> 
-                    {{orderItem?.orderItemSellingPrice?.toFixed(2)}}
+                    <!-- {{orderItem?.orderItemSellingPrice?.toFixed(2)}} -->
+                    {{(orderItem?.salePrice || orderItem?.orderItemSellingPrice)?.toFixed(2)}}
                 </td>
             </ng-container>
             <ng-container matColumnDef="quantity">
@@ -57,7 +58,8 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Item Amount</th>
                 <td mat-cell *matCellDef="let orderItem" class="">
                     <span class="font-medium text-gray-800">GHC</span> 
-                    {{(orderItem?.quantityOrdered * orderItem?.orderItemSellingPrice)?.toFixed(2)}}
+                    {{(orderItem?.quantityOrdered * 
+                        (orderItem?.salePrice || orderItem?.orderItemSellingPrice))?.toFixed(2)}}
                 </td>
             </ng-container>
             <!-- <ng-container matColumnDef="date">

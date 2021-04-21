@@ -5,6 +5,7 @@ export class CartItem {
 
     constructor(
         public quantity: number,
+        public soldPrice: number,
         public branchProduct?: BranchProduct) {
         this.id = this.branchProduct?.product?.id;
     }

@@ -34,7 +34,6 @@ export class EditProductQuantityDialogComponent implements OnInit {
   }
 
   quantityTyped(value: string): void {
-    console.log(value);
     this.productQuantity = +value;
   }
 
@@ -67,7 +66,6 @@ export class EditProductQuantityDialogComponent implements OnInit {
     }, error => {
       this.updatingQuantity = false;
       this.errorUpdatingQuantity  = true;
-      console.log(error);
     });
   }
 }

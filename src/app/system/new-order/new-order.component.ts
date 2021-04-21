@@ -1,3 +1,4 @@
+import { Router, ActivatedRoute } from '@angular/router';
 import { ProductListComponent } from './../product-list/product-list.component';
 import { NewOrderInsufficientOrderItemsDialogComponent } from './../new-order-insufficient-order-items-dialog/new-order-insufficient-order-items-dialog.component';
 import { PleaseWaitDialogComponent } from './../../dialog/please-wait-dialog/please-wait-dialog.component';
@@ -34,7 +35,10 @@ export class NewOrderComponent implements OnInit {
   constructor(
     private companyService: CompanyService,
     private staffService: StaffService, 
-    private dialogOpener: MatDialog) {
+    private dialogOpener: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute
+    ) {
     this.editProductQuantity = new EventEmitter();
 
     this.orderTotalAmount = 0;
@@ -81,7 +85,7 @@ export class NewOrderComponent implements OnInit {
     this.orderTotalAmount = 0;
 
     this.cartItems.forEach(item => {
-      this.orderTotalAmount += item.quantity * item.branchProduct.product.sellingPrice;
+      this.orderTotalAmount += item.quantity * item.soldPrice;
     });
   }
 
@@ -105,7 +109,9 @@ export class NewOrderComponent implements OnInit {
       for(const cartItem of this.cartItems) {
         if (cartItem.id === newItem.id) {
           cartItem.quantity = newItem.quantity;
+          cartItem.soldPrice = newItem.soldPrice;
           this.getOrderTotalAmount();
+          sessionStorage.setItem('cart-items', JSON.stringify(this.cartItems));
           return;
         }
       }
@@ -130,6 +136,7 @@ export class NewOrderComponent implements OnInit {
     .componentInstance
     .ok
     .subscribe(() => {
+      console.log(this.cartItems);
       const waitDialogRef = this.dialogOpener.open(PleaseWaitDialogComponent);
 
       this.staffService.startOrder({
@@ -144,6 +151,9 @@ export class NewOrderComponent implements OnInit {
         setTimeout(() => {
           this.productListComponent.refreshProducts();
         }, 1000);
+        
+        this.cartItems = [];
+        sessionStorage.removeItem('cart-items');
 
         this.dialogOpener.open(OkDialogComponent, {
           disableClose: true,
@@ -152,10 +162,12 @@ export class NewOrderComponent implements OnInit {
             message: 'Your order has been completed successfully.',
             okButtonText: 'FINISH'
           }
+        })
+        .componentInstance
+        .ok
+        .subscribe(() => {
+          this.router.navigate(['../orders', order.id], { relativeTo: this.route });
         });
-
-        this.cartItems = [];
-        sessionStorage.removeItem('cart-items');
       }, error => {
         waitDialogRef.close();
         console.log(error.error);

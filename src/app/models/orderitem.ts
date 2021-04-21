@@ -5,6 +5,7 @@ export class OrderItem {
 
     constructor(
         public id: string,
+        public salePrice: number,
         public quantityOrdered: number,
         public orderItemCostPrice: number,
         public orderItemSellingPrice: number
