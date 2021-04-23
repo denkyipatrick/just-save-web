@@ -15,6 +15,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -96,6 +97,7 @@ import { StockDetailComponent } from './stock-detail/stock-detail.component';
     MatInputModule,
     DialogModule,
     MatSortModule,
+    MatChipsModule,
     MatSelectModule,
     MatDialogModule,
     MatRippleModule,

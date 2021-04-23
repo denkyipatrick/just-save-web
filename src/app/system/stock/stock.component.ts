@@ -13,7 +13,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./stock.component.scss']
 })
 export class StockComponent implements OnInit {
-  stocks: Stock[];
+  stocks: Stock[] = [];
 
   constructor(
     private staffService: StaffService,
@@ -21,13 +21,25 @@ export class StockComponent implements OnInit {
     private dialogOpener: MatDialog,
     private route: ActivatedRoute,
     private router: Router
-    ) { }
+    ) {
+    this.stocks = JSON.parse(sessionStorage.getItem('stock-list')) || [];
+  }
 
   ngOnInit(): void {
+    // if (!this.stocks) {
+      this.fetchStock();
+    // }
+  }
+
+  fetchStock() {
     this.branchService.fetchBranchStockHistory(this.staffService.staff.staffBranch.branch.id)
     .subscribe(stocks => {
-      console.log(stocks);
-      this.stocks = stocks;
+      this.stocks = stocks.map(stock => {
+        stock.dateString = new Date(stock.createdAt).toDateString()
+        return stock;
+      });
+
+      sessionStorage.setItem('stock-list', JSON.stringify(this.stocks));
     }, error => {
       console.error(error);
     });
@@ -38,6 +50,9 @@ export class StockComponent implements OnInit {
     .componentInstance
     .stockCreated
     .subscribe(stock => {
+      stock.dateString = new Date(stock.createdAt).toDateString();
+      this.stocks.unshift(stock);
+
       this.dialogOpener.open(OkDialogComponent, {
         disableClose: true,
         data: {

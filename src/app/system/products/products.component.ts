@@ -100,7 +100,6 @@ export class ProductsComponent implements OnInit, AfterViewInit {
 
     this.companyService.fetchCompanyProducts()
     .subscribe(products => {
-      console.log(products);
       this.isFetchingProducts = false;
 
       this.products = products;

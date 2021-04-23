@@ -1,3 +1,4 @@
+import { CompanyService } from './../../services/company.service';
 import { OkDialogComponent } from './../../dialog/ok-dialog/ok-dialog.component';
 import { OkCancelDialogComponent } from './../../dialog/ok-cancel-dialog/ok-cancel-dialog.component';
 import { StaffService } from './../../services/staff.service';
@@ -17,6 +18,7 @@ export class CreateStockDialogComponent implements OnInit {
   isErrorCreating: boolean = false;
 
   constructor(
+    private companyService: CompanyService,
     private staffService: StaffService,
     private dialogOpener: MatDialog,
     private dialogRef: MatDialogRef<CreateStockDialogComponent>
@@ -33,20 +35,21 @@ export class CreateStockDialogComponent implements OnInit {
   }
 
   createStock() {
-    this.dialogOpener.open(OkCancelDialogComponent, {
-      data: {
-        title: "Create Branch Stock?",
-        message: "Are you sure you want to create a new stock?",
-        okButtonText: 'YES',
-        cancelButtonText: 'NO'
-      }
-    })
-    .componentInstance
-    .ok
-    .subscribe(() => {
+    // this.dialogOpener.open(OkCancelDialogComponent, {
+    //   data: {
+    //     title: "Create Branch Stock?",
+    //     message: "Are you sure you want to create a new stock?",
+    //     okButtonText: 'YES',
+    //     cancelButtonText: 'NO'
+    //   }
+    // })
+    // .componentInstance
+    // .ok
+    // .subscribe(() => {
       this.isCreating = true;
       
       this.staffService.createBranchStock({
+        companyId: this.companyService.company.id,
         branchId: this.staffService.staff.staffBranch.branch.id
       })
       .subscribe(stock => {
@@ -62,6 +65,7 @@ export class CreateStockDialogComponent implements OnInit {
             for (const validationError of error.error.errors) {
               if (validationError.param === 'stock_opened') {
                 this.dialogOpener.open(OkDialogComponent, {
+                  disableClose: true,
                   data: {
                     title: 'Close Opened Stock!',
                     message: 'You already have an opened stock. Please close it first.'
@@ -89,7 +93,7 @@ export class CreateStockDialogComponent implements OnInit {
           }
         }
       });
-    });
+    // });
   }
 
 }

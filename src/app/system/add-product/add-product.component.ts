@@ -1,3 +1,6 @@
+import { CompanyService } from './../../services/company.service';
+import { BranchService } from './../../services/branch.service';
+import { ActivatedRoute } from '@angular/router';
 import { UtilityService } from './../../services/utility.service';
 import { PleaseWaitDialogComponent } from './../../dialog/please-wait-dialog/please-wait-dialog.component';
 import { StaffService } from './../../services/staff.service';
@@ -15,16 +18,23 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class AddProductComponent implements OnInit {
   form: FormGroup;
+
+  stockId: string = '';
   lookedUpProducts: Product[];
   showLookedUpProductsWindow = true;
 
   constructor(
     private utilityService: UtilityService,
+    private companyService: CompanyService,
     private staffService: StaffService,
     private dialogOpener: MatDialog,
-    private matSnackBar: MatSnackBar) {
+    private matSnackBar: MatSnackBar,
+    private route: ActivatedRoute,
+    private branchService: BranchService
+    ) {
     this.form = new FormGroup({
       name: new FormControl(),
+      stockId: new FormControl(),
       quantity: new FormControl(),
       lookupKey: new FormControl(),
       unitPrice: new FormControl(),
@@ -34,6 +44,10 @@ export class AddProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.stockId = params['id']
+      this.form.patchValue({stockId: params['id']});
+    });
   }
 
   goBack(): void {
@@ -43,7 +57,7 @@ export class AddProductComponent implements OnInit {
   lookupProduct(lookupKey: string): void {
     this.showLookedUpProductsWindow = true;
 
-    this.utilityService.lookupProduct(lookupKey)
+    this.companyService.lookupProduct(lookupKey)
     .subscribe(products => {
       this.lookedUpProducts = products;
     }, error => {
@@ -80,10 +94,10 @@ export class AddProductComponent implements OnInit {
         disableClose: true
       });
 
-      this.staffService.createProduct(this.form.value)
+      this.branchService.createBranchStockItem(this.form.value)
       .subscribe(product => {
         dialogRef.close();
-        this.form.reset();
+        // this.form.reset();
         // localStorage.setItem('products', JSON.stringify(products));
         this.matSnackBar.open('Product Added Successfully', 'CLOSE', {
           duration: 5000

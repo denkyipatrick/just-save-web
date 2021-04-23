@@ -20,12 +20,12 @@
                 (change)="toggleShowMultipleBranches()">View From All Branches</mat-slide-toggle>
         </div>
 
-        <a *ngIf="canStaffCreateProduct"
+        <!-- <a *ngIf="canStaffCreateProduct"
             class="button primary-button-color"
             routerLink="../add-product" mat-raised-button>
             <mat-icon>add</mat-icon>
             <span>Add Product</span>
-        </a>
+        </a> -->
     </div>
     <table mat-table [dataSource]="dataSource" [fixedLayout]="false" matSort class="w-full">
         <ng-container matColumnDef="key">

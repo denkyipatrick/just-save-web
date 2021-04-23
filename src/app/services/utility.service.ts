@@ -30,8 +30,4 @@ export class UtilityService {
   fetchBranches(): Observable<Branch[]> {
     return this.http.get<Branch[]>(`${this.constants.BRANCHES_URL}`);
   }
-
-  lookupProduct(lookupKey: string): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.constants.PRODUCTS_URL}/lookup/${lookupKey}`);
-  }
 }

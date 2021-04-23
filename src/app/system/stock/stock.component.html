@@ -1,13 +1,53 @@
-<header>
-    <button mat-raised-button (click)="createStock()">
-        Create Stock
-    </button>
-</header>
-<section>
-    <p>Stock List</p>
-    <ul>
-        <li *ngFor="let stock of stocks">
-            {{stock?.id}}, isOpened: {{stock?.isOpened}}, Date: {{stock?.createdAt}}
-        </li>
-    </ul>
+<section *ngIf="!stocks?.length" style="height: 60vh;"
+    class="w-9/12 flex flex-col items-center 
+        justify-center space-y-4">
+    <div style="height: 100px; width: 100px; border-radius: 100%;"
+        class="bg-gray-100 flex items-center justify-center">
+        <mat-icon>inventory_2</mat-icon>
+    </div>
+    <div class="text-center space-y-4">
+        <span>
+            <p class="text-lg capitalize font-medium">
+                You do not have any stock
+            </p>
+            <p class="text-gray-600">
+                Create your new stock and start adding items 
+                to your store.
+            </p>
+        </span>
+
+        <button mat-raised-button color="primary"
+            class="mx-auto"
+            (click)="createStock()">
+            <mat-icon>add</mat-icon>&nbsp;
+            CREATE NEW STOCK
+        </button>
+    </div>
+</section>
+
+<section *ngIf="stocks?.length">
+    <header>
+        <section class="flex items-center justify-between space-x-4">
+            <p class="text-3xl">Stock History</p>
+            <button mat-raised-button
+                color="primary"
+                class="uppercase"
+                (click)="createStock()">
+                <mat-icon>add</mat-icon>&nbsp;
+                <span>Create Stock</span>
+            </button>
+        </section>
+    </header>
+    <section>
+        <ul>
+            <li *ngFor="let stock of stocks"
+                class="w-full py-2 border-b">
+                <a [routerLink]="stock.id" class="w-full inline-block">
+                    Date: {{stock?.dateString}}
+                    <span *ngIf="stock?.isOpened" class="text-green-500">, Opened</span>
+                    <span *ngIf="!stock?.isOpened" class="text-red-500">, Closed</span>
+                </a>
+            </li>
+        </ul>
+    </section>
 </section>

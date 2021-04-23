@@ -46,12 +46,12 @@ export class CompanySetupComponent implements OnInit {
       localStorage.removeItem('companyId');
       localStorage.removeItem('setup-stage');
 
+      this.companyService.company = company;
+      this.companyService.companyId = company.id;
+
       localStorage.setItem('companyId', company.id);
       localStorage.setItem('company', JSON.stringify(company));
       localStorage.setItem('setup-stage', 'product-detail');
-
-      this.companyService.companyId = company.id;
-
 
       const randomNumber = Math.floor(Math.random() * 10000);
       setTimeout(() => {

@@ -1,3 +1,4 @@
+import { Stock } from 'src/app/models/stock';
 import { Order } from './../models/order';
 import { Observable } from 'rxjs';
 import { Product } from './../models/product';
@@ -23,6 +24,10 @@ export class CompanyService {
   createStaff(data: any): Observable<Staff> {
     return this.http.post<Staff>(`${this.constants.STAFF_URL}`, data);
   }
+
+  fetchStaffs() {
+    return this.http.get<Staff[]>(`${this.constants.COMPANIES_URL}/${this.companyId}/staffs`);
+  }
   
   createBranch(branch: Branch): Observable<Branch> {
     return this.http.post<Branch>(`${this.constants.BRANCHES_URL}`, branch);
@@ -35,6 +40,11 @@ export class CompanyService {
   fetchBranchProducts(branchId: string): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.constants.BRANCHES_URL}/${branchId}/products`);
   }
+  
+  lookupProduct(lookupKey: string): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.constants.COMPANIES_URL}/` + 
+    `${this.companyId}/products/lookup/${lookupKey}`);
+  }
 
   fetchCompanyProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.constants.COMPANIES_URL}/${this.companyId}/products`);
@@ -45,6 +55,10 @@ export class CompanyService {
   }
 
   fetchOrders() {
-    return this.http.get<Order[]>(`${this.constants.COMPANIES_URL}/${this.companyId}/orders`)
+    return this.http.get<Order[]>(`${this.constants.COMPANIES_URL}/${this.companyId}/orders`);
+  }
+
+  fetchStock(stockId: string) {
+    return this.http.get<Stock>(`${this.constants.STOCKS_URL}/${stockId}`);
   }
 }

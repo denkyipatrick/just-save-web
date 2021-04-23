@@ -63,10 +63,12 @@ export class SignInComponent implements OnInit {
       console.log(staff);
 
       this.staffService.staff = staff;
-      this.staffService.branchId = staff.staffBranch.branch.id;
-      this.companyService.companyId = staff.staffBranch.branch.company.id;
+      this.staffService.branchId = staff?.staffBranch?.branch?.id;
+      // this.companyService.companyId = staff?.staffBranch?.branch?.company?.id;
 
-      // localStorage.setItem('branchId', JSON.stringify(staff.staffBranch.branch.id));
+      // localStorage.setItem('company', JSON.stringify(staff.staffBranch.branch.company));
+      // localStorage.setItem('companyId', JSON.stringify(staff.staffBranch.branch.company.id));
+      localStorage.setItem('branchId', staff?.staffBranch?.branch?.id);
       localStorage.setItem('staff', JSON.stringify(staff));
       sessionStorage.setItem('staff', JSON.stringify(staff));
       this.router.navigate(['system/products']);

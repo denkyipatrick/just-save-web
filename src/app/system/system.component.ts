@@ -66,6 +66,17 @@ export class SystemComponent implements OnInit {
 
     setTimeout(() => {
       dialogRef.close();
+      // localStorage.setItem('staff', JSON.stringify(staff));
+      // sessionStorage.setItem('staff', JSON.stringify(staff));
+      
+    // this.companyId = localStorage.getItem('companyId');
+    // this.company = JSON.parse(localStorage.getItem('company'));
+
+      localStorage.removeItem('staff');
+      sessionStorage.removeItem('staff');
+      // localStorage.removeItem('companyId');
+      // localStorage.removeItem('company');
+      localStorage.removeItem('branchId');
       this.router.navigate(['/out']);
     }, 2000);
   }

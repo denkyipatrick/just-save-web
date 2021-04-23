@@ -1,3 +1,4 @@
+import { StockItem } from './../models/stockitem';
 import { Stock } from './../models/stock';
 import { Observable } from 'rxjs';
 import { BranchProduct } from './../models/branchproduct';
@@ -14,11 +15,18 @@ export class BranchService {
     private http: HttpClient) {
   }
 
+  closeBranchStock(stockId: string) {
+    return this.http.patch(`${this.constants.STOCKS_URL}/` + 
+    `${stockId}/close`, null);
+  }
+
+  createBranchStockItem(data: any) {
+    return this.http.post<StockItem>(`${this.constants.STOCK_ITEMS_URL}/`, data);
+  }
+
   fetchBranchStockHistory(branchId: string) {
     return this.http.get<Stock[]>(`${this.constants.BRANCHES_URL}/${branchId}/stocks`);
   }
-
-  createBranchStock
 
   updateBranchProductQuantity(
     branchId: string,

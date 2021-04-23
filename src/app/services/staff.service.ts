@@ -21,8 +21,6 @@ export class StaffService {
     private constantsService: ConstantsService) {
       this.branchId = localStorage.getItem('branchId');
       this.staff = JSON.parse(sessionStorage.getItem('staff'));
-
-      // console.log(localStorage.getItem('branchId'))
   }
 
   signIn(data: object): Observable<Staff> {
@@ -75,9 +73,9 @@ export class StaffService {
     return this.http.get<Product>(`${this.constantsService.PRODUCTS_URL}/${productId}`);
   }
 
-  fetchProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.constantsService.PRODUCTS_URL}`);
-  }
+  // fetchProducts(): Observable<Product[]> {
+  //   return this.http.get<Product[]>(`${this.constantsService.PRODUCTS_URL}`);
+  // }
 
   startOrder(data: any) {
     return this.http.post<Order>(`${this.constantsService.ORDERS_URL}`, data);

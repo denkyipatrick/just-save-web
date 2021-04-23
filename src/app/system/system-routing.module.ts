@@ -34,6 +34,7 @@ const routes: Routes = [
     { path: 'new-order', component: NewOrderComponent },
     { path: 'stocks', component: StockComponent },
     { path: 'stocks/:id', component: StockDetailComponent },
+    { path: 'stocks/:id/add-product', component: AddProductComponent },
     { path: 'settings', loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule) },
   ]}
 ];
