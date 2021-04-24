@@ -1,3 +1,5 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { StockService } from './../../services/stock.service';
 import { StockItem } from './../../models/stockitem';
 import { Product } from './../../models/product';
 import { OkDialogComponent } from './../../dialog/ok-dialog/ok-dialog.component';
@@ -30,7 +32,9 @@ export class StockDetailComponent implements OnInit {
   constructor(
     private companyService: CompanyService,
     private branchService: BranchService,
+    private stockService: StockService,
     private dialogOpener: MatDialog,
+    private snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private router: Router,
   ) {    
@@ -87,9 +91,50 @@ export class StockDetailComponent implements OnInit {
     this.itemsDataSource.filter = query;
   }
 
+  deleteItem(item: StockItem, e: Event) {
+    e.stopPropagation();
+
+    this.dialogOpener.open(OkCancelDialogComponent, {
+      data: {
+        title: 'Remove Stock Item',
+        message: 'Do you want to remove this item? You cannot undo this operation.',
+        okButtonText: 'REMOVE',
+        cancelButtonText: 'CANCEL'
+      }
+    })
+    .componentInstance
+    .ok
+    .subscribe(() => {
+      item.isDeleting = true;
+
+      this.stockService.removeStockItem(item.id)
+      .subscribe(stockItem => {
+        item.isDeleting = false;
+        this.stock.items = this.stock.items
+          .filter(stockItem => stockItem.id !== item.id);
+
+        this.snackBar.open("Item Removed", "CLOSE", {
+          duration: 7000
+        });
+
+        this.itemsDataSource = new MatTableDataSource(this.stock.items);
+        this.itemsDataSource.sort = this.sort;
+        this.itemsDataSource.paginator = this.paginator;
+      }, error => {
+        item.isDeleting = false;
+        this.snackBar.open("Unable to remove item.", "OK", {
+          duration: 7000
+        });
+      });
+    });
+  }
+
   fetchStock() {
     this.companyService.fetchStock(this.stockId)
     .subscribe(stock => {
+      if (stock.isOpened) {
+        this.tableColumns.push('actions');
+      }
       stock.dateString = new Date(stock.createdAt).toDateString();
 
       this.stock = stock;

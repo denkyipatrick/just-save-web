@@ -1,6 +1,8 @@
+import { IDeletable } from "./ideleteable";
 
-export class StockItem {
-    constructor(
-        public id: string) {
+export class StockItem implements IDeletable {
+    isDeleting = false;
+
+    constructor(public id: string) {
     }
 }
