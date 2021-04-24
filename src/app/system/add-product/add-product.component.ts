@@ -1,3 +1,4 @@
+import { OkDialogComponent } from './../../dialog/ok-dialog/ok-dialog.component';
 import { CompanyService } from './../../services/company.service';
 import { BranchService } from './../../services/branch.service';
 import { ActivatedRoute } from '@angular/router';
@@ -111,18 +112,12 @@ export class AddProductComponent implements OnInit {
             break;
           }
           case 400: {
-            this.dialogOpener.open(OkCancelDialogComponent, {
+            this.dialogOpener.open(OkDialogComponent, {
               data: {
-                title: 'Product Already Exists',
-                message: `${this.form.value.name} is already in this branch. Edit product instead`,
-                okButtonText: 'OK, EDIT',
-                cancelButtonText: 'FORGET'
+                title: 'Product Already Part of This Stock',
+                message: `${this.form.value.name} is already added to this stock.`,
+                okButtonText: 'OK'
               }
-            })
-            .componentInstance
-            .ok
-            .subscribe(() => {
-
             });
             break;
           }
