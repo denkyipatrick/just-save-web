@@ -6,13 +6,13 @@
             <section class="flex items-center justify-between space-x-4">
                 <p class="text-3xl">Stock Detail</p>
                 <section class="flex items-center space-x-4">
-                    <p *ngIf="stock?.isOpened"
+                    <p *ngIf="stock && stock?.isOpened"
                         class="text-green-600 border
                         py-1 px-4 rounded-full text-center
                         font-medium bg-opacity-60">
                         Stock is opened
                     </p>
-                    <p *ngIf="!stock?.isOpened"
+                    <p *ngIf="stock && !stock?.isOpened"
                         class="text-red-600 border bordr-red-500 
                         py-1 px-4 rounded-full text-center
                         font-medium bg-opacity-60">
@@ -27,7 +27,35 @@
             </section>
         </header>
 
-        <section class="flex items-center space-x-16 pb-2 border-b">
+        <section *ngIf="!isFetchingStock && !stock"
+            class="flex flex-col items-center justify-center space-y-4">
+            <div style="width: 100px; height: 100px; border-radius: 100%;"
+                class="mx-auto border flex items-center
+                justify-center text-center bg-gray-100">
+                <mat-icon>inventory_2</mat-icon>                
+            </div>
+
+            <p class="font-medium">
+                Stock was not found
+            </p>
+
+            <div>
+                <a routerLink=".." 
+                    mat-raised-button color="primary" 
+                    class="uppercase">
+                    <mat-icon>arrow_back</mat-icon>&nbsp;
+                    View Stock List
+                </a>
+            </div>
+        </section>
+
+        <section *ngIf="isFetchingStock" 
+            class="flex items-center flex-col justify-center space-y-4">
+            <p>Fetching Stock</p>
+            <mat-spinner [diameter]="30"></mat-spinner>
+        </section>
+
+        <section *ngIf="!isFetchingStock && stock" class="flex items-center space-x-16 pb-2 border-b">
             <section class="flex items-start space-x-4">
                 <mat-icon>calendar_today</mat-icon>
                 <div>
@@ -45,8 +73,31 @@
         </section>
     
         <section class="mt-4">
-            <section *ngIf="stock?.items?.length" class="mat-elevation-z4 rounded-md">
-                <header class="p-4 flex items-start border
+            <section *ngIf="!isFetchingStock && stock && !stock?.items?.length" class="text-center space-y-4">
+                <div style="width: 100px; height: 100px; border-radius: 100%;"
+                    class="mx-auto border flex items-center
+                    justify-center text-center bg-gray-100">
+                    <mat-icon>style</mat-icon>
+                </div>
+                <p class="font-medium">You have no items in this stock.</p>
+                <div class="space-x-4">
+                    <button mat-raised-button color="warn"
+                        (click)="deleteStock()">
+                        <mat-icon>delete</mat-icon>&nbsp;
+                        <span>DELETE STOCK</span>
+                    </button>
+
+                    <a *ngIf="stock?.isOpened" routerLink="add-product" 
+                        mat-raised-button color="primary" 
+                        class="uppercase">
+                        <mat-icon>add</mat-icon>&nbsp;
+                        Add Stock Item
+                    </a>
+                </div>
+            </section>
+
+            <section *ngIf="!isFetchingStock && stock?.items?.length" class="mat-elevation-z4 rounded-md">
+                <header class="p-4 flex items-start
                     justify-between space-x-4">
                     <div>
                         <p class="text-lg">Stocked Products</p>

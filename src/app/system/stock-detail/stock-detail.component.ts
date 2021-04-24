@@ -23,6 +23,7 @@ import { MatTableDataSource } from '@angular/material/table';
 export class StockDetailComponent implements OnInit {
   stock: Stock;
   stockId: string = '';
+  isFetchingStock: boolean = true;
   tableColumns: string[] = ['key', 'name', 'quantity'];
   
   itemsDataSource: MatTableDataSource<StockItem>;
@@ -129,20 +130,72 @@ export class StockDetailComponent implements OnInit {
     });
   }
 
+  deleteStock() {
+    this.dialogOpener.open(OkCancelDialogComponent, {
+      data: {
+        title: 'Delete Stock',
+        message: 'Are you sure about this action?',
+        okButtonText: 'YES',
+        cancelButtonText: 'NO'
+      }
+    })
+    .componentInstance
+    .ok
+    .subscribe(() => {
+      const dialogRef = this.dialogOpener.open(PleaseWaitDialogComponent, {
+        disableClose: true
+      });
+
+      this.stockService.deleteStock(this.stock.id)
+      .subscribe(() => {
+        dialogRef.close();
+
+        this.snackBar.open("Stock is deleted", "CLOSE", {
+          duration: 7000
+        });
+
+        this.router.navigate(['..'], { relativeTo: this.route });
+      }, error => {
+        dialogRef.close();
+        
+        this.snackBar.open("Unable to delete stock.", "OK", {
+          duration: 7000
+        });
+
+        switch(error.status) {
+          case 400: {
+
+          }
+        }
+      });
+    });
+  }
+
   fetchStock() {
+    this.isFetchingStock = true;
+
     this.companyService.fetchStock(this.stockId)
     .subscribe(stock => {
-      if (stock.isOpened) {
+      this.isFetchingStock = false;
+
+      if (stock?.isOpened) {
         this.tableColumns.push('actions');
       }
-      stock.dateString = new Date(stock.createdAt).toDateString();
+
+      stock.dateString = new Date(stock?.createdAt).toDateString();
 
       this.stock = stock;
       this.itemsDataSource = new MatTableDataSource(this.stock.items);
       this.itemsDataSource.sort = this.sort;
       this.itemsDataSource.paginator = this.paginator;
     }, error => {
-      console.error(error);
+      this.isFetchingStock = false;
+
+      switch(error.status) {
+        case 400: {
+
+        }
+      }
     });
   }
 
