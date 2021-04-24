@@ -60,14 +60,22 @@
                 <mat-icon>calendar_today</mat-icon>
                 <div>
                     <p class="text-gray-500">Date Opened</p>
-                    <p class="text-2xl">{{stock?.dateString}}</p>
+                    <p class="text-xl">{{stock?.dateString}}</p>
                 </div>
             </section>
             <section class="flex items-start space-x-4">
                 <mat-icon>style</mat-icon>
                 <div>
-                    <p class="text-gray-500">Products Stocked</p>
-                    <p class="text-2xl">{{stock?.items?.length}}</p>
+                    <p class="text-gray-500">Stocked Products</p>
+                    <p class="text-xl">{{stock?.items?.length}}</p>
+                </div>
+            </section>
+            <section class="flex items-start space-x-4">
+                <mat-icon>meeting_room</mat-icon>
+                <div>
+                    <p class="text-gray-500">Branch</p>
+                    <p class="text-sm font-medium">{{stock?.branch?.name}}</p>
+                    <p class="text-xs text-gray-500">{{stock?.branch?.address}}</p>
                 </div>
             </section>
         </section>
