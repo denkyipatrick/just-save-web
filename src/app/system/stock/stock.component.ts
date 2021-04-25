@@ -82,11 +82,14 @@ export class StockComponent implements OnInit {
   }
 
   fetchBranchStock() {
-    this.isFetchingStocks = true;
+    if (!this.isRefreshing) {
+      this.isFetchingStocks = true;
+    }
 
     this.branchService.fetchBranchStockHistory(this.staffService.staff.staffBranch.branch.id)
     .subscribe(stocks => {
-      console.log(stocks);
+      this.isRefreshing = false;
+
       this.isFetchingStocks = false;
       this.stocks = stocks.map(stock => {
         stock.dateString = new Date(stock.createdAt).toDateString()
@@ -95,7 +98,9 @@ export class StockComponent implements OnInit {
 
       sessionStorage.setItem('stock-list', JSON.stringify(this.stocks));
     }, error => {
+      this.isRefreshing = false;
       this.isFetchingStocks = false;
+
       console.error(error);
     });
   }

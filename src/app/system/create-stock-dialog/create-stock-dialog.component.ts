@@ -1,3 +1,5 @@
+import { FormGroup, FormControl } from '@angular/forms';
+import { Branch } from './../../models/branch';
 import { CompanyService } from './../../services/company.service';
 import { OkDialogComponent } from './../../dialog/ok-dialog/ok-dialog.component';
 import { OkCancelDialogComponent } from './../../dialog/ok-cancel-dialog/ok-cancel-dialog.component';
@@ -14,6 +16,10 @@ import { Stock } from 'src/app/models/stock';
 export class CreateStockDialogComponent implements OnInit {
   @Output() stockCreated: EventEmitter<Stock>;
 
+  disabledBranchSelect: boolean;
+
+  form: FormGroup;
+  branches: Branch[];
   isCreating: boolean = false;
   isErrorCreating: boolean = false;
 
@@ -22,16 +28,37 @@ export class CreateStockDialogComponent implements OnInit {
     private staffService: StaffService,
     private dialogOpener: MatDialog,
     private dialogRef: MatDialogRef<CreateStockDialogComponent>
-    ) {
+  ) {
       this.dialogRef.disableClose = true;
       this.stockCreated = new EventEmitter();
-    }
+      this.branches = JSON.parse(sessionStorage.getItem('branches'));
+
+      this.form = new FormGroup({
+        branchId: new FormControl({
+          value: this.staffService.staff?.staffBranch?.branch?.id,
+          disabled: this.staffService.staff?.staffBranch?.branch?.id ? true : false
+        })
+      });
+  }
 
   ngOnInit(): void {
+    this.disabledBranchSelect = true;
+    if (!this.branches) {
+      this.fetchBranches();
+    }
   }
 
   close() {
     this.dialogRef.close();
+  }
+
+  fetchBranches() {
+    this.disabledBranchSelect = false;
+    this.companyService.fetchBranches()
+    .subscribe(branches => {
+      this.branches = branches;
+    }, error => {
+    });
   }
 
   createStock() {
@@ -47,7 +74,6 @@ export class CreateStockDialogComponent implements OnInit {
         this.dialogRef.close();
       }, error => {
         this.isCreating = false;
-        console.error(error);
 
         switch(error.status) {
           case 400: {
@@ -59,6 +85,11 @@ export class CreateStockDialogComponent implements OnInit {
                     title: 'Close Opened Stock!',
                     message: 'You already have an opened stock. Please close it first.'
                   }
+                })
+                .componentInstance
+                .ok
+                .subscribe(() => {
+                  this.dialogRef.close();
                 });
               }
             }

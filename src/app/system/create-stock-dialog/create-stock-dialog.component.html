@@ -12,29 +12,43 @@
         </button>
     </div>
 
-    <span class="text-center">
+    <div class="text-center">
         <h2>Create A New Stock</h2>
         <p class="text-gray-500 text-sm">
             A new stock will be added to your stock history.<br />
             You can add any item to your newly created stock.
         </p>
-    </span>
-
-    <div style="width: 100px; height: 100px; border-radius: 100%;" 
-        class="relative mx-auto flex items-center justify-center bg-gray-200">
-        <mat-icon class="material-icons-outlined">inventory_2</mat-icon>
     </div>
+    
+    <section>
+        <form [formGroup]="form" (ngSubmit)="createStock()">
+            <div style="width: 80px; height: 80px; border-radius: 100%;" 
+                class="relative mx-auto flex items-center justify-center bg-gray-200">
+                <mat-icon class="material-icons-outlined">inventory_2</mat-icon>
+            </div>
+            <mat-form-field appearance="outline" style="font-size: .8rem;"
+                class="mt-2">
+                <mat-label>Select Branch</mat-label>
+                <mat-select formControlName="branchId">
+                    <mat-option *ngFor="let branch of branches" [value]="branch.id">
+                        {{branch?.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
 
-    <div class="flex items-center justify-center">
-        <button tabindex="-1" mat-raised-button 
-            (click)="createStock()"
-            color="primary" 
-            [disabled]="isCreating"
-            class="inline-block my-2 mr-2">
-            CONTINUE &nbsp; 
-            <mat-icon>chevron_right</mat-icon>
-        </button> &nbsp; 
-        <mat-spinner *ngIf="isCreating" 
-            [diameter]="20" class="absolute justify-self-end"></mat-spinner>
-    </div>
+            <div class="flex items-center justify-center">
+        
+                <button tabindex="-1" mat-raised-button 
+                    color="primary" 
+                    [disabled]="isCreating"
+                    class="inline-block my-2 mr-2">
+                    CONTINUE &nbsp; 
+                    <mat-icon>chevron_right</mat-icon>
+                </button> &nbsp; 
+                <mat-spinner *ngIf="isCreating" 
+                    [diameter]="20" class="absolute justify-self-end">
+                </mat-spinner>
+            </div>
+        </form>
+    </section>
 </section>
