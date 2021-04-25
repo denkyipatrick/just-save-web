@@ -61,4 +61,8 @@ export class CompanyService {
   fetchStock(stockId: string) {
     return this.http.get<Stock>(`${this.constants.STOCKS_URL}/${stockId}`);
   }
+
+  fetchCompanyStocks() {
+    return this.http.get<Stock[]>(`${this.constants.COMPANIES_URL}/${this.companyId}/stocks`);
+  }
 }

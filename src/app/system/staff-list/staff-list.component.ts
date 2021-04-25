@@ -11,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 export class StaffListComponent implements OnInit {
   isAdmin: boolean = false;
 
-  staffList: Staff[];
+  staffList: Staff[] = [];
   viewerHasEditStaffRole: boolean;
   viewerHasDeleteStaffRole: boolean;
 
@@ -19,6 +19,8 @@ export class StaffListComponent implements OnInit {
     private companyService: CompanyService,
     private staffService: StaffService
   ) {
+    this.staffList = JSON.parse(sessionStorage.getItem('staffs'));
+
     if (this.staffService.staff.roles.find(role => role.id === 'edit-staff')) {
       this.viewerHasEditStaffRole = true;
     }
@@ -35,18 +37,20 @@ export class StaffListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.staffService.staff.username === 'root') {
-      this.fetchCompanyStaffs()
-    } else {
-      this.fetchStaff();
+    if(!this.staffList?.length) {
+      if (this.staffService.staff.username === 'root') {
+        this.fetchCompanyStaffs()
+      } else {
+        this.fetchStaff();
+      }
     }
   }
 
   fetchStaff(): void {
     this.staffService.fetchAllStaff()
     .subscribe(staffList => {
-      console.log(staffList);
       this.staffList = staffList;
+      sessionStorage.setItem('staffs', JSON.stringify(staffList));
     }, error => {
       console.log(error);
     });
@@ -54,8 +58,9 @@ export class StaffListComponent implements OnInit {
 
   fetchCompanyStaffs() {
     this.companyService.fetchStaffs()
-    .subscribe(staffs => {
-      this.staffList = staffs;
+    .subscribe(staffList => {
+      this.staffList = staffList;
+      sessionStorage.setItem('staffs', JSON.stringify(staffList));
     }, error => {
       console.error(error);
     });

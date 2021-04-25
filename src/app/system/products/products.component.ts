@@ -13,7 +13,7 @@ import { MatSort } from '@angular/material/sort';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit, AfterViewInit {
-  products: Product[];
+  products: Product[] = [];
   isFetchingProducts: boolean;
   isErrorFetchingProducts: boolean;
 
@@ -32,6 +32,8 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     private staffService: StaffService,
     private companyService: CompanyService,
     private router: Router, private route: ActivatedRoute) {
+
+    this.products = JSON.parse(sessionStorage.getItem('products'));
     this.isShowMultipleBranches = JSON.parse(localStorage.getItem('show-products-from-all-branches'));
 
     this.canStaffCreateProduct = this.staffService.staff.roles
@@ -43,7 +45,14 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.fetchProducts();
+    if (!this.products?.length) {
+      this.fetchProducts();
+    } else {
+      this.dataSource = new MatTableDataSource(this.products);
+
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    }
   }
 
   ngAfterViewInit(): void {
@@ -88,6 +97,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
 
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+      sessionStorage.setItem('products', JSON.stringify(products));
     }, error => {
       this.isFetchingProducts = false;
       this.isErrorFetchingProducts = true;
@@ -107,6 +117,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
 
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+      sessionStorage.setItem('products', JSON.stringify(products));
     }, error => {
       this.isFetchingProducts = false;
       this.isErrorFetchingProducts = true;

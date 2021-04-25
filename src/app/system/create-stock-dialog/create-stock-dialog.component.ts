@@ -35,17 +35,6 @@ export class CreateStockDialogComponent implements OnInit {
   }
 
   createStock() {
-    // this.dialogOpener.open(OkCancelDialogComponent, {
-    //   data: {
-    //     title: "Create Branch Stock?",
-    //     message: "Are you sure you want to create a new stock?",
-    //     okButtonText: 'YES',
-    //     cancelButtonText: 'NO'
-    //   }
-    // })
-    // .componentInstance
-    // .ok
-    // .subscribe(() => {
       this.isCreating = true;
       
       this.staffService.createBranchStock({

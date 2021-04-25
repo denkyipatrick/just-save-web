@@ -23,6 +23,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { SystemRoutingModule } from './system-routing.module';
@@ -51,6 +52,7 @@ import { NewOrderInsufficientOrderItemsDialogComponent } from './new-order-insuf
 import { StockComponent } from './stock/stock.component';
 import { CreateStockDialogComponent } from './create-stock-dialog/create-stock-dialog.component';
 import { StockDetailComponent } from './stock-detail/stock-detail.component';
+import { LoadingComponent } from './loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +79,8 @@ import { StockDetailComponent } from './stock-detail/stock-detail.component';
     NewOrderInsufficientOrderItemsDialogComponent,
     StockComponent,
     CreateStockDialogComponent,
-    StockDetailComponent
+    StockDetailComponent,
+    LoadingComponent
   ],
   imports: [
     CommonModule,
@@ -94,6 +97,7 @@ import { StockDetailComponent } from './stock-detail/stock-detail.component';
     MatToolbarModule,
     MatSidenavModule,
     MatFormFieldModule,
+    MatProgressBarModule,
     MatInputModule,
     DialogModule,
     MatSortModule,

@@ -1,4 +1,7 @@
-<section *ngIf="!stocks?.length" style="height: 60vh;"
+
+<app-loading *ngIf="isFetchingStocks" title="Loading Stocks..."></app-loading>
+
+<section *ngIf="!isFetchingStocks && !stocks?.length" style="height: 60vh;"
     class="w-9/12 flex flex-col items-center 
         justify-center space-y-4">
     <div style="height: 100px; width: 100px; border-radius: 100%;"
@@ -25,29 +28,67 @@
     </div>
 </section>
 
-<section *ngIf="stocks?.length">
+<section *ngIf="stocks?.length"
+    class="rounded-tl-md rounded-tr-md border-l border-r border-t mat-elevation-z2">
     <header>
-        <section class="flex items-center justify-between space-x-4">
+        <section class="p-4 flex items-center justify-between space-x-4">
             <p class="text-3xl">Stock History</p>
-            <button mat-raised-button
-                color="primary"
-                class="uppercase"
-                (click)="createStock()">
-                <mat-icon>add</mat-icon>&nbsp;
-                <span>Create Stock</span>
-            </button>
+
+            <div class="space-x-4">
+                <button mat-raised-button (click)="refreshStocks()"
+                    [disabled]="isRefreshing">
+                    <mat-icon>refresh</mat-icon>&nbsp;
+                    <span>REFRESH</span>
+                </button>
+                <button mat-raised-button
+                    color="primary"
+                    class="uppercase"
+                    (click)="createStock()">
+                    <mat-icon>add</mat-icon>&nbsp;
+                    <span>Create Stock</span>
+                </button>
+            </div>
         </section>
+        <mat-progress-bar [class.invisible]="!isRefreshing" [class.visible]="isRefreshing"
+            mode="indeterminate" class="border border-transparent">
+        </mat-progress-bar>
     </header>
     <section>
-        <ul>
-            <li *ngFor="let stock of stocks"
-                class="w-full py-2 border-b">
-                <a [routerLink]="stock.id" class="w-full inline-block">
-                    Date: {{stock?.dateString}}
-                    <span *ngIf="stock?.isOpened" class="text-green-500">, Opened</span>
-                    <span *ngIf="!stock?.isOpened" class="text-red-500">, Closed</span>
-                </a>
-            </li>
-        </ul>
+        <table mat-table [dataSource]="stocks" class="w-full">
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Date</th>
+                <td mat-cell *matCellDef="let stock">{{stock?.dateString}}</td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let stock" class="font-medium uppercase">
+                    <span *ngIf="stock?.isOpened" class="text-green-600">Opened</span>
+                    <span *ngIf="!stock?.isOpened" class="text-red-600">Closed</span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="branch">
+                <th mat-header-cell *matHeaderCellDef>Branch</th>
+                <td mat-cell *matCellDef="let stock">{{stock?.branch?.name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="items">
+                <th mat-header-cell *matHeaderCellDef>Items</th>
+                <td mat-cell *matCellDef="let stock">{{stock?.items?.length}}</td>
+            </ng-container>
+            <ng-container matColumnDef="view">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let stock" class="text-right font-medium uppercase">
+                    <button mat-icon-button>
+                        <mat-icon>chevron_right</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+            <a matRipple>
+                <tr mat-row *matRowDef="let stock; columns: tableColumns;" 
+                    class="body-row" style="cursor: pointer;"
+                    (click)="viewStock(stock.id)"></tr>
+            </a>
+        </table>
     </section>
 </section>

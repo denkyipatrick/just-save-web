@@ -28,10 +28,17 @@ export class OrdersComponent implements OnInit {
     private route: ActivatedRoute
   ) {    
     this.tableColumns = ['id', 'date'];
+    this.orders = JSON.parse(sessionStorage.getItem('orders'));
   }
 
   ngOnInit(): void {
-    this.fetchCompanyOrders();
+    if (!this.orders) {
+      this.fetchCompanyOrders();
+    } else {
+      this.dataSource = new MatTableDataSource(this.orders);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    }
   }
   
   ngAfterViewInit(): void {
@@ -49,7 +56,6 @@ export class OrdersComponent implements OnInit {
 
     this.companyService.fetchOrders()
     .subscribe(orders => {
-      console.log(orders);
       this.isFetchingOrders = false;
 
       this.orders = orders.map(order => {
@@ -57,9 +63,12 @@ export class OrdersComponent implements OnInit {
 
         return order;
       });
+
       this.dataSource = new MatTableDataSource(orders);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+
+      sessionStorage.setItem('orders', JSON.stringify(orders));
     }, error => {
       this.isFetchingOrders = false;
       this.isErrorFetchingOrders = true;

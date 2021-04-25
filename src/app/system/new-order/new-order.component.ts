@@ -99,6 +99,7 @@ export class NewOrderComponent implements OnInit {
 
   onProductSelected(product: Product) {
     this.dialogOpener.open(SelectOrderProductQuantityDialogComponent, {
+      disableClose: true,
       data: {
         product: product
       }
