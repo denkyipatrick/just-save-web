@@ -37,13 +37,13 @@ export class StaffListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(!this.staffList?.length) {
+    // if(!this.staffList?.length) {
       if (this.staffService.staff.username === 'root') {
         this.fetchCompanyStaffs()
       } else {
         this.fetchStaff();
       }
-    }
+    // }
   }
 
   fetchStaff(): void {

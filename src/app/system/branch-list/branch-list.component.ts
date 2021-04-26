@@ -17,9 +17,10 @@ export class BranchListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.branches?.length) {
-      this.fetchBranches();
-    }
+    // if (!this.branches?.length) {
+    // }
+    
+    this.fetchBranches();
   }
 
   fetchBranches() {

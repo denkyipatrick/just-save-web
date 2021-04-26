@@ -34,6 +34,7 @@ export class CreateStockDialogComponent implements OnInit {
       this.branches = JSON.parse(sessionStorage.getItem('branches'));
 
       this.form = new FormGroup({
+        companyId: new FormControl(this.companyService.company.id),
         branchId: new FormControl({
           value: this.staffService.staff?.staffBranch?.branch?.id,
           disabled: this.staffService.staff?.staffBranch?.branch?.id ? true : false
@@ -57,6 +58,7 @@ export class CreateStockDialogComponent implements OnInit {
     this.companyService.fetchBranches()
     .subscribe(branches => {
       this.branches = branches;
+      this.form.patchValue({branchId: branches[0].id});
     }, error => {
     });
   }
@@ -64,10 +66,7 @@ export class CreateStockDialogComponent implements OnInit {
   createStock() {
       this.isCreating = true;
       
-      this.staffService.createBranchStock({
-        companyId: this.companyService.company.id,
-        branchId: this.staffService.staff.staffBranch.branch.id
-      })
+      this.staffService.createBranchStock(this.form.value)
       .subscribe(stock => {
         this.isCreating = false;
         this.stockCreated.emit(stock);

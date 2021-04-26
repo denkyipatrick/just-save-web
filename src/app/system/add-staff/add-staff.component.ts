@@ -75,6 +75,10 @@ export class AddStaffComponent implements OnInit {
 
       this.staffService.createStaff(this.form.value)
       .subscribe(staff => {
+        const staffs: Staff[] = JSON.parse(sessionStorage.getItem('staffs')) || [];
+        staffs.push(staff);
+
+        sessionStorage.setItem('staffs', JSON.stringify(staffs));
         dialogRef.close();
 
         this.dialogOpener.open(OkDialogComponent, {

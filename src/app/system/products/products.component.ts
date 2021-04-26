@@ -45,14 +45,15 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    if (!this.products?.length) {
-      this.fetchProducts();
-    } else {
-      this.dataSource = new MatTableDataSource(this.products);
+    // if (!this.products?.length) {
+    // } else {
+    //   this.dataSource = new MatTableDataSource(this.products);
 
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-    }
+    //   this.dataSource.sort = this.sort;
+    //   this.dataSource.paginator = this.paginator;
+    // }
+    
+    this.fetchProducts();
   }
 
   ngAfterViewInit(): void {

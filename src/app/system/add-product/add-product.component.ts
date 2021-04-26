@@ -1,3 +1,4 @@
+import { Stock } from 'src/app/models/stock';
 import { OkDialogComponent } from './../../dialog/ok-dialog/ok-dialog.component';
 import { CompanyService } from './../../services/company.service';
 import { BranchService } from './../../services/branch.service';
@@ -20,6 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class AddProductComponent implements OnInit {
   form: FormGroup;
 
+  stock: Stock;
   stockId: string = '';
   lookedUpProducts: Product[];
   showLookedUpProductsWindow = true;

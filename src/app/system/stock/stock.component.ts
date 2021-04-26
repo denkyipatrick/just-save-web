@@ -33,10 +33,10 @@ export class StockComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.stocks?.length) {
-      this.isFetchingStocks = false;
-      return;
-    }
+    // if (this.stocks?.length) {
+    //   this.isFetchingStocks = false;
+    //   return;
+    // }
 
     this.fetchStocks();
     

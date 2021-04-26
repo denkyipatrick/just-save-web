@@ -1,3 +1,4 @@
+import { CompanyService } from './../services/company.service';
 import { Router } from '@angular/router';
 import { PleaseWaitDialogComponent } from './../dialog/please-wait-dialog/please-wait-dialog.component';
 import { StaffService } from './../services/staff.service';
@@ -23,13 +24,14 @@ export class SystemComponent implements OnInit {
   isShowDashboard: boolean;
 
   constructor(
+    private companyService: CompanyService,
     private staffService: StaffService,
     private utilityService: UtilityService,
     private dialogOpener: MatDialog,
     private router: Router
     ) {
     this.staff = this.staffService.staff;
-    this.appName = this.utilityService.appName;
+    this.appName = this.companyService.company.name;
     this.appSlogan = this.utilityService.appSlogan;
 
     if (this.staff.roles.find(role => role.id === 'make-order')) {
@@ -74,6 +76,12 @@ export class SystemComponent implements OnInit {
 
       localStorage.removeItem('staff');
       sessionStorage.removeItem('staff');
+      sessionStorage.removeItem('stock-list');
+      sessionStorage.removeItem('staffs');
+      sessionStorage.removeItem('orders');
+      sessionStorage.removeItem('branches');
+      sessionStorage.removeItem('products');
+      sessionStorage.removeItem('cart-items');
       // localStorage.removeItem('companyId');
       // localStorage.removeItem('company');
       localStorage.removeItem('branchId');
