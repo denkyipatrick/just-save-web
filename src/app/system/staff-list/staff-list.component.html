@@ -20,6 +20,10 @@
                                 
                                 <p class="text-lg my-0 ellipsize">{{staff?.firstName}} {{staff?.lastName}}</p>
                                 <p class="text-xs text-gray-400 my-0">@{{staff?.username}}</p>
+                                <p class="text-xs text-gray-400 my-0">
+                                    {{staff?.staffBranch?.branch?.name}}&nbsp;
+                                    <span *ngIf="staff?.staffBranch">Branch</span>
+                                </p>
                                 <span *ngIf="false" class="flex items-center justify-center text-gray-500 space-x-2">
                                     <a [routerLink]="'./' + staff?.id" mat-icon-button>
                                         <mat-icon>visibility</mat-icon>

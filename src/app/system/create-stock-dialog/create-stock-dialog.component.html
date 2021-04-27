@@ -29,7 +29,7 @@
             <mat-form-field appearance="outline" style="font-size: .8rem;"
                 class="mt-2">
                 <mat-label>Select Branch</mat-label>
-                <mat-select formControlName="branchId">
+                <mat-select required formControlName="branchId">
                     <mat-option *ngFor="let branch of branches" [value]="branch.id">
                         {{branch?.name}}
                     </mat-option>

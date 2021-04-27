@@ -37,7 +37,7 @@ export class CreateStockDialogComponent implements OnInit {
         companyId: new FormControl(this.companyService.company.id),
         branchId: new FormControl({
           value: this.staffService.staff?.staffBranch?.branch?.id,
-          disabled: this.staffService.staff?.staffBranch?.branch?.id ? true : false
+          // disabled: this.staffService.staff?.staffBranch?.branch?.id ? true : false
         })
       });
   }
@@ -57,61 +57,71 @@ export class CreateStockDialogComponent implements OnInit {
     this.disabledBranchSelect = false;
     this.companyService.fetchBranches()
     .subscribe(branches => {
-      this.branches = branches;
-      this.form.patchValue({branchId: branches[0].id});
+      if (!this.staffService.staff.isAdmin) {
+        this.branches = branches.filter(branch => branch.id ===
+          this.staffService.staff.staffBranch.branch.id);
+      } else {
+        this.branches = branches
+      }
+      
+      this.form.patchValue({branchId: this.branches[0].id});
     }, error => {
     });
   }
 
   createStock() {
-      this.isCreating = true;
-      
-      this.staffService.createBranchStock(this.form.value)
-      .subscribe(stock => {
-        this.isCreating = false;
-        this.stockCreated.emit(stock);
-        this.dialogRef.close();
-      }, error => {
-        this.isCreating = false;
+    if (this.form.invalid) { return; }
 
-        switch(error.status) {
-          case 400: {
-            for (const validationError of error.error.errors) {
-              if (validationError.param === 'stock_opened') {
-                this.dialogOpener.open(OkDialogComponent, {
-                  disableClose: true,
-                  data: {
-                    title: 'Close Opened Stock!',
-                    message: 'You already have an opened stock. Please close it first.'
-                  }
-                })
-                .componentInstance
-                .ok
-                .subscribe(() => {
-                  this.dialogRef.close();
-                });
-              }
+    console.log(this.form.value);
+
+    this.isCreating = true;
+    
+    this.staffService.createBranchStock(this.form.value)
+    .subscribe(stock => {
+      this.isCreating = false;
+      this.stockCreated.emit(stock);
+      this.dialogRef.close();
+    }, error => {
+      this.isCreating = false;
+
+      switch(error.status) {
+        case 400: {
+          for (const validationError of error.error.errors) {
+            if (validationError.param === 'stock_opened') {
+              this.dialogOpener.open(OkDialogComponent, {
+                disableClose: true,
+                data: {
+                  title: 'Close Opened Stock!',
+                  message: 'You already have an opened stock. Please close it first.'
+                }
+              })
+              .componentInstance
+              .ok
+              .subscribe(() => {
+                this.dialogRef.close();
+              });
             }
-            break;
           }
-          case 500: {
-            this.dialogOpener.open(OkCancelDialogComponent, {
-              data: {
-                title: 'Unexpected Error',
-                message: 'An unexpected error has occurred. Please try again later.',
-                okButtonText: 'TRY AGAIN',
-                cancelButtonText: 'CLOSE'
-              }
-            })
-            .componentInstance
-            .ok
-            .subscribe(() => {
-              this.createStock();
-            })
-            break;
-          }
+          break;
         }
-      });
+        case 500: {
+          this.dialogOpener.open(OkCancelDialogComponent, {
+            data: {
+              title: 'Unexpected Error',
+              message: 'An unexpected error has occurred. Please try again later.',
+              okButtonText: 'TRY AGAIN',
+              cancelButtonText: 'CLOSE'
+            }
+          })
+          .componentInstance
+          .ok
+          .subscribe(() => {
+            this.createStock();
+          })
+          break;
+        }
+      }
+    });
     // });
   }
 

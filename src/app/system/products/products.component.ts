@@ -14,13 +14,17 @@ import { MatSort } from '@angular/material/sort';
 })
 export class ProductsComponent implements OnInit, AfterViewInit {
   products: Product[] = [];
+
+  searchKey: string;
+
+  isRefreshing: boolean = false;
   isFetchingProducts: boolean;
   isErrorFetchingProducts: boolean;
 
   isShowMultipleBranches: boolean;
   canStaffCreateProduct: boolean;
 
-  tableColumns: string[];
+  tableColumns: string[] = ['key', 'name', 'sellingPrice', 'quantity', 'actions'];
   dataSource: MatTableDataSource<Product>;
 
   @Output() productSelected: EventEmitter<Product>
@@ -32,26 +36,28 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     private staffService: StaffService,
     private companyService: CompanyService,
     private router: Router, private route: ActivatedRoute) {
-
-    this.products = JSON.parse(sessionStorage.getItem('products'));
+    this.searchKey = sessionStorage.getItem('search-key');
     this.isShowMultipleBranches = JSON.parse(localStorage.getItem('show-products-from-all-branches'));
 
     this.canStaffCreateProduct = this.staffService.staff.roles
       .find(role => role.id === 'add-product') ? true : false;
 
-    this.tableColumns = ['key', 'name', 'sellingPrice', 'quantity', 'actions'];
-    this.dataSource = new MatTableDataSource(this.products);
     this.productSelected = new EventEmitter();
+    
+    this.products = JSON.parse(sessionStorage.getItem('products'));
   }
 
   ngOnInit(): void {
-    // if (!this.products?.length) {
-    // } else {
-    //   this.dataSource = new MatTableDataSource(this.products);
+    if (this.products?.length) {
+      this.setupPaginator();
 
-    //   this.dataSource.sort = this.sort;
-    //   this.dataSource.paginator = this.paginator;
-    // }
+      if (this.searchKey) {
+        return this.searchProduct(this.searchKey);
+      }
+
+      this.refreshProducts();
+      return;
+    }
     
     this.fetchProducts();
   }
@@ -61,12 +67,31 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     // this.dataSource.paginator = this.paginator;
   }
 
+  refreshProducts() {
+    this.isRefreshing = true;
+    this.fetchProducts();
+  }
+
+  setupPaginator() {
+    this.dataSource = new MatTableDataSource(this.products);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+
   viewProduct(row: Product): void {
     this.router.navigate(['./', row.id], { relativeTo: this.route });
   }
 
   searchProduct(query: string): void {
     this.dataSource.filter = query;
+    sessionStorage.setItem('search-key', query);
+  }
+
+  clearSearchField(input: HTMLInputElement) {
+    input.value = "";
+    this.searchKey = "";
+    this.searchProduct('');
+    sessionStorage.removeItem('search-key');
   }
 
   toggleShowMultipleBranches(): void {
@@ -86,40 +111,45 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   }
 
   fetchBranchProducts(): void {
-    this.isFetchingProducts = true;
+    if (!this.isRefreshing) {
+      this.isFetchingProducts = true;
+    }
+
     this.isErrorFetchingProducts = false;
 
     this.companyService.fetchBranchProducts(this.staffService.branchId)
     .subscribe(products => {
+      this.isRefreshing = false;
       this.isFetchingProducts = false;
 
       this.products = products;
-      this.dataSource = new MatTableDataSource(products);
-
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
+      this.setupPaginator();
       sessionStorage.setItem('products', JSON.stringify(products));
     }, error => {
+      this.isRefreshing = false;
       this.isFetchingProducts = false;
       this.isErrorFetchingProducts = true;
     });
   }
 
   fetchCompanyProducts(): void {
-    this.isFetchingProducts = true;
+    if (!this.isRefreshing) {
+      this.isFetchingProducts = true;
+    }
+
     this.isErrorFetchingProducts = false;
 
     this.companyService.fetchCompanyProducts()
     .subscribe(products => {
+      this.isRefreshing = false;
       this.isFetchingProducts = false;
 
       this.products = products;
-      this.dataSource = new MatTableDataSource(products);
-
-      this.dataSource.sort = this.sort;
+      this.setupPaginator();
       this.dataSource.paginator = this.paginator;
       sessionStorage.setItem('products', JSON.stringify(products));
     }, error => {
+      this.isRefreshing = false;
       this.isFetchingProducts = false;
       this.isErrorFetchingProducts = true;
     });

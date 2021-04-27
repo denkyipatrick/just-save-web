@@ -160,9 +160,9 @@
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
                         <td mat-cell *matCellDef="let item" style="min-width: 120px;">
                             <div class="flex items-center justify-start">
-                                <button mat-icon-button (click)="deleteItem(item, $event)">
+                                <!-- <button mat-icon-button (click)="deleteItem(item, $event)">
                                     <mat-icon>delete</mat-icon>
-                                </button>
+                                </button> -->
                                 <mat-spinner *ngIf="item.isDeleting" [diameter]="20"></mat-spinner>
                             </div>
                         </td>

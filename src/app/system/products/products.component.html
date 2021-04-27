@@ -4,29 +4,52 @@
     loaderText="Loading Products...">
 </app-loader>
 <section *ngIf="!isFetchingProducts && !isErrorFetchingProducts" 
-    class="mat-elevation-z8 rounded-md">
-    <div class="p-4 space-x-4 flex items-start justify-between">
-        <div>
-            <mat-form-field appearance="outline" style="font-size: .9rem;">
-                <mat-label>Search Products</mat-label>
-                <input #searchBox matInput autocomplete="off" (keyup)="searchProduct(searchBox.value)"/>
-                <span matPrefix>
-                    <mat-icon>search</mat-icon>
-                </span>
-            </mat-form-field> <br />
+    class="mat-elevation-z4 rounded-md">
 
-            <mat-slide-toggle color="warn" 
-                [checked]="isShowMultipleBranches"
-                (change)="toggleShowMultipleBranches()">View From All Branches</mat-slide-toggle>
-        </div>
+    <header>
 
-        <!-- <a *ngIf="canStaffCreateProduct"
-            class="button primary-button-color"
-            routerLink="../add-product" mat-raised-button>
-            <mat-icon>add</mat-icon>
-            <span>Add Product</span>
-        </a> -->
-    </div>
+        <section class="p-4 flex items-center justify-between space-x-4">
+            <p class="text-3xl font-light">Products</p>
+    
+            <div class="space-x-4">
+                <button mat-raised-button (click)="refreshProducts()"
+                    [disabled]="isRefreshing">
+                    <mat-icon>refresh</mat-icon>&nbsp;
+                    <span>REFRESH</span>
+                </button>
+            </div>
+        </section>
+
+        <section>
+            <section class="flex items-center justify-between px-4">
+                <mat-form-field appearance="outline" style="font-size: .8rem;"
+                    class="">
+                    <mat-label>Search Products</mat-label>
+                    <input #searchBox matInput autocomplete="off" [value]="searchKey"
+                        (keyup)="searchProduct(searchBox.value)"/>
+                    <span matPrefix>
+                        <mat-icon>search</mat-icon>
+                    </span>
+                    <span matSuffix *ngIf="searchBox.value">
+                        <button mat-icon-button (click)="clearSearchField(searchBox)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </span>
+                </mat-form-field>
+                
+                <mat-slide-toggle color="warn" class="inline-block ml-4 mb-2"
+                    [checked]="isShowMultipleBranches"
+                    (change)="toggleShowMultipleBranches()">
+                    View From All Branches
+                </mat-slide-toggle>
+            </section>
+
+            <mat-progress-bar [class.invisible]="!isRefreshing" [class.visible]="isRefreshing"
+                mode="indeterminate" class="border border-transparent">
+            </mat-progress-bar>
+        </section>        
+    </header>
+    
     <table mat-table [dataSource]="dataSource" [fixedLayout]="false" matSort class="w-full">
         <ng-container matColumnDef="key">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Lookup Key</th>

@@ -60,8 +60,6 @@ export class SignInComponent implements OnInit {
 
     this.staffService.signIn(this.form.value)
     .subscribe(staff => {
-      console.log(staff);
-
       this.staffService.staff = staff;
       this.staffService.branchId = staff?.staffBranch?.branch?.id;
       // this.companyService.companyId = staff?.staffBranch?.branch?.company?.id;

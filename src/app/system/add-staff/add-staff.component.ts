@@ -45,8 +45,8 @@ export class AddStaffComponent implements OnInit {
   fetchBranches(): void {
     this.companyService.fetchBranches()
     .subscribe(branches => {
-      console.log(branches);
       this.branches = branches;
+      this.form.patchValue({branchId: branches[0].id});
     }, error => {
       console.log(error);
     });

@@ -30,6 +30,9 @@
                 {{staff?.firstName}} {{staff?.lastName}}
               </p>
               <p class="text-xs">@{{staff?.username}}</p>
+              <p *ngIf="staff?.staffBranch" class="text-xs">
+                <span>{{staff?.staffBranch?.branch?.name}}</span> Branch
+              </p>
             </span>
           </span>
           <button mat-icon-button [matMenuTriggerFor]="profileMenu">
@@ -50,15 +53,15 @@
       </div>
 
       <div class="p-2">
-          <ul class="left-nav">
-            <li *ngIf="isMakeOrder" class="mt-2 mb-4">
-              <a routerLink="new-order" mat-raised-button 
-                class="w-full text-lefts primary-button-color">
-                <mat-icon>add</mat-icon> &nbsp;
-                <span class="inline-block text-left">NEW ORDER</span>
-              </a>
-            </li>
-          </ul>
+        <ul class="left-nav">
+          <li *ngIf="isMakeOrder" class="mt-2 mb-4">
+            <a routerLink="new-order" mat-raised-button 
+              class="w-full text-lefts primary-button-color">
+              <mat-icon>add</mat-icon> &nbsp;
+              <span class="inline-block text-left">NEW ORDER</span>
+            </a>
+          </li>
+        </ul>
       </div>
 
       <mat-accordion *ngIf="true" multi="true" displayMode="flat">

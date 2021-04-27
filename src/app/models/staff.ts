@@ -9,6 +9,7 @@ export class Staff {
 
     constructor(
         public id: string,
+        public isAdmin: boolean,
         public companyId: string,
         public branchId: string,
         public username: string,

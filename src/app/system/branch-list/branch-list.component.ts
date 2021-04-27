@@ -12,6 +12,8 @@ export class BranchListComponent implements OnInit {
   @Input() branches: Branch[];
   @Input() fetchBranchesFromNetwork = true;
 
+  tableColumns: string[] = ['name', 'address'];
+
   constructor(private companyService: CompanyService) {
     this.branches = JSON.parse(sessionStorage.getItem('branches')) || []
   }

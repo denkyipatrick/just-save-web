@@ -84,4 +84,8 @@ export class StaffService {
   fetchOrderDetail(orderId: any) {
     return this.http.get<Order>(`${this.constantsService.ORDERS_URL}/${orderId}`)
   }
+
+  fetchBranchOrders(branchId: string) {
+    return this.http.get<Order[]>(`${this.constantsService.BRANCHES_URL}/${branchId}/orders`);
+  }
 }

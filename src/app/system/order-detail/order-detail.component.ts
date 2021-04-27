@@ -35,13 +35,13 @@ export class OrderDetailComponent implements OnInit {
     .subscribe(order => {
       this.order = order;
 
-      const orderDate = new Date(this.order.createdAt);
+      const orderDate = new Date(this.order?.createdAt);
       this.orderDateString = `${orderDate.toDateString()} ` + 
       `${orderDate.getHours().toString().padStart(2, '0')}:` + 
       `${orderDate.getMinutes().toString().padStart(2, '0')}:` + 
       `${orderDate.getSeconds().toString().padStart(2, '0')} (24HR Time)`;
 
-      this.order.items.forEach(item => {
+      this.order?.items.forEach(item => {
         this.orderAmount += item.salePrice > 0 ? 
           item.quantityOrdered * item.salePrice :
           item.quantityOrdered * item.orderItemSellingPrice

@@ -76,7 +76,7 @@
             </ng-container>
             <ng-container matColumnDef="view">
                 <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let stock" class="text-right font-medium uppercase">
+                <td mat-cell *matCellDef="let stock" class="text-right">
                     <button mat-icon-button>
                         <mat-icon>chevron_right</mat-icon>
                     </button>
@@ -86,7 +86,7 @@
             <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
             <a matRipple>
                 <tr mat-row *matRowDef="let stock; columns: tableColumns;" 
-                    class="body-row" style="cursor: pointer;"
+                    class="" style="cursor: pointer;"
                     (click)="viewStock(stock.id)"></tr>
             </a>
         </table>

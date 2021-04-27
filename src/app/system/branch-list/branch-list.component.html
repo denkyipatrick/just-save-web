@@ -10,3 +10,19 @@
         <p class="w-1/2">{{branch?.address}}</p>
     </li>
 </ul>
+
+        <table mat-table [dataSource]="branches" class="w-full">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Branch</th>
+                <td mat-cell *matCellDef="let branch">{{branch?.name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="address">
+                <th mat-header-cell *matHeaderCellDef>Address</th>
+                <td mat-cell *matCellDef="let branch">{{branch?.address}}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+            <a matRipple>
+                <tr mat-row *matRowDef="let branch; columns: tableColumns;" 
+                    class="" style="cursor: normal;"></tr>
+            </a>
+        </table>

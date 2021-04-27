@@ -29,7 +29,7 @@ export class StaffListComponent implements OnInit {
       this.viewerHasDeleteStaffRole = true;
     }
 
-    if (this.staffService.staff.username === 'root') {
+    if (this.staffService.staff.isAdmin) {
       this.isAdmin;
       this.viewerHasEditStaffRole = true;
       this.viewerHasDeleteStaffRole = true;
@@ -38,7 +38,7 @@ export class StaffListComponent implements OnInit {
 
   ngOnInit(): void {
     // if(!this.staffList?.length) {
-      if (this.staffService.staff.username === 'root') {
+      if (this.staffService.staff.isAdmin) {
         this.fetchCompanyStaffs()
       } else {
         this.fetchStaff();

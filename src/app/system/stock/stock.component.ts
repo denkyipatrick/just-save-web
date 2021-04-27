@@ -28,18 +28,21 @@ export class StockComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
     ) {
-    this.stocks = JSON.parse(sessionStorage.getItem('stock-list')) || [];    
-    this.isFetchingStocks = true;
+    this.stocks = JSON.parse(sessionStorage.getItem('stock-list')) || [];
+    
+    if (this.stocks.length) {
+      this.isRefreshing = true;
+    } else {
+      this.isFetchingStocks = true;
+    }
   }
 
   ngOnInit(): void {
-    // if (this.stocks?.length) {
-    //   this.isFetchingStocks = false;
-    //   return;
-    // }
+    if (this.stocks.length) {
+      return this.refreshStocks();
+    }
 
     this.fetchStocks();
-    
   }
 
   viewStock(stockId: string) {
@@ -47,7 +50,7 @@ export class StockComponent implements OnInit {
   }
 
   fetchStocks() {
-    if (this.staffService.staff.username === 'root') {
+    if (this.staffService.staff.isAdmin) {
       this.fetchCompanyStock();
     } else {
       this.fetchBranchStock();
