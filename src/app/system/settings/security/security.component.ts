@@ -43,7 +43,7 @@ export class SecurityComponent implements OnInit {
         disableClose: true
       });
 
-      this.staffService.changePassword(this.staffService.staff.username, this.form.value)
+      this.staffService.changePassword(this.staffService.staff.id, this.form.value)
       .subscribe(staff => {
         dialogRef.close();
 

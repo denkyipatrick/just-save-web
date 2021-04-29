@@ -2,6 +2,7 @@ import { StaffService } from './../../services/staff.service';
 import { Order } from './../../models/order';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-order-detail',
@@ -35,11 +36,7 @@ export class OrderDetailComponent implements OnInit {
     .subscribe(order => {
       this.order = order;
 
-      const orderDate = new Date(this.order?.createdAt);
-      this.orderDateString = `${orderDate.toDateString()} ` + 
-      `${orderDate.getHours().toString().padStart(2, '0')}:` + 
-      `${orderDate.getMinutes().toString().padStart(2, '0')}:` + 
-      `${orderDate.getSeconds().toString().padStart(2, '0')} (24HR Time)`;
+      this.orderDateString = moment(new Date(this.order?.createdAt)).format("DD MMM YYYY hh:mm:ss a");
 
       this.order?.items.forEach(item => {
         this.orderAmount += item.salePrice > 0 ? 

@@ -50,6 +50,7 @@ export class StockComponent implements OnInit {
   }
 
   fetchStocks() {
+    console.log('isAdmin', this.staffService.staff.isAdmin);
     if (this.staffService.staff.isAdmin) {
       this.fetchCompanyStock();
     } else {

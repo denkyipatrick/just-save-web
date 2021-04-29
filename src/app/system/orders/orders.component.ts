@@ -6,6 +6,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-orders',
@@ -59,6 +60,7 @@ export class OrdersComponent implements OnInit {
 
   refreshOrders() {
     this.isRefreshing = true;
+    this.setupPaginator();
     this.fetchOrders();
   }
 
@@ -83,8 +85,8 @@ export class OrdersComponent implements OnInit {
       this.isFetchingOrders = false;
 
       this.orders = orders.map(order => {
-        order.id = order.id.substr(-1, 5);
-        order.simpleDate = new Date(order.createdAt).toDateString();
+        order.maskedId = order.id.substring(order.id.lastIndexOf('-'), 5);
+        order.simpleDate = moment(new Date(order.createdAt)).format("DD MMM YYYY hh:mm:ss a");
 
         return order;
       });
@@ -113,7 +115,7 @@ export class OrdersComponent implements OnInit {
 
       this.orders = orders.map(order => {
         order.maskedId = order.id.substring(order.id.lastIndexOf('-'), 5);
-        order.simpleDate = new Date(order.createdAt).toDateString();
+        order.simpleDate = moment(new Date(order.createdAt)).format("DD MM YYYY hh:mm:ss a");
 
         return order;
       });

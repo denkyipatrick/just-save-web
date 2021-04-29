@@ -97,7 +97,7 @@ export class StockDetailComponent implements OnInit {
 
     this.dialogOpener.open(OkCancelDialogComponent, {
       data: {
-        title: 'Remove Stock Item',
+        title: `Remove ${item?.product?.name}?`,
         message: 'Do you want to remove this item? You cannot undo this operation.',
         okButtonText: 'REMOVE',
         cancelButtonText: 'CANCEL'
