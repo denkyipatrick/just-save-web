@@ -26,7 +26,7 @@ export class StockDetailComponent implements OnInit {
   stock: Stock;
   stockId: string = '';
   isFetchingStock: boolean = true;
-  tableColumns: string[] = ['key', 'name', 'quantity'];
+  tableColumns: string[] = ['key', 'name', 'quantity', 'quantityAvailable'];
   
   itemsDataSource: MatTableDataSource<StockItem>;
   @ViewChild(MatSort) sort: MatSort;
