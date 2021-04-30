@@ -1,3 +1,4 @@
+import { StaffService } from './../../services/staff.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { StockService } from './../../services/stock.service';
 import { StockItem } from './../../models/stockitem';
@@ -14,6 +15,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { TransferStockItemDialogComponent } from '../transfer-stock-item-dialog/transfer-stock-item-dialog.component';
 
 @Component({
   selector: 'app-stock-detail',
@@ -33,6 +35,7 @@ export class StockDetailComponent implements OnInit {
   constructor(
     private companyService: CompanyService,
     private branchService: BranchService,
+    private staffService: StaffService,
     private stockService: StockService,
     private dialogOpener: MatDialog,
     private snackBar: MatSnackBar,
@@ -48,6 +51,32 @@ export class StockDetailComponent implements OnInit {
     });
 
     this.fetchStock();
+  }
+
+  showRowMenu(e: Event) {
+    e.stopPropagation();
+  }
+
+  showTransferItemDialog(stockItem: StockItem) {
+    this.dialogOpener.open(TransferStockItemDialogComponent, {
+      disableClose: true,
+      data: {
+        item: stockItem,
+        stock: this.stock,
+        staffBranchId: this.staffService.staff?.staffBranch?.branch.id,
+      }
+    })
+    .componentInstance
+    .done
+    .subscribe(input => {
+      this.dialogOpener.open(OkDialogComponent, {
+        data: {
+          title: `Transfer Completed`,
+          message: `You have successfully transferred 5 of ${stockItem.product.name} ` + 
+          `to the ${input.branchName} branch.`
+        }
+      });
+    });
   }
 
   closeOrder() {

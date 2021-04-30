@@ -37,4 +37,8 @@ export class BranchService {
     });
   }
 
+  transferBranchItem(itemId: string, data: any) {
+    return this.http.post(`${this.constants.STOCK_ITEMS_URL}/${itemId}/transfer`, data);
+  }
+
 }
