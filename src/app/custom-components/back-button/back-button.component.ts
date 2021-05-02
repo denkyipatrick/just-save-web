@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-back-button',
@@ -6,14 +6,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./back-button.component.scss']
 })
 export class BackButtonComponent implements OnInit {
+  @Output() clicked: EventEmitter<null>;
+  @Input() cancelEvent: boolean = false;
 
-  constructor() { }
+  constructor() {
+    this.clicked = new EventEmitter();
+  }
 
   ngOnInit(): void {
   }
 
   goBack(): void {
-    history.back();
+    if (!this.cancelEvent) {
+      history.back();
+    }
+
+    this.clicked.emit();
   }
 
 }
