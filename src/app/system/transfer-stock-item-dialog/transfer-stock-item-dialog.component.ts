@@ -1,3 +1,4 @@
+import { OkDialogComponent } from './../../dialog/ok-dialog/ok-dialog.component';
 import { StaffService } from './../../services/staff.service';
 import { OkCancelDialogComponent } from './../../dialog/ok-cancel-dialog/ok-cancel-dialog.component';
 import { BranchService } from './../../services/branch.service';
@@ -22,6 +23,7 @@ export class TransferStockItemDialogComponent implements OnInit {
 
   transferForm: FormGroup;
   isTransferring: boolean = false;
+  transferErrorMessage: string = '';
 
   constructor(
     private dialogRef: MatDialogRef<TransferStockItemDialogComponent>,
@@ -72,6 +74,17 @@ export class TransferStockItemDialogComponent implements OnInit {
   transferItem() {
     if (this.transferForm.invalid) { return; }
 
+    if (this.transferForm.value['quantity'] > this.item.availableQuantity) {
+      this.dialogOpener.open(OkDialogComponent, {
+        data: {
+          title: 'Insufficient Quantity',
+          message: 'Quantity available is not enough for this transfer. ' +
+          'Please reduce the quantity you are sending.'
+        }
+      })
+      return;
+    }
+
     const selectedBranch = this.branches.find(branch => branch.id ===
       this.transferForm.value['receivingBranchId']);
 
@@ -86,11 +99,12 @@ export class TransferStockItemDialogComponent implements OnInit {
     .ok
     .subscribe(() => {
       this.isTransferring = true;
+      this.transferErrorMessage = '';
+
       this.branchService.transferBranchItem(this.item.id, this.transferForm.value)
-      .subscribe(item => {
+      .subscribe(stockItemTransfer => {
         this.isTransferring = false;
-        // alert('success');
-        this.done.emit({item: null, branchName: selectedBranch.name});
+        this.done.emit({transfer: stockItemTransfer, branchName: selectedBranch.name});
         this.dialogRef.close();
       }, error => {
         this.isTransferring = false;

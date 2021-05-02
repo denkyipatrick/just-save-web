@@ -1,3 +1,4 @@
+import { StockItemTransfer } from './../models/stockitemtransfer';
 import { StockItem } from './../models/stockitem';
 import { Stock } from './../models/stock';
 import { Observable } from 'rxjs';
@@ -38,7 +39,7 @@ export class BranchService {
   }
 
   transferBranchItem(itemId: string, data: any) {
-    return this.http.post(`${this.constants.STOCK_ITEMS_URL}/${itemId}/transfer`, data);
+    return this.http.post<StockItemTransfer>(`${this.constants.STOCK_ITEMS_URL}/${itemId}/transfer`, data);
   }
 
 }

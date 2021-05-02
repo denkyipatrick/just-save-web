@@ -13,16 +13,27 @@
         </span>
     </header>
     <section class="space-y-4">
-        <span>
-            <p class="text-xs text-gray-600">Item</p>
-            <p class="text-lg text-gray-900">{{item?.product?.name}}</p>
-        </span>
+        <div class="flex items-center justify-between space-x-4">
+            <span>
+                <p class="text-xs text-gray-600">Item</p>
+                <p class="text-lg text-gray-900">{{item?.product?.name}}</p>
+            </span>
+    
+            <span class="text-right text-sm">
+                <p class="text-xs text-gray-600">Available Quantity</p>
+                <p class="text-lg text-gray-900">{{item?.availableQuantity}}</p>
+            </span>
+        </div>
 
         <form [formGroup]="transferForm" autocomplete="off" (ngSubmit)="transferItem()">
             <section class="grid grid-cols-2 gap-4">
                 <mat-form-field appearance="outline">
                     <mat-label>Quantity</mat-label>
-                    <input matInput required type="number" formControlName="quantity" />
+                    <input #quantityBox matInput required
+                        type="number" formControlName="quantity" />
+                    <mat-error *ngIf="+quantityBox.value > item.availableQuantity">
+                        Quantity must be lesser than or equal to available quantity.
+                    </mat-error>
                 </mat-form-field>
                 
                 <mat-form-field appearance="outline">
@@ -40,16 +51,22 @@
             </section>
 
             <footer>
-                <span class="flex items-center space-x-2">
-                    <button mat-raised-button color="primary" [disabled]="transferForm.invalid"
-                        class="flex items-center">
-                        <span>TRANSFER ITEM</span>&nbsp;
-                        <mat-icon class="material-icons-round">send</mat-icon>
-                    </button>
-                    <mat-spinner *ngIf="isTransferring" [diameter]="20"
-                        class="inline">
-                    </mat-spinner>
-                </span>
+                <section class="flex items-start justify-between space-x-4">
+                    <p class="text-red-600 text-xs">
+                        {{transferErrorMessage}}
+                    </p>
+                    <span class="mr-auto"></span>
+                    <span class="justify-self-end flex items-center space-x-2">
+                        <button mat-raised-button color="primary" [disabled]="transferForm.invalid"
+                            class="flex items-center">
+                            <span>TRANSFER ITEM</span>&nbsp;
+                            <mat-icon class="material-icons-round">send</mat-icon>
+                        </button>
+                        <mat-spinner *ngIf="isTransferring" [diameter]="20"
+                            class="inline">
+                        </mat-spinner>
+                    </span>
+                </section>
             </footer>
         </form>
     </section>

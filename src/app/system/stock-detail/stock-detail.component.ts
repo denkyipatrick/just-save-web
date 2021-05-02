@@ -1,3 +1,4 @@
+import { StockItemTransfer } from './../../models/stockitemtransfer';
 import { StaffService } from './../../services/staff.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { StockService } from './../../services/stock.service';
@@ -26,7 +27,7 @@ export class StockDetailComponent implements OnInit {
   stock: Stock;
   stockId: string = '';
   isFetchingStock: boolean = true;
-  tableColumns: string[] = ['key', 'name', 'quantity', 'quantityAvailable'];
+  tableColumns: string[] = ['key', 'name', 'quantity'];
   
   itemsDataSource: MatTableDataSource<StockItem>;
   @ViewChild(MatSort) sort: MatSort;
@@ -69,6 +70,14 @@ export class StockDetailComponent implements OnInit {
     .componentInstance
     .done
     .subscribe(input => {
+      const transfer = input.transfer as StockItemTransfer;
+
+      this.stock.items.forEach(item => {
+        if (item.id === transfer.sendingStockItemId) {
+          item.availableQuantity -= transfer.quantity
+        }
+      });
+
       this.dialogOpener.open(OkDialogComponent, {
         data: {
           title: `Transfer Completed`,
