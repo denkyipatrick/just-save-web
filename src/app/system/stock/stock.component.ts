@@ -7,6 +7,7 @@ import { Stock } from './../../models/stock';
 import { BranchService } from './../../services/branch.service';
 import { StaffService } from './../../services/staff.service';
 import { Component, OnInit } from '@angular/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-stock',
@@ -73,7 +74,7 @@ export class StockComponent implements OnInit {
       this.isRefreshing = false;
       this.isFetchingStocks = false;
       this.stocks = stocks.map(stock => {
-        stock.dateString = new Date(stock.createdAt).toDateString()
+        stock.dateString = moment(new Date(stock.createdAt)).format("Do MMMM YYYY");
         return stock;
       });
 
@@ -96,7 +97,7 @@ export class StockComponent implements OnInit {
 
       this.isFetchingStocks = false;
       this.stocks = stocks.map(stock => {
-        stock.dateString = new Date(stock.createdAt).toDateString()
+        stock.dateString = moment(new Date(stock.createdAt)).format("Do MMMM YYYY");
         return stock;
       });
 

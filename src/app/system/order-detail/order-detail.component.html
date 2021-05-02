@@ -14,7 +14,7 @@
                 <p class="text-base font-medium">{{orderDateString}}</p>
             </div>
             <div>
-                <p class="text-xl font-light">Served By</p>
+                <p class="text-xl font-light">Staff Name</p>
                 <p class="text-base font-medium">{{order?.staff?.firstName}} {{order?.staff?.lastName}}</p>
             </div>
             <div>
@@ -26,7 +26,7 @@
     
     <section>
         <p class="text-3xl font-light">Items Ordered</p>
-        <blockquote class="bg-blue-800 p-4 text-white my-4 rounded-md bg-opacity-75">
+        <blockquote class="bg-blue-400 p-4 text-gray-900 my-4 rounded-md bg-opacity-75">
             <p class="text-lg font-medium">Note</p>
             <p>
                 The order prices of these items refer 
@@ -34,7 +34,6 @@
                 prices recently, it will not affect the old sale prices.
             </p>
         </blockquote>
-    
     
         <table mat-table [dataSource]="order?.items" [fixedLayout]="false" matSort 
             class="w-full text-gray-700 mat-elevation-z4">

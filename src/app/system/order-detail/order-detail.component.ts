@@ -36,7 +36,7 @@ export class OrderDetailComponent implements OnInit {
     .subscribe(order => {
       this.order = order;
 
-      this.orderDateString = moment(new Date(this.order?.createdAt)).format("DD MMM YYYY hh:mm:ss a");
+      this.orderDateString = moment(new Date(this.order?.createdAt)).format("Do MMMM YYYY hh:mm a");
 
       this.order?.items.forEach(item => {
         this.orderAmount += item.salePrice > 0 ? 

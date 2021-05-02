@@ -65,10 +65,10 @@ export class OrdersComponent implements OnInit {
   }
 
   fetchOrders() {
-    if (this.staffService.staff.staffBranch) {
-      this.fetchBranchOrders();
-    } else {
+    if (this.staffService.staff.isAdmin) {
       this.fetchCompanyOrders();
+    } else {
+      this.fetchBranchOrders();
     }
   }
 
@@ -86,7 +86,7 @@ export class OrdersComponent implements OnInit {
 
       this.orders = orders.map(order => {
         order.maskedId = order.id.substring(order.id.lastIndexOf('-'), 5);
-        order.simpleDate = moment(new Date(order.createdAt)).format("DD MMM YYYY hh:mm:ss a");
+        order.simpleDate = moment(new Date(order.createdAt)).format("Do MMMM YYYY hh:mm a");
 
         return order;
       });
@@ -115,7 +115,7 @@ export class OrdersComponent implements OnInit {
 
       this.orders = orders.map(order => {
         order.maskedId = order.id.substring(order.id.lastIndexOf('-'), 5);
-        order.simpleDate = moment(new Date(order.createdAt)).format("DD MM YYYY hh:mm:ss a");
+        order.simpleDate = moment(new Date(order.createdAt)).format("Do MMMM YYYY hh:mm a");
 
         return order;
       });
