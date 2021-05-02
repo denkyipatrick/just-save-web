@@ -1,6 +1,6 @@
 
 <section class="flex items-start space-x-4">
-    <app-back-button></app-back-button>
+    <app-back-button [cancelEvent]="true" (clicked)="goBack()"></app-back-button>
     <section class="w-full space-y-12">
         <header>
             <section class="flex items-center justify-between space-x-4">

@@ -26,7 +26,7 @@ const SEARCH_KEY: string = 'simple-stock-items-search-key';
   templateUrl: './stock-detail.component.html',
   styleUrls: ['./stock-detail.component.scss']
 })
-export class StockDetailComponent implements OnInit, OnDestroy {
+export class StockDetailComponent implements OnInit {
   stock: Stock;
   stockId: string = '';
   isFetchingStock: boolean = true;
@@ -61,9 +61,10 @@ export class StockDetailComponent implements OnInit, OnDestroy {
     this.fetchStock();
   }
 
-  ngOnDestroy(): void {
+  goBack() {
     this.searchQuery = '';
-    sessionStorage.removeItem(SEARCH_KEY);    
+    sessionStorage.removeItem(SEARCH_KEY);
+    window.history.back();
   }
 
   showRowMenu(e: Event) {
