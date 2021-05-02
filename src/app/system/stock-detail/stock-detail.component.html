@@ -110,15 +110,20 @@
                     <div>
                         <p class="text-lg">Stocked Products</p>
 
-                        <!-- <mat-form-field appearance="outline"
+                        <mat-form-field appearance="outline"
                             style="font-size: .8rem;">
                             <mat-label>Search Products</mat-label>
-                            <input #searchBox matInput autocomplete="off" 
+                            <input #searchBox matInput autocomplete="off" [value]="searchQuery" 
                                 (keyup)="searchProduct(searchBox.value)"/>
                             <span matPrefix>
                                 <mat-icon>search</mat-icon>
                             </span>
-                        </mat-form-field> -->
+                            <span *ngIf="searchBox.value" matSuffix>
+                                <button mat-icon-button (click)="clearSearchBox(searchBox)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </span>
+                        </mat-form-field>
                     </div>
 
                     <div class="text-right">
@@ -136,15 +141,15 @@
                 <table mat-table [dataSource]="itemsDataSource" [fixedLayout]="false" 
                     matSort class="w-full">
                     <ng-container matColumnDef="key">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Lookup Key</th>
-                        <td mat-cell *matCellDef="let item" class="uppercase">{{item?.product.lookupKey}}</td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Product Lookup Key</th>
+                        <td mat-cell *matCellDef="let item" class="uppercase">{{item?.productLookupKey}}</td>
                     </ng-container>
                     <ng-container matColumnDef="name">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
                         <td mat-cell *matCellDef="let item">
                             <p style="margin: 0; font-size: .8rem; margin-right: 1rem;" 
                                 class="font-medium text-gray-800">
-                                {{item?.product.name}}
+                                {{item?.productName}}
                             </p>
                         </td>
                     </ng-container>
@@ -152,7 +157,7 @@
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity Stocked</th>
                         <td mat-cell *matCellDef="let item" style="min-width: 120px;">
                             <span class="font-medium">
-                                {{item?.quantity || 0}}
+                                {{item?.quantityStocked || 0}}
                             </span>
                         </td>
                     </ng-container>
@@ -194,10 +199,10 @@
                     <tr mat-row *matRowDef="let item; columns: tableColumns;" 
                         class="body-row" style="cursor: pointer;"
                         [class.opacity-50]="item.isDeleting"
-                        (click)="viewProduct(item.product)"></tr>
+                        (click)="viewItem(item)"></tr>
                 </table>
                 <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 1000]"
-                    showFirstLastButtons>                    
+                    showFirstLastButtons>
                 </mat-paginator>
             </section>
         </section>

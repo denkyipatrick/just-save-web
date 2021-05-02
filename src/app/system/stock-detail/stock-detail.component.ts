@@ -1,3 +1,4 @@
+import { SimpleStockItem } from './../../models/simplestockitem';
 import { StockItemTransfer } from './../../models/stockitemtransfer';
 import { StaffService } from './../../services/staff.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,24 +13,30 @@ import { BranchService } from './../../services/branch.service';
 import { CompanyService } from './../../services/company.service';
 import { Stock } from './../../models/stock';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { TransferStockItemDialogComponent } from '../transfer-stock-item-dialog/transfer-stock-item-dialog.component';
+
+const SEARCH_KEY: string = 'simple-stock-items-search-key';
 
 @Component({
   selector: 'app-stock-detail',
   templateUrl: './stock-detail.component.html',
   styleUrls: ['./stock-detail.component.scss']
 })
-export class StockDetailComponent implements OnInit {
+export class StockDetailComponent implements OnInit, OnDestroy {
   stock: Stock;
   stockId: string = '';
   isFetchingStock: boolean = true;
+
+  simpleStockItems: SimpleStockItem[] = [];
+  searchQuery: string = sessionStorage.getItem(SEARCH_KEY);
+
   tableColumns: string[] = ['key', 'name', 'quantity'];
   
-  itemsDataSource: MatTableDataSource<StockItem>;
+  itemsDataSource: MatTableDataSource<SimpleStockItem>;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -52,6 +59,11 @@ export class StockDetailComponent implements OnInit {
     });
 
     this.fetchStock();
+  }
+
+  ngOnDestroy(): void {
+    this.searchQuery = '';
+    sessionStorage.removeItem(SEARCH_KEY);    
   }
 
   showRowMenu(e: Event) {
@@ -122,12 +134,20 @@ export class StockDetailComponent implements OnInit {
     });
   }
   
-  viewProduct(row: Product): void {
-    this.router.navigate(['/system/products/', row.id], { relativeTo: this.route });
+  viewItem(item: SimpleStockItem): void {
+    const stockItem = this.stock.items.find(ssItem => ssItem.id === item.id);
+    this.router.navigate(['/system/products/', stockItem.product.id], { relativeTo: this.route });
   }
 
   searchProduct(query: string): void {
     this.itemsDataSource.filter = query;
+    sessionStorage.setItem(SEARCH_KEY, query);
+  }
+
+  clearSearchBox(inputElement: HTMLInputElement) {
+    inputElement.value = '';
+    this.itemsDataSource.filter = "";
+    sessionStorage.removeItem(SEARCH_KEY);
   }
 
   deleteItem(item: StockItem, e: Event) {
@@ -147,16 +167,21 @@ export class StockDetailComponent implements OnInit {
       item.isDeleting = true;
 
       this.stockService.removeStockItem(item.id)
-      .subscribe(stockItem => {
+      .subscribe(removedStockItem => {
         item.isDeleting = false;
+
         this.stock.items = this.stock.items
           .filter(stockItem => stockItem.id !== item.id);
+
+        this.simpleStockItems = this.simpleStockItems.filter(simpleStockItem => 
+          simpleStockItem.id !== item.id
+        );
 
         this.snackBar.open("Item Removed", "CLOSE", {
           duration: 7000
         });
 
-        this.itemsDataSource = new MatTableDataSource(this.stock.items);
+        this.itemsDataSource = new MatTableDataSource(this.simpleStockItems);
         this.itemsDataSource.sort = this.sort;
         this.itemsDataSource.paginator = this.paginator;
       }, error => {
@@ -223,9 +248,17 @@ export class StockDetailComponent implements OnInit {
       stock.dateString = new Date(stock?.createdAt).toDateString();
 
       this.stock = stock;
-      this.itemsDataSource = new MatTableDataSource(this.stock.items);
+      this.stock.items.forEach(item => {
+        this.simpleStockItems.push(new SimpleStockItem(
+          item.id, item?.product?.name, item?.product?.lookupKey, item.quantity
+          ));
+      });
+
+      this.itemsDataSource = new MatTableDataSource(this.simpleStockItems);
       this.itemsDataSource.sort = this.sort;
       this.itemsDataSource.paginator = this.paginator;
+
+      this.itemsDataSource.filter = this.searchQuery;
     }, error => {
       this.isFetchingStock = false;
 
