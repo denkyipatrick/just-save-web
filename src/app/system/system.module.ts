@@ -54,6 +54,8 @@ import { CreateStockDialogComponent } from './create-stock-dialog/create-stock-d
 import { StockDetailComponent } from './stock-detail/stock-detail.component';
 import { LoadingComponent } from './loading/loading.component';
 import { TransferStockItemDialogComponent } from './transfer-stock-item-dialog/transfer-stock-item-dialog.component';
+import { AddStockItemDialogComponent } from './add-stock-item-dialog/add-stock-item-dialog.component';
+import { AddStockItemQuantityDialogComponent } from './add-stock-item-quantity-dialog/add-stock-item-quantity-dialog.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +84,9 @@ import { TransferStockItemDialogComponent } from './transfer-stock-item-dialog/t
     CreateStockDialogComponent,
     StockDetailComponent,
     LoadingComponent,
-    TransferStockItemDialogComponent
+    TransferStockItemDialogComponent,
+    AddStockItemDialogComponent,
+    AddStockItemQuantityDialogComponent
   ],
   imports: [
     CommonModule,

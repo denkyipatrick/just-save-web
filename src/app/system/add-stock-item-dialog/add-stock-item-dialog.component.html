@@ -1,0 +1,71 @@
+
+<section style="width: 800px; max-width: 100%;">
+    <header class="space-y-4">
+        <span class="flex items-center justify-between space-x-4">
+            <span class="flex items-center space-x-2 font-medium text-blue-600">
+                <mat-icon class="material-icons-outlined">inventory</mat-icon>
+                <p>Inventory</p>
+            </span>
+            <button tabindex="-1" mat-icon-button class="text-red-600 bg-red-100" (click)="closeDialog()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </span>
+
+        <span class="flex items-center justify-between space-x-4">
+            <p class="text-lg">Select Product</p>
+            <a tabindex="-1" mat-raised-button
+                color="primary" (click)="addProduct()">
+                <mat-icon>add</mat-icon>&nbsp;
+                <span>ADD NEW PRODUCT</span>
+            </a>
+        </span>
+
+        <span>
+            <mat-form-field appearance="outline" style="font-size: .8rem;">
+                <mat-label>Search Product</mat-label>
+                <input #searchBox matInput
+                    (keyup)="searchProduct(searchBox.value)" />
+                <span matPrefix>
+                    <mat-icon>search</mat-icon>
+                </span>
+                <span *ngIf="searchBox.value" matSuffix>
+                    <button mat-icon-button (click)="clearSearchBox(searchBox)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </span>
+            </mat-form-field>
+        </span>
+    </header>
+
+    <section style="height: 60vh; overflow-y: auto;">        
+        <table tabindex="-1" mat-table [dataSource]="dataSource" [fixedLayout]="false" 
+            matSort class="w-full">
+            <ng-container matColumnDef="key">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Product Lookup Key</th>
+                <td mat-cell *matCellDef="let product" class="uppercase">{{product?.lookupKey}}</td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                <td mat-cell *matCellDef="let product">
+                    <p style="margin: 0; font-size: .8rem; margin-right: 1rem;" 
+                        class="font-medium text-gray-800">
+                        {{product?.name}}
+                    </p>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="unitPrice">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit Price</th>
+                <td mat-cell *matCellDef="let product" style="min-width: 120px;">
+                    <span class="font-medium">
+                        GHC {{product?.unitPrice?.toFixed(2)}}
+                    </span>
+                </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+            <tr mat-row *matRowDef="let product; columns: tableColumns;" 
+                class="body-row" style="cursor: pointer;"
+                (click)="selectProduct(product)"></tr>
+        </table>
+    </section>
+</section>

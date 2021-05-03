@@ -128,12 +128,12 @@
 
                     <div class="text-right">
                         <div>
-                            <a *ngIf="stock?.isOpened" routerLink="add-product" 
+                            <button *ngIf="stock?.isOpened" (click)="showAddItemDialog()"
                                 mat-raised-button color="primary" 
                                 class="uppercase">
                                 <mat-icon>add</mat-icon>&nbsp;
-                                Add Item / Product
-                            </a>
+                                Add Item
+                            </button>
                         </div>
                     </div>
                 </header>

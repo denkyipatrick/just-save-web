@@ -1,0 +1,63 @@
+<section style="width: 500px; max-width: 100%;">
+    <header class="space-y-4">
+        <span class="flex items-center justify-between space-x-4">
+            <span class="flex items-center space-x-2 font-medium text-blue-600">
+                <mat-icon class="material-icons-outlined">inventory</mat-icon>
+                <p>Inventory</p>
+            </span>
+            <button tabindex="-1" mat-icon-button class="text-red-600 bg-red-100"
+                (click)="closeDialog()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </span>
+    </header>
+
+    <section class="space-y-4">
+        <span>
+            <p class="text-lg">Enter Quantity</p>
+        </span>
+        <section class="flex items-center justify-between space-x-4">
+            <span>
+                <p class="text-gray-600 text-xs">Item</p>
+                <p class="text-lg">{{product?.name}}</p>
+            </span>
+            <span class="text-right">
+                <p class="text-gray-600 text-xs">Lookup Key</p>
+                <p class="text-lg">{{product?.lookupKey}}</p>
+            </span>
+        </section>
+        <form [formGroup]="form" (ngSubmit)="createStockItem()">
+            <span class="flex items-start justify-between space-x-4">
+                <mat-form-field appearance="outline"
+                    class="w-9/12" style="font-size: .8rem;">
+                    <mat-label>Type Quantity</mat-label>
+                    <input #quantityBox matInput required type="number"
+                        formControlName="quantity" />
+                    <mat-error *ngIf="!quantityBox.value">
+                        Enter the quantity for this item.
+                    </mat-error>
+                </mat-form-field>
+
+                <span class="flex items-center space-x-2">
+                    <button mat-raised-button style="margin-top: .5rem;
+                        padding-top: 3px; padding-bottom: 3px;"
+                        color="primary" class="mt-2 py-1"
+                        [disabled]="isCreatingStockItem">
+                        <span>CONTINUE</span>&nbsp;
+                        <mat-icon>chevron_right</mat-icon>
+                    </button>
+                    <mat-spinner *ngIf="isCreatingStockItem"
+                        [diameter]="25">
+                    </mat-spinner>
+                </span>                
+            </span>
+        </form>
+    </section>
+
+    <footer>
+        <span class="flex items-start justify-between space-x-4">
+            <p class="text-red-600 text-xs">
+            </p>
+        </span>
+    </footer>
+</section>

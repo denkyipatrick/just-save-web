@@ -18,6 +18,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { TransferStockItemDialogComponent } from '../transfer-stock-item-dialog/transfer-stock-item-dialog.component';
+import { AddStockItemDialogComponent } from '../add-stock-item-dialog/add-stock-item-dialog.component';
 
 const SEARCH_KEY: string = 'simple-stock-items-search-key';
 
@@ -59,6 +60,21 @@ export class StockDetailComponent implements OnInit {
     });
 
     this.fetchStock();
+  }
+
+  showAddItemDialog() {
+    const dialogRef = this.dialogOpener.open(AddStockItemDialogComponent, {
+      disableClose: false,
+      data: {
+        stockId: this.stock.id
+      }
+    });
+
+    dialogRef.componentInstance
+    .addNewProduct
+    .subscribe(() => {
+      this.router.navigate(['add-product'], { relativeTo: this.route });
+    });
   }
 
   goBack() {
