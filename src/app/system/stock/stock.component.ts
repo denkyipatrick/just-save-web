@@ -46,12 +46,12 @@ export class StockComponent implements OnInit {
     this.fetchStocks();
   }
 
-  viewStock(stockId: string) {
-    this.router.navigate(['./', stockId], { relativeTo: this.route });
+  viewStock(stock: Stock) {
+    sessionStorage.setItem('target-stock', JSON.stringify(stock));
+    this.router.navigate(['./', stock.id], { relativeTo: this.route });
   }
 
   fetchStocks() {
-    console.log('isAdmin', this.staffService.staff.isAdmin);
     if (this.staffService.staff.isAdmin) {
       this.fetchCompanyStock();
     } else {
@@ -129,6 +129,7 @@ export class StockComponent implements OnInit {
       .componentInstance
       .ok
       .subscribe(() => {
+        sessionStorage.setItem('target-stock', JSON.stringify(stock));
         this.router.navigate(['./', stock.id], { relativeTo: this.route });
       })
     });

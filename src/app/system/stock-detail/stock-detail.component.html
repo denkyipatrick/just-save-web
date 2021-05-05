@@ -20,7 +20,7 @@
                     </p>
                     <button *ngIf="stock?.isOpened" mat-raised-button
                         color="warn"
-                        (click)="closeOrder()">
+                        (click)="closeStock()">
                         CLOSE STOCK
                     </button>
                 </section>
@@ -117,7 +117,7 @@
                     <div>
                         <p class="text-lg">Stocked Products</p>
 
-                        <mat-form-field appearance="outline"
+                        <mat-form-field *ngIf="stock?.items?.length > 8" appearance="outline"
                             style="font-size: .8rem;">
                             <mat-label>Search Products</mat-label>
                             <input #searchBox matInput autocomplete="off" [value]="searchQuery" 

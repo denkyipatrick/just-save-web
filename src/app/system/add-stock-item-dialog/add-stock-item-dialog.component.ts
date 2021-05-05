@@ -3,7 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Product } from './../../models/product';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { StockItem } from 'src/app/models/stockitem';
+import { StockItem } from '../../models/stockitem';
 
 @Component({
   selector: 'app-add-stock-item-dialog',

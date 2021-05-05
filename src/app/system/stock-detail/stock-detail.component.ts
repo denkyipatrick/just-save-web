@@ -13,7 +13,7 @@ import { BranchService } from './../../services/branch.service';
 import { CompanyService } from './../../services/company.service';
 import { Stock } from './../../models/stock';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -30,7 +30,7 @@ const SEARCH_KEY: string = 'simple-stock-items-search-key';
 export class StockDetailComponent implements OnInit {
   stock: Stock;
   stockId: string = '';
-  isFetchingStock: boolean = true;
+  isFetchingStock: boolean = false;
 
   simpleStockItems: SimpleStockItem[] = [];
   searchQuery: string = sessionStorage.getItem(SEARCH_KEY);
@@ -50,16 +50,38 @@ export class StockDetailComponent implements OnInit {
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private router: Router,
-  ) {    
-    // this.itemsDataSource = new MatTableDataSource(this.products);
+  ) {
+    this.stock = JSON.parse(sessionStorage.getItem('target-stock'));
   }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.stockId = params['id'];
+
+      if (this.stock) {
+        this.setupStockItemsTable();
+        return this.isFetchingStock = false;
+      }
+      
+      this.fetchStock();
+    });
+  }
+
+  setupStockItemsTable() {
+    if (this.stock?.isOpened) {
+      this.tableColumns.push('actions');
+    }
+
+    this.stock.items.forEach(item => {
+      this.simpleStockItems.push(new SimpleStockItem(
+        item.id, item?.product?.name, item?.product?.lookupKey, item.quantity
+      ));
     });
 
-    this.fetchStock();
+    this.itemsDataSource = new MatTableDataSource(this.simpleStockItems);
+    this.itemsDataSource.sort = this.sort;
+    this.itemsDataSource.paginator = this.paginator;
+    this.itemsDataSource.filter = this.searchQuery;
   }
 
   showAddItemDialog() {
@@ -87,6 +109,7 @@ export class StockDetailComponent implements OnInit {
         ));
         
         this.itemsDataSource = new MatTableDataSource(this.simpleStockItems);
+        sessionStorage.setItem('target-stock', JSON.stringify(this.stock));
         return;
       }
       
@@ -112,6 +135,8 @@ export class StockDetailComponent implements OnInit {
 
       this.searchQuery = '';
       this.itemsDataSource.filter = '';
+
+      sessionStorage.setItem('target-stock', JSON.stringify(this.stock));
     });
   }
 
@@ -155,7 +180,7 @@ export class StockDetailComponent implements OnInit {
     });
   }
 
-  closeOrder() {
+  closeStock() {
     this.dialogOpener.open(OkCancelDialogComponent, {
       data: {
         title: 'Close Stock',
@@ -174,7 +199,11 @@ export class StockDetailComponent implements OnInit {
       this.branchService.closeBranchStock(this.stock.id)
       .subscribe(stock => {
         dialogRef.close();
+        
+        this. tableColumns = this.tableColumns.filter(item => item !== 'actions');
+
         this.stock.isOpened = false;
+        sessionStorage.setItem('target-stock', JSON.stringify(this.stock));
 
         this.dialogOpener.open(OkDialogComponent, {
           data: {
@@ -295,24 +324,10 @@ export class StockDetailComponent implements OnInit {
     this.companyService.fetchStock(this.stockId)
     .subscribe(stock => {
       this.isFetchingStock = false;
-
-      if (stock?.isOpened) {
-        this.tableColumns.push('actions');
-      }
-
       stock.dateString = new Date(stock?.createdAt).toDateString();
 
       this.stock = stock;
-      this.stock.items.forEach(item => {
-        this.simpleStockItems.push(new SimpleStockItem(
-          item.id, item?.product?.name, item?.product?.lookupKey, item.quantity
-        ));
-      });
-
-      this.itemsDataSource = new MatTableDataSource(this.simpleStockItems);
-      this.itemsDataSource.sort = this.sort;
-      this.itemsDataSource.paginator = this.paginator;
-      this.itemsDataSource.filter = this.searchQuery;
+      this.setupStockItemsTable();
     }, error => {
       this.isFetchingStock = false;
 
