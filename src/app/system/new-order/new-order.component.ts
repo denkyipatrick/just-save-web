@@ -167,6 +167,7 @@ export class NewOrderComponent implements OnInit {
         .componentInstance
         .ok
         .subscribe(() => {
+          sessionStorage.setItem('target-order', JSON.stringify(order));
           this.router.navigate(['../orders', order.id], { relativeTo: this.route });
         });
       }, error => {

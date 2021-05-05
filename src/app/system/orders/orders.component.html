@@ -57,7 +57,7 @@
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
             <tr mat-row *matRowDef="let order; columns: tableColumns;" 
-                class="" style="cursor: pointer;" (click)="viewOrder(order.id)"></tr>
+                class="" style="cursor: pointer;" (click)="viewOrder(order)"></tr>
         </table>
         <mat-paginator [pageSizeOptions]="[5, 25, 50, 100, 1000]" showFirstLastButtons></mat-paginator>
     

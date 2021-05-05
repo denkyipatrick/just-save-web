@@ -54,8 +54,9 @@ export class OrdersComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  viewOrder(orderId: string) {
-    this.router.navigate(['./', orderId], { relativeTo: this.route })
+  viewOrder(order: Order) {
+    sessionStorage.setItem('target-order', JSON.stringify(order));
+    this.router.navigate(['./', order.id], { relativeTo: this.route })
   }
 
   refreshOrders() {

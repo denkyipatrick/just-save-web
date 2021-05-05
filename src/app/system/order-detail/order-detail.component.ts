@@ -20,6 +20,7 @@ export class OrderDetailComponent implements OnInit {
     private staffService: StaffService, 
     private route: ActivatedRoute) {
       this.orderAmount = 0;
+      this.order = JSON.parse(sessionStorage.getItem('target-order'));
       this.tableColumns = ['name', 'itemPrice', 'quantity', 'totalItemAmount'];
     }
 
@@ -27,7 +28,21 @@ export class OrderDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.orderId = params['orderId'];
 
+      if (this.order) {
+        return this.setupOrderDetails();
+      }
+
       this.fetchOrder();
+    });
+  }
+
+  setupOrderDetails() {
+    this.orderDateString = moment(new Date(this.order?.createdAt)).format("Do MMMM YYYY hh:mm a");
+
+    this.order?.items.forEach(item => {
+      this.orderAmount += item.salePrice > 0 ?
+        item.quantityOrdered * item.salePrice :
+        item.quantityOrdered * item.orderItemSellingPrice
     });
   }
 
@@ -35,14 +50,7 @@ export class OrderDetailComponent implements OnInit {
     this.staffService.fetchOrderDetail(this.orderId)
     .subscribe(order => {
       this.order = order;
-
-      this.orderDateString = moment(new Date(this.order?.createdAt)).format("Do MMMM YYYY hh:mm a");
-
-      this.order?.items.forEach(item => {
-        this.orderAmount += item.salePrice > 0 ? 
-          item.quantityOrdered * item.salePrice :
-          item.quantityOrdered * item.orderItemSellingPrice
-      });
+      this.setupOrderDetails();
     }, error => {
       console.log(error);
     });
