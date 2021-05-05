@@ -27,18 +27,15 @@ export class AddProductComponent implements OnInit {
   showLookedUpProductsWindow = true;
 
   constructor(
-    private utilityService: UtilityService,
     private companyService: CompanyService,
     private staffService: StaffService,
     private dialogOpener: MatDialog,
     private matSnackBar: MatSnackBar,
-    private route: ActivatedRoute,
-    private branchService: BranchService
+    private route: ActivatedRoute
     ) {
     this.form = new FormGroup({
       name: new FormControl(),
-      stockId: new FormControl(),
-      quantity: new FormControl(),
+      companyId: new FormControl(this.companyService.company.id),
       lookupKey: new FormControl(),
       unitPrice: new FormControl(),
       costPrice: new FormControl(),
@@ -48,8 +45,7 @@ export class AddProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.stockId = params['id']
-      this.form.patchValue({stockId: params['id']});
+      this.stockId = params['id'];
     });
   }
 
@@ -97,10 +93,12 @@ export class AddProductComponent implements OnInit {
         disableClose: true
       });
 
-      this.branchService.createBranchStockItem(this.form.value)
+      this.companyService.createProduct(this.form.value)
       .subscribe(product => {
         dialogRef.close();
-        // this.form.reset();
+        this.form.reset();
+        this.form.markAsUntouched()
+
         // localStorage.setItem('products', JSON.stringify(products));
         this.matSnackBar.open('Product Added Successfully', 'CLOSE', {
           duration: 5000

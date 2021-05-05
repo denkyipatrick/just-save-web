@@ -24,6 +24,10 @@ export class CompanyService {
   createStaff(data: any): Observable<Staff> {
     return this.http.post<Staff>(`${this.constants.STAFF_URL}`, data);
   }
+  
+  createProduct(data: any): Observable<Product> {
+    return this.http.post<Product>(`${this.constants.PRODUCTS_URL}`, data);
+  }
 
   fetchStaffs() {
     return this.http.get<Staff[]>(`${this.constants.COMPANIES_URL}/${this.companyId}/staffs`);
