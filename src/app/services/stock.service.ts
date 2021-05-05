@@ -12,7 +12,11 @@ export class StockService {
   constructor(
     private constants: ConstantsService,
     private http: HttpClient
-    ) { }
+  ) { }
+
+  createStockItem(data: any) {
+    return this.http.post<StockItem>(`${this.constants.STOCK_ITEMS_URL}`, data);
+  }
 
   deleteStock(stockId: string) {
     return this.http.delete<Stock>(`${this.constants.STOCKS_URL}/${stockId}`);

@@ -38,14 +38,13 @@
     </header>
 
     <section style="height: 60vh; overflow-y: auto;">        
-        <table tabindex="-1" mat-table [dataSource]="dataSource" [fixedLayout]="false" 
-            matSort class="w-full">
+        <table tabindex="-1" mat-table [dataSource]="dataSource" class="w-full">
             <ng-container matColumnDef="key">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Product Lookup Key</th>
+                <th mat-header-cell *matHeaderCellDef>Product Lookup Key</th>
                 <td mat-cell *matCellDef="let product" class="uppercase">{{product?.lookupKey}}</td>
             </ng-container>
             <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                <th mat-header-cell *matHeaderCellDef>Name</th>
                 <td mat-cell *matCellDef="let product">
                     <p style="margin: 0; font-size: .8rem; margin-right: 1rem;" 
                         class="font-medium text-gray-800">
@@ -54,7 +53,7 @@
                 </td>
             </ng-container>
             <ng-container matColumnDef="unitPrice">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit Price</th>
+                <th mat-header-cell *matHeaderCellDef>Unit Price</th>
                 <td mat-cell *matCellDef="let product" style="min-width: 120px;">
                     <span class="font-medium">
                         GHC {{product?.unitPrice?.toFixed(2)}}

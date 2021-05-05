@@ -1,8 +1,11 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { StockService } from './../../services/stock.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { OkCancelDialogComponent } from './../../dialog/ok-cancel-dialog/ok-cancel-dialog.component';
 import { Product } from './../../models/product';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { StockItem } from 'src/app/models/stockitem';
 
 @Component({
   selector: 'app-add-stock-item-quantity-dialog',
@@ -13,11 +16,13 @@ export class AddStockItemQuantityDialogComponent implements OnInit {
   form: FormGroup;
   stockId: string;
   product: Product;
-
   isCreatingStockItem: boolean = false;
+  @Output() itemCreated: EventEmitter<StockItem>;
 
   constructor(
     private dialogRef: MatDialogRef<AddStockItemQuantityDialogComponent>,
+    private stockService: StockService,
+    private snackBar: MatSnackBar,
     private dialogOpener: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any 
   ) {
@@ -26,11 +31,18 @@ export class AddStockItemQuantityDialogComponent implements OnInit {
       quantity: new FormControl(),
       productId: new FormControl()
     });
+
+    this.itemCreated = new EventEmitter();
   }
 
   ngOnInit(): void {
     this.stockId = this.data.stockId;
     this.product = this.data.product;
+
+    this.form.patchValue({
+      stockId: this.data.stockId,
+      productId: this.product.id
+    });
   }
 
   closeDialog() {
@@ -54,6 +66,18 @@ export class AddStockItemQuantityDialogComponent implements OnInit {
     .subscribe(() => {
 
       this.isCreatingStockItem = true;
+      this.stockService.createStockItem(this.form.value)
+      .subscribe(stockItem => {
+        this.isCreatingStockItem = false;
+        this.itemCreated.emit(stockItem);
+
+        this.snackBar.open(`${stockItem.quantity} ${this.product.name} added.`, 'CLOSE', {
+          duration: 5000
+        });
+        this.dialogRef.close();
+      }, error => {
+        this.isCreatingStockItem = false;
+      });
     });
   }
 

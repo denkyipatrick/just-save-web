@@ -75,6 +75,44 @@ export class StockDetailComponent implements OnInit {
     .subscribe(() => {
       this.router.navigate(['add-product'], { relativeTo: this.route });
     });
+
+    dialogRef.componentInstance
+    .itemAdded
+    .subscribe(item => {
+      if (!this.stock.items.find(sItem => sItem.id === item.id)) {
+        this.stock.items.push(item);
+  
+        this.simpleStockItems.push(new SimpleStockItem(
+          item.id, item?.product?.name, item?.product?.lookupKey, item.quantity
+        ));
+        
+        this.itemsDataSource = new MatTableDataSource(this.simpleStockItems);
+        return;
+      }
+      
+      this.stock.items = this.stock.items.map(sItem => {
+        if (sItem.id === item.id) {
+          sItem.quantity = item.quantity;
+        }
+
+        return sItem;
+      });
+
+      this.simpleStockItems = [];
+
+      this.stock.items.forEach(item => {
+        this.simpleStockItems.push(new SimpleStockItem(
+          item.id, item?.product?.name, item?.product?.lookupKey, item.quantity
+        ));
+      });
+
+      this.itemsDataSource = new MatTableDataSource(this.simpleStockItems);
+      this.itemsDataSource.sort = this.sort;
+      this.itemsDataSource.paginator = this.paginator;
+
+      this.searchQuery = '';
+      this.itemsDataSource.filter = '';
+    });
   }
 
   goBack() {
@@ -268,13 +306,12 @@ export class StockDetailComponent implements OnInit {
       this.stock.items.forEach(item => {
         this.simpleStockItems.push(new SimpleStockItem(
           item.id, item?.product?.name, item?.product?.lookupKey, item.quantity
-          ));
+        ));
       });
 
       this.itemsDataSource = new MatTableDataSource(this.simpleStockItems);
       this.itemsDataSource.sort = this.sort;
       this.itemsDataSource.paginator = this.paginator;
-
       this.itemsDataSource.filter = this.searchQuery;
     }, error => {
       this.isFetchingStock = false;
