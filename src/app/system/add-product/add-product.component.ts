@@ -22,8 +22,7 @@ import { ThreeButtonDialogComponent } from '../three-button-dialog/three-button-
 export class AddProductComponent implements OnInit {
   form: FormGroup;
 
-  stock: Stock;
-  stockId: string = '';
+  existingProducts: Product[];
   lookedUpProducts: Product[];
   showLookedUpProductsWindow = true;
 
@@ -43,12 +42,11 @@ export class AddProductComponent implements OnInit {
       costPrice: new FormControl(),
       sellingPrice: new FormControl()
     });
+
+    this.existingProducts = JSON.parse(sessionStorage.getItem('products')) || [];
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.stockId = params['id'];
-    });
   }
 
   goBack(): void {
@@ -58,12 +56,9 @@ export class AddProductComponent implements OnInit {
   lookupProduct(lookupKey: string): void {
     this.showLookedUpProductsWindow = true;
 
-    this.companyService.lookupProduct(lookupKey)
-    .subscribe(products => {
-      this.lookedUpProducts = products;
-    }, error => {
-      console.log(error);
-    });
+    this.lookedUpProducts = this.existingProducts
+      .filter(product => product.lookupKey.toLowerCase()
+      .indexOf(lookupKey.toLowerCase()) > -1);
   }
 
   selectLookedUpProduct(product: Product): void {
