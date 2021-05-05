@@ -95,7 +95,7 @@ export class StockDetailComponent implements OnInit {
     dialogRef.componentInstance
     .addNewProduct
     .subscribe(() => {
-      this.router.navigate(['add-product'], { relativeTo: this.route });
+      this.router.navigate(['/system/add-product']);
     });
 
     dialogRef.componentInstance
@@ -199,7 +199,7 @@ export class StockDetailComponent implements OnInit {
       this.branchService.closeBranchStock(this.stock.id)
       .subscribe(stock => {
         dialogRef.close();
-        
+
         this. tableColumns = this.tableColumns.filter(item => item !== 'actions');
 
         this.stock.isOpened = false;

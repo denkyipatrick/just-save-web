@@ -2,7 +2,7 @@ import { Stock } from 'src/app/models/stock';
 import { OkDialogComponent } from './../../dialog/ok-dialog/ok-dialog.component';
 import { CompanyService } from './../../services/company.service';
 import { BranchService } from './../../services/branch.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UtilityService } from './../../services/utility.service';
 import { PleaseWaitDialogComponent } from './../../dialog/please-wait-dialog/please-wait-dialog.component';
 import { StaffService } from './../../services/staff.service';
@@ -12,6 +12,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { ThreeButtonDialogComponent } from '../three-button-dialog/three-button-dialog.component';
 
 @Component({
   selector: 'app-add-product',
@@ -31,7 +32,8 @@ export class AddProductComponent implements OnInit {
     private staffService: StaffService,
     private dialogOpener: MatDialog,
     private matSnackBar: MatSnackBar,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
     ) {
     this.form = new FormGroup({
       name: new FormControl(),
@@ -96,12 +98,38 @@ export class AddProductComponent implements OnInit {
       this.companyService.createProduct(this.form.value)
       .subscribe(product => {
         dialogRef.close();
-        this.form.reset();
-        this.form.markAsUntouched()
 
-        // localStorage.setItem('products', JSON.stringify(products));
-        this.matSnackBar.open('Product Added Successfully', 'CLOSE', {
-          duration: 5000
+        const products: Product[] = JSON.parse(sessionStorage.getItem('products')) || [];
+        products.push(product);
+        
+        sessionStorage.setItem('products', JSON.stringify(products));
+
+        const dialogRef2 = this.dialogOpener.open(ThreeButtonDialogComponent, {
+          data: {
+            title: 'Product Added Successfully',
+            message: `You have successfully created ${product?.name || 'the product.'} ` + 
+            `You can view its details, create a new product or view all products.`,
+            option1ButtonText: 'VIEW PRODUCTS',
+            option2ButtonText: 'ADD NEW',
+            option3ButtonText: 'VIEW'
+          }
+        })
+        .componentInstance;
+
+        dialogRef2.option1
+        .subscribe(() => {
+          this.router.navigate(['/system/products/'], { relativeTo: this.route });
+        });
+        
+        dialogRef2.option2
+        .subscribe(() => {
+          this.form.markAsUntouched();
+          this.form.reset();
+        });
+        
+        dialogRef2.option3
+        .subscribe(() => {
+          this.router.navigate(['/system/products/', product.id], { relativeTo: this.route });
         });
       }, error => {
         dialogRef.close();

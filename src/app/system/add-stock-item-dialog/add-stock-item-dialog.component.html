@@ -6,15 +6,15 @@
                 <mat-icon class="material-icons-outlined">inventory</mat-icon>
                 <p>Inventory</p>
             </span>
-            <button tabindex="-1" mat-icon-button class="text-red-600 bg-red-100" (click)="closeDialog()">
+            <button tabindex="-1" mat-icon-button class="text-red-600 bg-red-100"
+                (click)="closeDialog()">
                 <mat-icon>close</mat-icon>
             </button>
         </span>
 
         <span class="flex items-center justify-between space-x-4">
             <p class="text-lg">Select Product</p>
-            <a tabindex="-1" mat-raised-button
-                color="primary" (click)="addProduct()">
+            <a tabindex="-1" mat-raised-button (click)="addProduct()" color="primary">
                 <mat-icon>add</mat-icon>&nbsp;
                 <span>ADD NEW PRODUCT</span>
             </a>
@@ -23,7 +23,7 @@
         <span>
             <mat-form-field appearance="outline" style="font-size: .8rem;">
                 <mat-label>Search Product</mat-label>
-                <input #searchBox matInput
+                <input #searchBox matInput tabindex="0" autocomplete="off"
                     (keyup)="searchProduct(searchBox.value)" />
                 <span matPrefix>
                     <mat-icon>search</mat-icon>
