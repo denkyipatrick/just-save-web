@@ -7,9 +7,11 @@
     class="mat-elevation-z4 rounded-md">
 
     <header>
-
         <section class="p-4 flex items-center justify-between space-x-4">
-            <p class="text-3xl font-light">Products</p>
+            <span class="flex items-center space-x-2">
+                <app-back-button></app-back-button>
+                <p class="text-3xl font-light">Products</p>
+            </span>
     
             <div class="space-x-4">
                 <button mat-raised-button (click)="refreshProducts()"
@@ -17,6 +19,12 @@
                     <mat-icon>refresh</mat-icon>&nbsp;
                     <span>REFRESH</span>
                 </button>
+                
+                <a mat-raised-button color="primary" routerLink="../add-product"
+                    [disabled]="isRefreshing">
+                    <mat-icon>add</mat-icon>&nbsp;
+                    <span>ADD PRODUCT</span>
+                </a>
             </div>
         </section>
 

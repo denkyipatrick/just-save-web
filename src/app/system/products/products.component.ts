@@ -1,3 +1,4 @@
+import { Staff } from 'src/app/models/staff';
 import { CompanyService } from './../../services/company.service';
 import { StaffService } from './../../services/staff.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,8 +15,8 @@ import { MatSort } from '@angular/material/sort';
 })
 export class ProductsComponent implements OnInit, AfterViewInit {
   products: Product[] = [];
-
   searchKey: string;
+  staff: Staff;
 
   isRefreshing: boolean = false;
   isFetchingProducts: boolean;
@@ -35,15 +36,16 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   constructor(
     private staffService: StaffService,
     private companyService: CompanyService,
-    private router: Router, private route: ActivatedRoute) {
+    private router: Router, private route: ActivatedRoute
+  ) {
+    this.staff = this.staffService.staff;
     this.searchKey = sessionStorage.getItem('search-key');
     this.isShowMultipleBranches = JSON.parse(localStorage.getItem('show-products-from-all-branches'));
 
     this.canStaffCreateProduct = this.staffService.staff.roles
       .find(role => role.id === 'add-product') ? true : false;
 
-    this.productSelected = new EventEmitter();
-    
+    this.productSelected = new EventEmitter();    
     this.products = JSON.parse(sessionStorage.getItem('products'));
   }
 
@@ -103,7 +105,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   }
 
   fetchProducts(): void {
-    if (this.isShowMultipleBranches) {
+    if (this.staff.isAdmin) {
       this.fetchCompanyProducts();
     } else {
       this.fetchBranchProducts();

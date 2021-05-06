@@ -53,6 +53,10 @@ export class AddProductComponent implements OnInit {
     history.back();
   }
 
+  closeWindow() {
+    this.showLookedUpProductsWindow = false;
+  }
+  
   lookupProduct(lookupKey: string): void {
     this.showLookedUpProductsWindow = true;
 
@@ -95,9 +99,11 @@ export class AddProductComponent implements OnInit {
         dialogRef.close();
 
         const products: Product[] = JSON.parse(sessionStorage.getItem('products')) || [];
-        products.push(product);
-        
-        sessionStorage.setItem('products', JSON.stringify(products));
+
+        if (!products.find(prod => prod.lookupKey === this.form.value['lookupKey'])) {
+          products.push(product);
+          sessionStorage.setItem('products', JSON.stringify(products));
+        }
 
         const dialogRef2 = this.dialogOpener.open(ThreeButtonDialogComponent, {
           data: {
