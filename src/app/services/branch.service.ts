@@ -29,6 +29,10 @@ export class BranchService {
     return this.http.get<Stock[]>(`${this.constants.BRANCHES_URL}/${branchId}/stocks`);
   }
 
+  fetchProducts(branchId: string) {
+    return this.http.get<BranchProduct[]>(`${this.constants.BRANCHES_URL}/${branchId}/products`);
+  }
+
   updateBranchProductQuantity(
     branchId: string,
     productId: string,

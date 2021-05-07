@@ -1,3 +1,7 @@
+import { SearchableBranchProduct } from './../../models/searchablebranchproduct';
+import { MatTableDataSource } from '@angular/material/table';
+import { BranchProduct } from './../../models/branchproduct';
+import { BranchService } from './../../services/branch.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductListComponent } from './../product-list/product-list.component';
 import { NewOrderInsufficientOrderItemsDialogComponent } from './../new-order-insufficient-order-items-dialog/new-order-insufficient-order-items-dialog.component';
@@ -20,9 +24,12 @@ import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/cor
 export class NewOrderComponent implements OnInit {
   @Output() editProductQuantity: EventEmitter<null>;
 
-
+  branchProducts: BranchProduct[];
   cartItems: CartItem[];
   selectedCartItemIdMenu: string;
+
+  tableColumns: string[] = ['key', 'name', 'quantity', 'sellingPrice'];
+  dataSource: MatTableDataSource<SearchableBranchProduct>;
 
   orderTotalAmount: number;
   isShowProducts: boolean;
@@ -34,7 +41,8 @@ export class NewOrderComponent implements OnInit {
 
   constructor(
     private companyService: CompanyService,
-    private staffService: StaffService, 
+    private staffService: StaffService,
+    private branchService: BranchService,
     private dialogOpener: MatDialog,
     private router: Router,
     private route: ActivatedRoute
@@ -43,6 +51,7 @@ export class NewOrderComponent implements OnInit {
 
     this.orderTotalAmount = 0;
     this.totalSelectedItems = 0;
+    // this.branchProducts = JSON.parse(sessionStorage.getItem('branch-products'));
 
     this.cartItems = JSON.parse(sessionStorage.getItem('cart-items')) || [];
     this.isShowProducts = JSON.parse(localStorage.getItem('show-products'));
@@ -52,6 +61,30 @@ export class NewOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.branchService.fetchProducts(this.staffService.staff.staffBranch.branch.id)
+    .subscribe(branchProducts => {
+      this.branchProducts = branchProducts;
+      this.setupDataSource();
+
+      console.log(branchProducts);
+    })
+  }
+
+  setupDataSource() {
+    const searchableBranchProducts: SearchableBranchProduct[] = [];
+
+    this.branchProducts.forEach(branchProduct => {
+      searchableBranchProducts.push(
+        new SearchableBranchProduct(
+          branchProduct.product.lookupKey,
+          branchProduct.product.name,
+          branchProduct.product.sellingPrice,
+          branchProduct.quantity
+        )
+      )
+    })
+    this.dataSource = new MatTableDataSource(searchableBranchProducts);
+
   }
 
   ngAfterViewInit() {}
@@ -60,6 +93,10 @@ export class NewOrderComponent implements OnInit {
     this.isShowProducts = !this.isShowProducts;
     localStorage.setItem('show-products', JSON.stringify(this.isShowProducts));
     this.showOrCollapseProductsButtonText = this.isShowProducts ? 'Hide Products' : 'Show Products';
+  }
+
+  searchProduct(query: string) {
+    this.dataSource.filter = query;
   }
 
   deleteCartItem(item: CartItem) {
@@ -97,11 +134,14 @@ export class NewOrderComponent implements OnInit {
     this.selectedCartItemIdMenu = null;
   }
 
-  onProductSelected(product: Product) {
+  onProductSelected(searchableProduct: SearchableBranchProduct) {
+    const branchProduct = this.branchProducts.find(bProduct => bProduct.product.lookupKey === 
+      searchableProduct.productLookupKey);
+
     this.dialogOpener.open(SelectOrderProductQuantityDialogComponent, {
       disableClose: true,
       data: {
-        product: product
+        branchProduct: branchProduct
       }
     })
     .componentInstance
@@ -149,9 +189,9 @@ export class NewOrderComponent implements OnInit {
       .subscribe(order => {
         waitDialogRef.close();
 
-        setTimeout(() => {
-          this.productListComponent.refreshProducts();
-        }, 1000);
+        // setTimeout(() => {
+        //   this.productListComponent.refreshProducts();
+        // }, 1000);
         
         this.cartItems = [];
         sessionStorage.removeItem('cart-items');

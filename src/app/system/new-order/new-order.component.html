@@ -4,24 +4,77 @@
         <section class="w-full h-full space-y-6">
             <header class="flex items-center justify-between">
                 <p class="text-3xl font-light">New Order</p>
-                <button mat-raised-button class="bg-red-500 text-white uppercase"
-                    (click)="toggleProducts()">
-                    {{showOrCollapseProductsButtonText}}
-                </button>
-                <!-- <div>
-                    <mat-form-field appearance="fill" class="w-full">
-                        <mat-label>Search by product name or Lookup Key</mat-label>
-                        <input matInput autocomplete="off"/>
-                    </mat-form-field>
-                </div> -->
             </header>
 
-            <section [class.zeroHeight]="!isShowProducts" 
-                style="max-height: 400px; padding: 1px;" 
-                class="overflow-y-auto pb-2">
-                <app-product-list [canCreateProduct]="false"
+            <section style="max-height: 400px; padding: 1px;" 
+                class="relative">
+                <!-- <app-product-list [canCreateProduct]="false"
                     [tablePaginatorPageSizeOptions]="[15]"
-                    (productSelected)="onProductSelected($event)"></app-product-list>
+                    (productSelected)="onProductSelected($event)">
+                </app-product-list> -->
+
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Search Product by Name or Key</mat-label>
+                    <input #searchField matInput class="py-4 text-lg"
+                        (keyup)="searchProduct(searchField.value)"
+                        autocomplete="off" />
+                    <span matPrefix>
+                        <mat-icon>search</mat-icon>
+                    </span>
+                    <span matSuffix>
+                        <button mat-icon-button (click)="searchField.value = ''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </span>
+                </mat-form-field>
+
+                <div *ngIf="searchField.value" class="bg-white w-full absolute top-full
+                    mat-elevation-z4 py-4 z-10">
+                    <div class="px-4">
+                        <p>Select a product</p>
+                    </div>
+                    <div style="max-height: 60vh; overflow-y: auto;">
+                        <table mat-table [dataSource]="dataSource" class="w-full">
+                            <ng-container matColumnDef="key">
+                                <th mat-header-cell *matHeaderCellDef>Lookup Key</th>
+                                <td mat-cell *matCellDef="let searchableProduct" class="uppercase">
+                                    {{searchableProduct?.productLookupKey}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell *matHeaderCellDef>Name</th>
+                                <td mat-cell *matCellDef="let searchableProduct">
+                                    <p style="margin: 0; font-size: .8rem; margin-right: 1rem;" 
+                                        class="font-medium text-gray-800">
+                                        {{searchableProduct?.productName}}
+                                    </p>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="sellingPrice">
+                                <th mat-header-cell *matHeaderCellDef>Unit Price</th>
+                                <td mat-cell *matCellDef="let searchableProduct" style="min-width: 120px;">
+                                    <span class="text-gray-600 font-medium">GHC </span> 
+                                    <span class="font-medium text-gray-900">
+                                        {{searchableProduct?.productSellingPrice?.toFixed(2)}}
+                                    </span>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="quantity">
+                                <th mat-header-cell *matHeaderCellDef>In Stock</th>
+                                <td mat-cell *matCellDef="let searchableProduct" style="min-width: 120px;">
+                                    <span class="font-medium">
+                                        {{searchableProduct?.quantity}}
+                                    </span>
+                                </td>
+                            </ng-container>
+                        
+                            <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+                            <tr mat-row *matRowDef="let searchableProduct; columns: tableColumns;" 
+                                class="body-row" style="cursor: pointer;"
+                                (click)="onProductSelected(searchableProduct)"></tr>
+                        </table>
+                    </div>
+                </div>
             </section>
 
             <section class="mt-2">

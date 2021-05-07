@@ -16,6 +16,7 @@ export class SelectOrderProductQuantityDialogComponent implements OnInit {
   formErrorMessage: string;
   
   product: Product;
+  branchProduct: BranchProduct;
   selectedProductBranch: BranchProduct;
   productBranches: BranchProduct[];
 
@@ -34,17 +35,15 @@ export class SelectOrderProductQuantityDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.product = this.data?.product;
+    this.branchProduct = this.data.branchProduct;
 
-    const staffBranchId = this.staffService.branchId;
-    this.productBranches = this.product.productBranches;
-    this.selectedProductBranch = this.product.productBranches.find(productBranch => 
-      productBranch.branchId === staffBranchId) || this.product.productBranches[0];
+    const staffBranchId = this.staffService.staff.staffBranch.branch.id;
 
     this.form = new FormGroup({
       quantity: new FormControl(),
-      priceSold: new FormControl(this.product.sellingPrice),
+      priceSold: new FormControl(this.branchProduct.product.sellingPrice),
       selectedBranchId: new FormControl(
-        this.selectedProductBranch.branchId
+        this.branchProduct?.branch.id
       )
     });
 
@@ -56,11 +55,6 @@ export class SelectOrderProductQuantityDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  branchChanged(branchId: string) {
-    this.selectedProductBranch = this.product.productBranches
-    .find(productBranch  => productBranch.branch.id === branchId);
-  }
-
   quantityChanged(newQuantity: number) {
     this.selectedQuantityNumber = newQuantity;
   }
@@ -70,33 +64,34 @@ export class SelectOrderProductQuantityDialogComponent implements OnInit {
 
     const typedQuantity = this.form.value['quantity'];
 
-    if (typedQuantity > this.selectedProductBranch.quantity) {
-      this.formErrorMessage = `${this.selectedProductBranch?.branch.name} ` + 
+    if (typedQuantity > this.branchProduct.quantity) {
+      this.formErrorMessage = `${this.branchProduct?.branch.name} ` + 
       `branch does not have ${typedQuantity} of this product. ` + 
-      `This branch only has ${this.selectedProductBranch.quantity}. ` +
+      `This branch only has ${this.branchProduct.quantity}. ` +
       `Try other branches or reduce the quantity.`;
       return;
     }
 
-    const branchProduct = new BranchProduct(
-      this.selectedProductBranch.branch.id,
-      this.product.id, this.selectedProductBranch.quantity
-    );
+    // const branchProduct = new BranchProduct(
+    //   this.selectedProductBranch.branch.id,
+    //   this.product.id, this.selectedProductBranch.quantity
+    // );
 
     const productQuantity = null;
+    this.branchProduct.product.quantity = null;
 
-    branchProduct.product = new Product(
-      this.product.id, 
-      this.product.name, 
-      this.product.lookupKey,
-      productQuantity,
-      this.product.unitPrice,
-      this.product.costPrice,
-      this.product.sellingPrice
-    );
+    // branchProduct.product = new Product(
+    //   this.product.id, 
+    //   this.product.name, 
+    //   this.product.lookupKey,
+    //   productQuantity,
+    //   this.product.unitPrice,
+    //   this.product.costPrice,
+    //   this.product.sellingPrice
+    // );
     
     this.accept.emit(
-      new CartItem(this.form.value['quantity'], this.form.value['priceSold'], branchProduct)
+      new CartItem(this.form.value['quantity'], this.form.value['priceSold'], this.branchProduct)
     );
 
     this.dialogRef.close();

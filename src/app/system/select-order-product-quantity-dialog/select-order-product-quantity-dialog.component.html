@@ -27,13 +27,13 @@
                     <div class="space-y-1 font-medium">
                         <p>
                             <span class="text-lg">
-                                {{product?.name}}
+                                {{branchProduct?.product?.name}}
                             </span>
                         </p>
                         <p>
                             Unit Price: 
                             <span class="text-red-600">
-                                GHC {{product?.sellingPrice?.toFixed(2)}}
+                                GHC {{branchProduct?.product?.sellingPrice?.toFixed(2)}}
                             </span>
                         </p>
 
@@ -41,45 +41,46 @@
 
                     <div class="text-right">
                         <p class="text-gray-500 text-xs">LookupKey</p>
-                        <p class="uppercase">{{product?.lookupKey}}</p>
+                        <p class="uppercase">{{branchProduct?.product?.lookupKey}}</p>
                     </div>
                 </span>
 
                 <p class="text-xs font-medium mt-2">
                     Branch: 
                     <span class="text-blue-800">
-                        {{selectedProductBranch?.branch?.name}}
+                        {{branchProduct?.branch?.name}}
                     </span>,
                     Available Quantity: 
                     <span class="text-blue-800">
-                        {{selectedProductBranch?.quantity}} 
-                        <span *ngIf="selectedProductBranch?.quantity == 1">item</span>
-                        <span *ngIf="selectedProductBranch?.quantity > 1">items</span>
+                        {{branchProduct?.quantity}} 
+                        <span *ngIf="branchProduct?.quantity == 1">item</span>
+                        <span *ngIf="branchProduct?.quantity > 1">items</span>
                     </span>
                 </p>
             </div>            
             <div class="grid grid-cols-3 gap-4 mt-4">
                 <mat-form-field appearance="outline" class="w-full text-xs">
                     <mat-label>Branch</mat-label>
-                    <mat-select tabindex="-1" required #branchSelect formControlName="selectedBranchId"
+                    <input matInput [value]="branchProduct?.branch?.name" disabled />
+                    <!-- <mat-select tabindex="-1" required #branchSelect formControlName="selectedBranchId"
                         (selectionChange)="branchChanged(branchSelect.value)">
-                        <mat-option *ngFor="let productBranch of productBranches" 
+                        <mat-option *ngFor="let branchProduct of productBranches" 
                             [value]="productBranch.branch.id">
                             {{productBranch?.branch?.name}}
                         </mat-option>
-                    </mat-select>
+                    </mat-select> -->
                 </mat-form-field>
                 
                 <mat-form-field appearance="outline" class="w-full text-xs">
-                    <mat-label>Price Sold</mat-label>
+                    <mat-label>Selling at</mat-label>
                     <input tabindex="-1" matInput required value="1" type="number" 
                         #priceSoldTextbox 
                         autocomplete="off"
                         formControlName="priceSold" />
                     <span matPrefix>¢</span>
-                    <mat-error *ngIf="priceSoldTextbox.value > selectedProductBranch?.quantity">
+                    <!-- <mat-error *ngIf="priceSoldTextbox.value > branchProduct?.quantity">
                         The quantity you have specified.
-                    </mat-error>
+                    </mat-error> -->
                 </mat-form-field>  
                 
                 <mat-form-field appearance="outline" class="w-full text-xs">
@@ -88,9 +89,9 @@
                         #quantityTextbox 
                         autocomplete="off"
                         formControlName="quantity" />
-                    <mat-error *ngIf="+quantityTextbox.value > selectedProductBranch?.quantity">
+                    <!-- <mat-error *ngIf="+quantityTextbox.value > selectedProductBranch?.quantity">
                         The quantity you have specified.
-                    </mat-error>
+                    </mat-error> -->
                 </mat-form-field>      
             </div>
             <div class="flex items-start justify-between space-x-6">
