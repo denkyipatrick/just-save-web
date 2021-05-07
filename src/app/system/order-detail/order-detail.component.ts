@@ -1,3 +1,5 @@
+import { OrderReceiptDialogComponent } from './../order-receipt-dialog/order-receipt-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 import { StaffService } from './../../services/staff.service';
 import { Order } from './../../models/order';
 import { ActivatedRoute } from '@angular/router';
@@ -18,11 +20,13 @@ export class OrderDetailComponent implements OnInit {
 
   constructor(
     private staffService: StaffService, 
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private dialogOpener: MatDialog
+  ) {
       this.orderAmount = 0;
       this.order = JSON.parse(sessionStorage.getItem('target-order'));
       this.tableColumns = ['name', 'itemPrice', 'quantity', 'totalItemAmount'];
-    }
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -34,6 +38,14 @@ export class OrderDetailComponent implements OnInit {
 
       this.fetchOrder();
     });
+  }
+
+  showOrderReceiptDialog() {
+    this.dialogOpener.open(OrderReceiptDialogComponent, {
+      data: {
+        order: this.order
+      }
+    })
   }
 
   setupOrderDetails() {

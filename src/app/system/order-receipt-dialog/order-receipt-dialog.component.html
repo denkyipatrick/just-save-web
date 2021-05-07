@@ -1,0 +1,75 @@
+<section class="space-y-4" style="width: 60mm; max-width: 100%;">
+    <header class="print-hide">
+        <section class="flex items-center justify-between">
+            <span class="flex items-center space-x-2">
+                <mat-icon>receipt</mat-icon>
+                <p>Sales</p>
+            </span>
+
+            <button tabindex="-1" mat-icon-button
+                (click)="closeDialog()"
+                class="text-red-600 bg-red-200">
+                <mat-icon>close</mat-icon>
+            </button>
+        </section>
+    </header>
+
+    <section style="max-height: 60vh; width: 60mm;"
+        class="mx-auto space-y-6">
+        <section class="w-8/12 mx-auto text-center">
+            <p class="text-sm font-semibold">{{company?.name}}</p>
+        </section>
+        <section class="text-xs font-semibold" 
+            style="font-size: 0.6rem; font-family: 'Courier New', Courier, monospace;">
+            <span class="flex items-center space-x-2 font-semibold">
+                <p class="w-2/3">Item</p>
+                <p class="w-1/3">Qty</p>
+                <p class="w-1/3">Subtotal</p>
+            </span>
+            <ul>
+                <li *ngFor="let item of order.items">
+                    <span class="flex items-center space-x-2 py-1 border-b">
+                        <p class="w-2/3">{{item?.product?.name}}</p>
+                        <p class="w-1/3">{{item?.quantityOrdered}}</p>
+                        <p class="w-1/3">GHC {{item?.salePrice?.toFixed(2)}}</p>
+                    </span>
+                </li>
+            </ul>
+
+            <section class="mt-4 font-semibold">
+                <!-- <span class="flex items-center justify-end space-x-2">
+                    <p class="w-1/2">VAT(15%):</p>
+                    <p class="w-1/2 text-right"></p>
+                </span> -->
+                <span class="flex items-center justify-end space-x-2">
+                    <p class="w-1/2">Total:</p>
+                    <p class="w-1/2 text-right">GHC {{orderAmount?.toFixed(2)}}</p>
+                </span>
+                
+                <span class="flex items-center justify-between">
+                    <p>Branch:</p>
+                    <p>{{order?.branch?.name}}</p>
+                </span>
+                <span class="flex items-center justify-between">
+                    <p>Served By:</p>
+                    <p>{{order?.staff?.firstName}} {{order?.staff?.lastName}}</p>
+                </span>
+            </section>
+        </section>
+
+        <section>
+            <p class="text-center font-semibold">THANK YOU</p>
+        </section>
+
+    </section>
+
+    <footer class="print-hide">
+        <section class="text-right">
+            <button mat-raised-button color="primary"
+                (click)="printReceipt()">
+                <span>PRINT</span>&nbsp;
+                <mat-icon>print</mat-icon>
+            </button>
+        </section>
+    </footer>
+</section>

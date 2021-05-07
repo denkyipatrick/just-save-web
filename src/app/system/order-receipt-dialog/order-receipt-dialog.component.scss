@@ -1,0 +1,17 @@
+p {
+    margin: 0;
+}
+
+@media print {
+    mat-dialog-container, .mat-dialog-container {
+        box-shadow: none !important;
+    }
+
+    .print-hide {
+        display: none;
+    }
+
+    .print-no-shadow {
+        box-shadow: none;
+    }
+}
