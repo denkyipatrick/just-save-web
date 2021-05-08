@@ -75,9 +75,18 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   }
 
   setupPaginator() {
+    let products = this.products;
+
+    if (!this.isShowMultipleBranches) {
+      products = this.products.filter(product => product.productBranches.find(pBranch => pBranch.branchId === 
+        this.staff.staffBranch.branch.id) );
+    }
+
     this.dataSource = new MatTableDataSource(this.products);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    
+    console.log(products);
   }
 
   viewProduct(row: Product): void {
@@ -105,11 +114,12 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   }
 
   fetchProducts(): void {
-    if (this.staff.isAdmin) {
-      this.fetchCompanyProducts();
-    } else {
-      this.fetchBranchProducts();
-    }
+    this.fetchCompanyProducts();
+    // if (this.staff.isAdmin) {
+    //   this.fetchCompanyProducts();
+    // } else {
+    //   this.fetchBranchProducts();
+    // }
   }
 
   fetchBranchProducts(): void {
