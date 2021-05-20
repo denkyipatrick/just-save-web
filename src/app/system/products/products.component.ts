@@ -33,7 +33,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   isShowMultipleBranches: boolean;
   canStaffCreateProduct: boolean;
 
-  tableColumns: string[] = ['key', 'name', 'sellingPrice', 'quantity', 'actions'];
+  tableColumns: string[] = ['name', 'sellingPrice', 'quantity', 'actions'];
   // tableColumns: string[] = [
   //   'key', 'name', 'sellingPrice', 'quantity'
   // ]
