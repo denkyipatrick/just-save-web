@@ -5,7 +5,7 @@ import { OkCancelDialogComponent } from './../../dialog/ok-cancel-dialog/ok-canc
 import { Product } from './../../models/product';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { StockItem } from '../../models/stockitem';
+import { StockEntryItem } from '../../models/stockentryitem';
 
 @Component({
   selector: 'app-add-stock-item-quantity-dialog',
@@ -17,7 +17,7 @@ export class AddStockItemQuantityDialogComponent implements OnInit {
   stockId: string;
   product: Product;
   isCreatingStockItem: boolean = false;
-  @Output() itemCreated: EventEmitter<StockItem>;
+  @Output() itemCreated: EventEmitter<StockEntryItem>;
 
   constructor(
     private dialogRef: MatDialogRef<AddStockItemQuantityDialogComponent>,

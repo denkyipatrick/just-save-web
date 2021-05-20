@@ -33,7 +33,7 @@
                     <div class="px-4">
                         <p>Select a product</p>
                     </div>
-                    <div style="max-height: 60vh; overflow-y: auto;">
+                    <div style="max-height: 55vh; overflow-y: auto;">
                         <table mat-table [dataSource]="dataSource" class="w-full">
                             <ng-container matColumnDef="key">
                                 <th mat-header-cell *matHeaderCellDef>Lookup Key</th>
@@ -82,7 +82,7 @@
                     class="flex items-center justify-center text-center
                     bg-gray-100 border">
                     <div>
-                        <p class="text-2xl font-medium">No Items</p>
+                        <p class="text-2xl font-medium">No Item Selected</p>
                         <p class="text-gray-400">The items you select will show here...</p>
                     </div>
                 </section>
@@ -111,11 +111,11 @@
                                     <div class="flex items-center space-x-4 border-b 
                                         py-2 text-gray-700">
                                         <div class="w-1/4 text-xs">
-                                            <p>{{item?.branchProduct?.product?.name}}</p>
+                                            <p>{{item?.stockItem?.product?.name}}</p>
                                             <p class="font-medium text-red-600">
-                                                GHC {{(item?.branchProduct?.product?.sellingPrice)?.toFixed(2)}}
+                                                GHC {{(item?.stockItem?.product?.sellingPrice)?.toFixed(2)}}
                                             </p>
-                                            <p *ngIf="item?.branchProduct?.product?.sellingPrice !== item?.soldPrice" 
+                                            <p *ngIf="item?.stockItem?.product?.sellingPrice !== item?.soldPrice" 
                                                 class="font-medium text-red-600">
                                                 Selling At: GHC {{(item?.soldPrice)?.toFixed(2)}}
                                             </p>
@@ -125,7 +125,8 @@
                                             <span class="text-gray-800 font-medium">GHC</span> 
                                             {{(item?.soldPrice * item?.quantity)?.toFixed(2)}}
                                         </p>
-                                        <div [class.showQuantityBox]="item.id === selectedCartItemIdMenu" 
+                                        <div [class.showQuantityBox_stop_working]="item.id ===
+                                            selectedCartItemIdMenu" 
                                             class="w-1/5 flex items-center relative">
                                             <div class="quantityBox hidden absolute top-0 right-32 bg-white z-10
                                                 shadow-lg py-2 px-4 border rounded-t-md"
@@ -133,7 +134,7 @@
                                                 <div class="flex items-center justify-between">
                                                     <span>
                                                         <p class="font-medium text-xs">Change Quantity</p>
-                                                        <p>Available Quantity: {{item?.branchProduct?.quantity}}</p>
+                                                        <p>Available Quantity: {{item?.stockItem?.quantity}}</p>
                                                     </span>
 
                                                     <button mat-icon-button class="text-xs"

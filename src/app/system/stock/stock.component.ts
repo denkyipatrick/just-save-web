@@ -1,9 +1,10 @@
+import { Stock } from './../../models/stock';
 import { CompanyService } from './../../services/company.service';
 import { OkDialogComponent } from './../../dialog/ok-dialog/ok-dialog.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CreateStockDialogComponent } from './../create-stock-dialog/create-stock-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Stock } from './../../models/stock';
+import { StockEntry } from '../../models/stockentry';
 import { BranchService } from './../../services/branch.service';
 import { StaffService } from './../../services/staff.service';
 import { Component, OnInit } from '@angular/core';
@@ -15,11 +16,10 @@ import * as moment from 'moment';
   styleUrls: ['./stock.component.scss']
 })
 export class StockComponent implements OnInit {
-  stocks: Stock[] = [];
-  isRefreshing: boolean = false;
+  stocks: Stock[];  
   isFetchingStocks: boolean;
-
-  tableColumns: string[] = ['date', 'status', 'branch', 'items', 'view'];
+  isRefreshing: boolean = false;
+  tableColumns: string[] = ['date', 'status', 'branch', 'view'];
 
   constructor(
     private companyService: CompanyService,
@@ -38,25 +38,21 @@ export class StockComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    if (this.stocks.length) {
-      return this.refreshStocks();
-    }
-
+  ngOnInit() {
     this.fetchStocks();
   }
-
-  viewStock(stock: Stock) {
-    sessionStorage.setItem('target-stock', JSON.stringify(stock));
-    this.router.navigate(['./', stock.id], { relativeTo: this.route });
-  }
-
+  
   fetchStocks() {
     if (this.staffService.staff.isAdmin) {
-      this.fetchCompanyStock();
+      this.fetchCompanyStocks();
     } else {
-      this.fetchBranchStock();
+      this.fetchBranchStocks();
     }
+  }  
+
+  viewStock(stock: StockEntry) {
+    sessionStorage.setItem('target-stock', JSON.stringify(stock));
+    this.router.navigate(['./', stock.id], { relativeTo: this.route });
   }
 
   refreshStocks() {
@@ -64,7 +60,31 @@ export class StockComponent implements OnInit {
     this.fetchStocks();
   }
 
-  fetchCompanyStock() {
+  fetchBranchStocks() {
+    if (!this.isRefreshing) {
+      this.isFetchingStocks = true;
+    }
+
+    this.branchService.fetchBranchStockHistory()
+    .subscribe(stocks => {
+      this.isRefreshing = false;
+      this.isFetchingStocks = false;
+
+      this.stocks = stocks.map(stock => {
+        stock.dateString = moment(new Date(stock.createdAt)).format("Do MMMM YYYY");
+        return stock;
+      });
+
+      sessionStorage.setItem('stock-list', JSON.stringify(this.stocks));
+
+      console.log(stocks);
+    }, error => {
+      this.isRefreshing = false;
+      this.isFetchingStocks = false;
+    })
+  }
+
+  fetchCompanyStocks() {
     if (!this.isRefreshing) {
       this.isFetchingStocks = true;
     }
@@ -73,65 +93,18 @@ export class StockComponent implements OnInit {
     .subscribe(stocks => {
       this.isRefreshing = false;
       this.isFetchingStocks = false;
+
       this.stocks = stocks.map(stock => {
         stock.dateString = moment(new Date(stock.createdAt)).format("Do MMMM YYYY");
         return stock;
       });
 
       sessionStorage.setItem('stock-list', JSON.stringify(this.stocks));
+
+      console.log(stocks);
     }, error => {
       this.isRefreshing = false;
       this.isFetchingStocks = false;
-      console.error(error);
-    });    
-  }
-
-  fetchBranchStock() {
-    if (!this.isRefreshing) {
-      this.isFetchingStocks = true;
-    }
-
-    this.branchService.fetchBranchStockHistory(this.staffService.staff.staffBranch.branch.id)
-    .subscribe(stocks => {
-      this.isRefreshing = false;
-
-      this.isFetchingStocks = false;
-      this.stocks = stocks.map(stock => {
-        stock.dateString = moment(new Date(stock.createdAt)).format("Do MMMM YYYY");
-        return stock;
-      });
-
-      sessionStorage.setItem('stock-list', JSON.stringify(this.stocks));
-    }, error => {
-      this.isRefreshing = false;
-      this.isFetchingStocks = false;
-
-      console.error(error);
-    });
-  }
-
-  createStock() {
-    this.dialogOpener.open(CreateStockDialogComponent)
-    .componentInstance
-    .stockCreated
-    .subscribe(stock => {
-      stock.dateString = new Date(stock.createdAt).toDateString();
-      this.stocks.unshift(stock);
-
-      this.dialogOpener.open(OkDialogComponent, {
-        disableClose: true,
-        data: {
-          title: "Stock Created",
-          message: "A new stock is created and opened. You can add items to your new stock.",
-          okButtonText: 'OK'
-        }
-      })
-      .componentInstance
-      .ok
-      .subscribe(() => {
-        sessionStorage.setItem('target-stock', JSON.stringify(stock));
-        this.router.navigate(['./', stock.id], { relativeTo: this.route });
-      })
-    });
+    })
   }
 }

@@ -1,3 +1,4 @@
+import { Stock } from './../../models/stock';
 import { SearchableBranchProduct } from './../../models/searchablebranchproduct';
 import { MatTableDataSource } from '@angular/material/table';
 import { BranchProduct } from './../../models/branchproduct';
@@ -24,6 +25,7 @@ import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/cor
 export class NewOrderComponent implements OnInit {
   @Output() editProductQuantity: EventEmitter<null>;
 
+  activeStock: Stock;
   branchProducts: BranchProduct[];
   cartItems: CartItem[];
   selectedCartItemIdMenu: string;
@@ -61,28 +63,47 @@ export class NewOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.branchService.fetchProducts(this.staffService.staff.staffBranch.branch.id)
-    .subscribe(branchProducts => {
-      this.branchProducts = branchProducts;
-      this.setupDataSource();
+    // this.branchService.fetchProducts(this.staffService.staff.staffBranch.branch.id)
+    // .subscribe(branchProducts => {
+    //   this.branchProducts = branchProducts;
+    //   this.setupDataSource();
 
-      console.log(branchProducts);
-    })
+    //   console.log(branchProducts);
+    // });
+
+    this.branchService.fetchActiveStock(this.staffService.staff.staffBranch.branch.id)
+    .subscribe(activeStock => {
+      this.activeStock = activeStock;
+      this.setupDataSource();
+      console.log(activeStock);
+    });
   }
 
   setupDataSource() {
     const searchableBranchProducts: SearchableBranchProduct[] = [];
 
-    this.branchProducts.forEach(branchProduct => {
+    // this.branchProducts.forEach(branchProduct => {
+    //   searchableBranchProducts.push(
+    //     new SearchableBranchProduct(
+    //       branchProduct.product.lookupKey,
+    //       branchProduct.product.name,
+    //       branchProduct.product.sellingPrice,
+    //       branchProduct.quantity
+    //     )
+    //   )
+    // });
+
+    this.activeStock.items.forEach(item => {
       searchableBranchProducts.push(
         new SearchableBranchProduct(
-          branchProduct.product.lookupKey,
-          branchProduct.product.name,
-          branchProduct.product.sellingPrice,
-          branchProduct.quantity
+          item.product.lookupKey,
+          item.product.name,
+          item.product.sellingPrice,
+          item.availableQuantity
         )
       )
-    })
+    });
+
     this.dataSource = new MatTableDataSource(searchableBranchProducts);
 
   }
@@ -135,18 +156,20 @@ export class NewOrderComponent implements OnInit {
   }
 
   onProductSelected(searchableProduct: SearchableBranchProduct) {
-    const branchProduct = this.branchProducts.find(bProduct => bProduct.product.lookupKey === 
-      searchableProduct.productLookupKey);
+    const item = this.activeStock.items.find(stockItem => stockItem.product.lookupKey ===
+      searchableProduct.productLookupKey)
 
     this.dialogOpener.open(SelectOrderProductQuantityDialogComponent, {
       disableClose: true,
       data: {
-        branchProduct: branchProduct
+        stockItem: item
       }
     })
     .componentInstance
     .accept
     .subscribe(newItem => {
+      this.dataSource.filter = '';
+
       for(const cartItem of this.cartItems) {
         if (cartItem.id === newItem.id) {
           cartItem.quantity = newItem.quantity;
@@ -177,21 +200,24 @@ export class NewOrderComponent implements OnInit {
     .componentInstance
     .ok
     .subscribe(() => {
-      console.log(this.cartItems);
       const waitDialogRef = this.dialogOpener.open(PleaseWaitDialogComponent);
 
+      const cartItems = this.cartItems.map(cartItem => {
+        delete cartItem.id;
+        delete cartItem.stockItem;
+
+        return cartItem;
+      });
+
       this.staffService.startOrder({
-        items: this.cartItems,
+        items: cartItems,
+        stockId: this.activeStock.id,
         staffId: this.staffService.staff.id,
         branchId: this.staffService.staff.branchId,
         companyId: this.companyService.company.id
       })
       .subscribe(order => {
         waitDialogRef.close();
-
-        // setTimeout(() => {
-        //   this.productListComponent.refreshProducts();
-        // }, 1000);
         
         this.cartItems = [];
         sessionStorage.removeItem('cart-items');
@@ -221,7 +247,7 @@ export class NewOrderComponent implements OnInit {
                 items: error.error.items,
                 title: 'Order Aborted',
                 message: 'Some of the items you have selected does not have the specified quantities.',
-                okButtonText: 'OK, FINISH'
+                okButtonText: 'CLOSE'
               }
             });
             break;
@@ -231,7 +257,7 @@ export class NewOrderComponent implements OnInit {
               data: {
                 title: 'Order Failed',
                 message: 'Your order has not been completed.',
-                okButtonText: 'OK, FINISH'
+                okButtonText: 'CLOSE'
               }
             });
           }

@@ -1,4 +1,5 @@
-import { Stock } from 'src/app/models/stock';
+import { Stock } from './../models/stock';
+import { StockEntry } from 'src/app/models/stockentry';
 import { Order } from './../models/order';
 import { Observable } from 'rxjs';
 import { Product } from './../models/product';
@@ -63,7 +64,15 @@ export class CompanyService {
   }
 
   fetchStock(stockId: string) {
-    return this.http.get<Stock>(`${this.constants.STOCKS_URL}/${stockId}`);
+    return this.http.get<StockEntry>(`${this.constants.STOCK_ENTRIES_URL}/${stockId}`);
+  }
+
+  fetchAllBranchActiveStocks() {
+    return this.http.get<Stock[]>(`${this.constants.COMPANIES_URL}/${this.companyId}/branch-active-stocks`);
+  }
+  
+  fetchCompanyStockEntries() {
+    return this.http.get<StockEntry[]>(`${this.constants.COMPANIES_URL}/${this.companyId}/stock-entries`);
   }
 
   fetchCompanyStocks() {

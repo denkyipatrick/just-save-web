@@ -1,3 +1,8 @@
+import { MatDialog } from '@angular/material/dialog';
+import { StockItem } from './../../models/stockitem';
+import { SearchableBranchStockItem } from './../../models/searchablebranchstockitem';
+import { Stock } from './../../models/stock';
+import { BranchService } from './../../services/branch.service';
 import { Staff } from 'src/app/models/staff';
 import { CompanyService } from './../../services/company.service';
 import { StaffService } from './../../services/staff.service';
@@ -7,6 +12,7 @@ import { AfterViewInit, Component, OnInit, Output, ViewChild, EventEmitter } fro
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { SearchAllBranchStockItemsDialogComponent } from '../search-all-branch-stock-items-dialog/search-all-branch-stock-items-dialog.component';
 
 @Component({
   selector: 'app-products',
@@ -18,6 +24,8 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   searchKey: string;
   staff: Staff;
 
+  activeStock: Stock;
+
   isRefreshing: boolean = false;
   isFetchingProducts: boolean;
   isErrorFetchingProducts: boolean;
@@ -26,7 +34,11 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   canStaffCreateProduct: boolean;
 
   tableColumns: string[] = ['key', 'name', 'sellingPrice', 'quantity', 'actions'];
-  dataSource: MatTableDataSource<Product>;
+  // tableColumns: string[] = [
+  //   'key', 'name', 'sellingPrice', 'quantity'
+  // ]
+  
+  dataSource: MatTableDataSource<SearchableBranchStockItem>;
 
   @Output() productSelected: EventEmitter<Product>
 
@@ -34,7 +46,9 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    private dialogOpener: MatDialog,
     private staffService: StaffService,
+    private branchService: BranchService,
     private companyService: CompanyService,
     private router: Router, private route: ActivatedRoute
   ) {
@@ -45,12 +59,13 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     this.canStaffCreateProduct = this.staffService.staff.roles
       .find(role => role.id === 'add-product') ? true : false;
 
-    this.productSelected = new EventEmitter();    
-    this.products = JSON.parse(sessionStorage.getItem('products'));
+    this.productSelected = new EventEmitter();
+    this.activeStock = JSON.parse(sessionStorage.getItem('active-stock'));
+    // this.products = JSON.parse(sessionStorage.getItem('products'));
   }
 
   ngOnInit(): void {
-    if (this.products?.length) {
+    if (this.activeStock) {
       this.setupPaginator();
 
       if (this.searchKey) {
@@ -74,23 +89,34 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     this.fetchProducts();
   }
 
-  setupPaginator() {
-    let products = this.products;
-
-    if (!this.isShowMultipleBranches) {
-      products = this.products.filter(product => product.productBranches.find(pBranch => pBranch.branchId === 
-        this.staff.staffBranch.branch.id) );
-    }
-
-    this.dataSource = new MatTableDataSource(this.products);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    
-    console.log(products);
+  searchAllBranches() {
+    this.dialogOpener.open(SearchAllBranchStockItemsDialogComponent)
   }
 
-  viewProduct(row: Product): void {
-    this.router.navigate(['./', row.id], { relativeTo: this.route });
+  setupPaginator() {
+    const searchableStockItems: SearchableBranchStockItem[] = [];
+
+    this.activeStock?.items?.forEach(stockItem => {
+      searchableStockItems.push(
+        new SearchableBranchStockItem(
+          stockItem.product.lookupKey,
+          stockItem.product.id,
+          stockItem.product.name,
+          stockItem.availableQuantity,
+          stockItem.product.sellingPrice
+        )
+      )
+    });
+
+    this.dataSource = new MatTableDataSource(searchableStockItems);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
+    this.searchProduct(this.searchKey);
+  }
+
+  viewProduct(searchableBranchStockItem: SearchableBranchStockItem): void {
+    this.router.navigate(['./', searchableBranchStockItem.productId], { relativeTo: this.route });
   }
 
   searchProduct(query: string): void {
@@ -114,12 +140,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   }
 
   fetchProducts(): void {
-    this.fetchCompanyProducts();
-    // if (this.staff.isAdmin) {
-    //   this.fetchCompanyProducts();
-    // } else {
-    //   this.fetchBranchProducts();
-    // }
+    this.fetchBranchProducts();
   }
 
   fetchBranchProducts(): void {
@@ -129,18 +150,17 @@ export class ProductsComponent implements OnInit, AfterViewInit {
 
     this.isErrorFetchingProducts = false;
 
-    this.companyService.fetchBranchProducts(this.staffService.branchId)
-    .subscribe(products => {
+    this.branchService.fetchActiveStock(this.staffService.staff.staffBranch.branch.id)
+    .subscribe(stock => {
+      this.activeStock = stock;
       this.isRefreshing = false;
       this.isFetchingProducts = false;
-
-      this.products = products;
       this.setupPaginator();
-      sessionStorage.setItem('products', JSON.stringify(products));
+      sessionStorage.setItem('active-stock', JSON.stringify(this.activeStock));
+    
     }, error => {
       this.isRefreshing = false;
       this.isFetchingProducts = false;
-      this.isErrorFetchingProducts = true;
     });
   }
 

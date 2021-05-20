@@ -27,13 +27,13 @@
                     <div class="space-y-1 font-medium">
                         <p>
                             <span class="text-lg">
-                                {{branchProduct?.product?.name}}
+                                {{stockItem?.product?.name}}
                             </span>
                         </p>
                         <p>
                             Unit Price: 
                             <span class="text-red-600">
-                                GHC {{branchProduct?.product?.sellingPrice?.toFixed(2)}}
+                                GHC {{stockItem?.product?.sellingPrice?.toFixed(2)}}
                             </span>
                         </p>
 
@@ -41,35 +41,35 @@
 
                     <div class="text-right">
                         <p class="text-gray-500 text-xs">LookupKey</p>
-                        <p class="uppercase">{{branchProduct?.product?.lookupKey}}</p>
+                        <p class="uppercase">{{stockItem?.product?.lookupKey}}</p>
                     </div>
                 </span>
 
                 <p class="text-xs font-medium mt-2">
                     Branch: 
                     <span class="text-blue-800">
-                        {{branchProduct?.branch?.name}}
+                        {{stockItem?.branch?.name}}
                     </span>,
                     Available Quantity: 
                     <span class="text-blue-800">
-                        {{branchProduct?.quantity}} 
-                        <span *ngIf="branchProduct?.quantity == 1">item</span>
-                        <span *ngIf="branchProduct?.quantity > 1">items</span>
+                        {{stockItem?.availableQuantity}} 
+                        <span *ngIf="stockItem?.availableQuantity == 1">item</span>
+                        <span *ngIf="stockItem?.availableQuantity > 1">items</span>
                     </span>
                 </p>
             </div>            
-            <div class="grid grid-cols-3 gap-4 mt-4">
-                <mat-form-field appearance="outline" class="w-full text-xs">
+            <div class="grid grid-cols-2 gap-4 mt-4">
+                <!-- <mat-form-field appearance="outline" class="hidden w-full text-xs">
                     <mat-label>Branch</mat-label>
-                    <input matInput [value]="branchProduct?.branch?.name" disabled />
-                    <!-- <mat-select tabindex="-1" required #branchSelect formControlName="selectedBranchId"
+                    <input matInput [value]="stockItem?.branch?.name" disabled />
+                    <mat-select tabindex="-1" required #branchSelect formControlName="selectedBranchId"
                         (selectionChange)="branchChanged(branchSelect.value)">
-                        <mat-option *ngFor="let branchProduct of productBranches" 
+                        <mat-option *ngFor="let stockItem of productBranches" 
                             [value]="productBranch.branch.id">
                             {{productBranch?.branch?.name}}
                         </mat-option>
-                    </mat-select> -->
-                </mat-form-field>
+                    </mat-select>
+                </mat-form-field> -->
                 
                 <mat-form-field appearance="outline" class="w-full text-xs">
                     <mat-label>Selling at</mat-label>
@@ -89,9 +89,6 @@
                         #quantityTextbox 
                         autocomplete="off"
                         formControlName="quantity" />
-                    <!-- <mat-error *ngIf="+quantityTextbox.value > selectedProductBranch?.quantity">
-                        The quantity you have specified.
-                    </mat-error> -->
                 </mat-form-field>      
             </div>
             <div class="flex items-start justify-between space-x-6">

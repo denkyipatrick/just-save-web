@@ -4,7 +4,7 @@
     <section class="w-full space-y-12">
         <header>
             <section class="flex items-center justify-between space-x-4">
-                <p class="text-3xl">Stock Detail</p>
+                <p class="text-3xl">Current Stock</p>
             </section>
         </header>
 
@@ -14,7 +14,7 @@
             <mat-spinner [diameter]="30"></mat-spinner>
         </section>
 
-        <section *ngIf="stock" class="flex items-center space-x-16 pb-2 border-b">
+        <section *ngIf="activeStock" class="flex items-center space-x-16 pb-2 border-b">
             <section class="flex items-start space-x-4">
                 <mat-icon>calendar_today</mat-icon>
                 <div>
@@ -26,42 +26,37 @@
                 <mat-icon>style</mat-icon>
                 <div>
                     <p class="text-gray-500">Added Products</p>
-                    <p class="text-xl">{{stock?.items?.length}}</p>
+                    <p class="text-xl">{{activeStock?.items?.length}}</p>
                 </div>
             </section>
-            <section class="flex items-start space-x-4">
-                <mat-icon>inventory_2</mat-icon>
+            <!-- <section class="flex items-start space-x-4">
+                <mat-icon>meeting_room</mat-icon>
                 <div>
-                    <p class="text-gray-500">Stock Status</p>
-                    <span class="font-medium">
-                        <p *ngIf="stock?.isActive" class="text-green-600">Current Stock</p>
-                        <p *ngIf="!stock?.isActive" class="text-red-600">Old Stock</p>
-                    </span>
-                    <!-- <p class="text-gray-500">Branch</p>
-                    <p class="text-sm font-medium">{{stock?.branch?.name}}</p>
-                    <p class="text-xs text-gray-500">{{stock?.branch?.address}}</p> -->
+                    <p class="text-gray-500">Branch</p>
+                    <p class="text-sm font-medium">{{activeStock?.branch?.name}}</p>
+                    <p class="text-xs text-gray-500">{{activeStock?.branch?.address}}</p>
                 </div>
-            </section>
+            </section> -->
         </section>
     
         <section class="mt-4">
-            <section *ngIf="!isFetchingStock && stock?.items?.length"
+            <section *ngIf="!isFetchingStock && activeStock?.items?.length"
                 class="mat-elevation-z4 rounded-md">
                 <header class="p-4 flex items-start
                     justify-between space-x-4">
                     <div>
                         <p class="text-lg">Stocked Products</p>
 
-                        <mat-form-field *ngIf="stock?.items?.length > 8" appearance="outline"
+                        <mat-form-field *ngIf="activeStock?.items?.length > 8" appearance="outline"
                             style="font-size: .8rem;">
                             <mat-label>Search Products</mat-label>
-                            <input #searchBox matInput autocomplete="off" [value]="searchKey" 
+                            <input #searchBox matInput autocomplete="off" [value]="searchQuery" 
                                 (keyup)="searchProduct(searchBox.value)"/>
                             <span matPrefix>
                                 <mat-icon>search</mat-icon>
                             </span>
-                            <span [class.invisible]="!searchBox.value" matSuffix>
-                                <button mat-icon-button (click)="clearSearchField(searchBox)">
+                            <span *ngIf="searchBox.value" matSuffix>
+                                <button mat-icon-button (click)="clearSearchBox(searchBox)">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </span>
@@ -69,7 +64,7 @@
                     </div>
                 </header>
                 
-                <table mat-table [dataSource]="tableDataSource" [fixedLayout]="false" 
+                <table mat-table [dataSource]="simpleStockItems" [fixedLayout]="false" 
                     matSort class="w-full">
                     <ng-container matColumnDef="productKey">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Lookup Key</th>

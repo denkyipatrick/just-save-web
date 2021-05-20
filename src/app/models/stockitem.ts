@@ -1,18 +1,16 @@
 import { Product } from './product';
-import { IDeletable } from "./ideleteable";
-import { Stock } from './stock';
+import { Branch } from "./branch";
 
-export class StockItem implements IDeletable {
-    isDeleting = false;
+export class StockItem {
+    branch: Branch;
     product: Product;
-    stock: Stock;
 
     constructor(
         public id: string,
-        public stockId: string,
-        public productId: string,
-        public quantity: number,
-        public availableQuantity: number
+        public quantitySold: number,
+        public quantityStocked: number,
+        public availableQuantity: number,
+        public quantityFromPreviousStock: number
     ) {
     }
 }

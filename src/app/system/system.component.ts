@@ -77,6 +77,7 @@ export class SystemComponent implements OnInit {
       localStorage.removeItem('staff');
       sessionStorage.removeItem('staff');
       sessionStorage.removeItem('stock-list');
+      sessionStorage.removeItem('stock-entries');
       sessionStorage.removeItem('staffs');
       sessionStorage.removeItem('orders');
       sessionStorage.removeItem('branches');

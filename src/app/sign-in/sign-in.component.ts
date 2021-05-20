@@ -1,3 +1,4 @@
+import { BranchService } from './../services/branch.service';
 import { Company } from './../models/company';
 import { CompanyService } from './../services/company.service';
 import { UtilityService } from './../services/utility.service';
@@ -26,6 +27,7 @@ export class SignInComponent implements OnInit {
   constructor(
     private companyService: CompanyService,
     private staffService: StaffService,
+    private branchService: BranchService,
     private utilityService: UtilityService,
     private dialogOpener: MatDialog,
     private router: Router) {
@@ -62,11 +64,13 @@ export class SignInComponent implements OnInit {
     .subscribe(staff => {
       this.staffService.staff = staff;
       this.staffService.branchId = staff?.staffBranch?.branch?.id;
+      this.branchService.branchId = staff?.staffBranch?.branch?.id;
       // this.companyService.companyId = staff?.staffBranch?.branch?.company?.id;
 
       // localStorage.setItem('company', JSON.stringify(staff.staffBranch.branch.company));
       // localStorage.setItem('companyId', JSON.stringify(staff.staffBranch.branch.company.id));
       localStorage.setItem('branchId', staff?.staffBranch?.branch?.id);
+      sessionStorage.setItem('branchId', staff?.staffBranch?.branch?.id);
       localStorage.setItem('staff', JSON.stringify(staff));
       sessionStorage.setItem('staff', JSON.stringify(staff));
       this.router.navigate(['system/products']);

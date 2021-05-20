@@ -58,6 +58,10 @@ import { AddStockItemDialogComponent } from './add-stock-item-dialog/add-stock-i
 import { AddStockItemQuantityDialogComponent } from './add-stock-item-quantity-dialog/add-stock-item-quantity-dialog.component';
 import { ThreeButtonDialogComponent } from './three-button-dialog/three-button-dialog.component';
 import { OrderReceiptDialogComponent } from './order-receipt-dialog/order-receipt-dialog.component';
+import { StockEntryDetailComponent } from './stock-entry-detail/stock-entry-detail.component';
+import { StockEntriesComponent } from './stock-entries/stock-entries.component';
+import { CurrentStockComponent } from './current-stock/current-stock.component';
+import { SearchAllBranchStockItemsDialogComponent } from './search-all-branch-stock-items-dialog/search-all-branch-stock-items-dialog.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +94,11 @@ import { OrderReceiptDialogComponent } from './order-receipt-dialog/order-receip
     AddStockItemDialogComponent,
     AddStockItemQuantityDialogComponent,
     ThreeButtonDialogComponent,
-    OrderReceiptDialogComponent
+    OrderReceiptDialogComponent,
+    StockEntryDetailComponent,
+    StockEntriesComponent,
+    CurrentStockComponent,
+    SearchAllBranchStockItemsDialogComponent
   ],
   imports: [
     CommonModule,

@@ -1,26 +1,51 @@
 
 <app-loading *ngIf="isFetchingStocks" title="Loading Stocks..."></app-loading>
 
-<section *ngIf="!isFetchingStocks && !stocks?.length" style="height: 60vh;"
+<section *ngIf="!isFetchingStocks && !stockEntries?.length" style="height: 60vh;"
     class="w-9/12 flex flex-col items-center 
         justify-center space-y-4">
     <div style="height: 100px; width: 100px; border-radius: 100%;"
         class="bg-gray-100 flex items-center justify-center">
         <mat-icon>inventory_2</mat-icon>
     </div>
+    <div class="text-center space-y-4">
+        <span>
+            <p class="text-lg capitalize font-medium">
+                You do not have any stock entry
+            </p>
+            <p class="text-gray-600">
+                Create your new stock entry to start adding items 
+                to your store.
+            </p>
+        </span>
+
+        <button mat-raised-button color="primary"
+            class="mx-auto"
+            (click)="createStock()">
+            <mat-icon>add</mat-icon>&nbsp;
+            CREATE NEW STOCK ENTRY
+        </button>
+    </div>
 </section>
 
-<section *ngIf="stocks?.length"
+<section *ngIf="stockEntries?.length"
     class="rounded-tl-md rounded-tr-md border-l border-r border-t mat-elevation-z2">
     <header>
         <section class="p-4 flex items-center justify-between space-x-4">
-            <p class="text-3xl">Stock History</p>
+            <p class="text-3xl">Stock Entries</p>
 
             <div class="space-x-4">
                 <button mat-raised-button (click)="refreshStocks()"
                     [disabled]="isRefreshing">
                     <mat-icon>refresh</mat-icon>&nbsp;
                     <span>REFRESH</span>
+                </button>
+                <button mat-raised-button
+                    color="primary"
+                    class="uppercase"
+                    (click)="createStock()">
+                    <mat-icon>add</mat-icon>&nbsp;
+                    <span>New Stock Entry</span>
                 </button>
             </div>
         </section>
@@ -29,25 +54,29 @@
         </mat-progress-bar>
     </header>
     <section>
-        <table mat-table [dataSource]="stocks" class="w-full">
+        <table mat-table [dataSource]="stockEntries" class="w-full">
             <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef>Date</th>
-                <td mat-cell *matCellDef="let stock">{{stock?.dateString}}</td>
+                <td mat-cell *matCellDef="let stockEntry">{{stockEntry?.dateString}}</td>
             </ng-container>
             <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef>Status</th>
-                <td mat-cell *matCellDef="let stock" class="font-medium uppercase">
-                    <span *ngIf="stock?.isActive" class="text-green-600">Current</span>
-                    <span *ngIf="!stock?.isActive" class="text-red-600">Old Stock</span>
+                <td mat-cell *matCellDef="let stockEntry" class="font-medium uppercase">
+                    <span *ngIf="stockEntry?.isOpened" class="text-green-600">Opened</span>
+                    <span *ngIf="!stockEntry?.isOpened" class="text-red-600">Closed</span>
                 </td>
             </ng-container>
             <ng-container matColumnDef="branch">
                 <th mat-header-cell *matHeaderCellDef>Branch</th>
-                <td mat-cell *matCellDef="let stock">{{stock?.branchStock?.branch?.name}}</td>
+                <td mat-cell *matCellDef="let stockEntry">{{stockEntry?.branch?.name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="items">
+                <th mat-header-cell *matHeaderCellDef>Items</th>
+                <td mat-cell *matCellDef="let stockEntry">{{stockEntry?.items?.length}}</td>
             </ng-container>
             <ng-container matColumnDef="view">
                 <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let stock" class="text-right">
+                <td mat-cell *matCellDef="let stockEntry" class="text-right">
                     <button mat-icon-button>
                         <mat-icon>chevron_right</mat-icon>
                     </button>
@@ -56,9 +85,9 @@
 
             <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
             <a matRipple>
-                <tr mat-row *matRowDef="let stock; columns: tableColumns;" 
+                <tr mat-row *matRowDef="let stockEntry; columns: tableColumns;" 
                     class="" style="cursor: pointer;"
-                    (click)="viewStock(stock)"></tr>
+                    (click)="viewStock(stockEntry)"></tr>
             </a>
         </table>
     </section>

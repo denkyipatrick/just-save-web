@@ -1,3 +1,4 @@
+import { StockItem } from './stockitem';
 import { BranchProduct } from './branchproduct';
 
 export class CartItem {
@@ -6,7 +7,9 @@ export class CartItem {
     constructor(
         public quantity: number,
         public soldPrice: number,
-        public branchProduct?: BranchProduct) {
-        this.id = this.branchProduct?.product?.id;
+        public stockItemId: string,
+        public stockItem?: StockItem
+    ) {
+        this.id = this.stockItem?.product?.id;
     }
 }

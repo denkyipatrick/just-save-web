@@ -1,15 +1,15 @@
-import { Branch } from './branch';
 import { StockItem } from './stockitem';
+import { Branch } from "./branch";
 
 export class Stock {
     branch: Branch;
     items: StockItem[];
-    dateString: string = '';
+    dateString: string;
 
     constructor(
         public id: string,
-        public branchId: string,
-        public createdAt: Date,
-        public isOpened: boolean) {
+        public isActive: boolean,
+        public createdAt: Date
+        ) {
     }
 }

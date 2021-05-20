@@ -1,9 +1,10 @@
+import { CompanyService } from './../../services/company.service';
 import { AddStockItemQuantityDialogComponent } from './../add-stock-item-quantity-dialog/add-stock-item-quantity-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { Product } from './../../models/product';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { StockItem } from '../../models/stockitem';
+import { StockEntryItem } from '../../models/stockentryitem';
 
 @Component({
   selector: 'app-add-stock-item-dialog',
@@ -12,7 +13,7 @@ import { StockItem } from '../../models/stockitem';
 })
 export class AddStockItemDialogComponent implements OnInit {
   @Output() closed: EventEmitter<null>;
-  @Output() itemAdded: EventEmitter<StockItem>;
+  @Output() itemAdded: EventEmitter<StockEntryItem>;
   @Output() addNewProduct: EventEmitter<null>;
 
   stockId: string;
@@ -20,7 +21,12 @@ export class AddStockItemDialogComponent implements OnInit {
   dataSource: MatTableDataSource<Product>;
   tableColumns: string[] = ['key', 'name', 'unitPrice'];
 
+  isRefreshing: boolean;
+  isFetchingProducts: boolean;
+  isErrorFetchingProducts: boolean;
+
   constructor(
+    private companyService: CompanyService,
     private dialogRef: MatDialogRef<AddStockItemDialogComponent>,
     private dialogOpener: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -28,12 +34,18 @@ export class AddStockItemDialogComponent implements OnInit {
     this.closed = new EventEmitter();
     this.itemAdded = new EventEmitter();
     this.addNewProduct = new EventEmitter();
-    this.products = JSON.parse(sessionStorage.getItem('products'));
+    this.products = JSON.parse(sessionStorage.getItem('all-products'));
     this.dataSource = new MatTableDataSource(this.products);
   }
 
   ngOnInit(): void {
     this.stockId = this.data.stockId;
+
+    if(!this.products) {
+      this.fetchCompanyProducts();
+    } else {
+      this.refreshProducts();
+    }
   }
 
   closeDialog() {
@@ -67,6 +79,34 @@ export class AddStockItemDialogComponent implements OnInit {
     .itemCreated
     .subscribe(stockItem => {
       this.itemAdded.emit(stockItem);
+    });
+  }
+
+  refreshProducts() {
+    this.isRefreshing = true;
+    this.fetchCompanyProducts();
+  }
+  
+  fetchCompanyProducts(): void {
+    if (!this.isRefreshing) {
+      this.isFetchingProducts = true;
+    }
+
+    this.isErrorFetchingProducts = false;
+
+    this.companyService.fetchCompanyProducts()
+    .subscribe(products => {
+      this.isRefreshing = false;
+      this.isFetchingProducts = false;
+
+      this.products = products;
+      // this.setupPaginator();
+      // this.dataSource.paginator = this.paginator;
+      sessionStorage.setItem('all-products', JSON.stringify(products));
+    }, error => {
+      this.isRefreshing = false;
+      this.isFetchingProducts = false;
+      this.isErrorFetchingProducts = true;
     });
   }
 

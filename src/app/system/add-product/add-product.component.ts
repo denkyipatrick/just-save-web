@@ -1,4 +1,4 @@
-import { Stock } from 'src/app/models/stock';
+import { StockEntry } from 'src/app/models/stockentry';
 import { OkDialogComponent } from './../../dialog/ok-dialog/ok-dialog.component';
 import { CompanyService } from './../../services/company.service';
 import { BranchService } from './../../services/branch.service';
@@ -98,11 +98,11 @@ export class AddProductComponent implements OnInit {
       .subscribe(product => {
         dialogRef.close();
 
-        const products: Product[] = JSON.parse(sessionStorage.getItem('products')) || [];
+        const products: Product[] = JSON.parse(sessionStorage.getItem('all-products')) || [];
 
         if (!products.find(prod => prod.lookupKey === this.form.value['lookupKey'])) {
           products.push(product);
-          sessionStorage.setItem('products', JSON.stringify(products));
+          sessionStorage.setItem('all-products', JSON.stringify(products));
         }
 
         const dialogRef2 = this.dialogOpener.open(ThreeButtonDialogComponent, {

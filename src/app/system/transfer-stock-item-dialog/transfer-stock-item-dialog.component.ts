@@ -5,7 +5,7 @@ import { BranchService } from './../../services/branch.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { CompanyService } from './../../services/company.service';
 import { Branch } from './../../models/branch';
-import { StockItem } from './../../models/stockitem';
+import { StockEntryItem } from '../../models/stockentryitem';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
 
@@ -15,7 +15,7 @@ import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
   styleUrls: ['./transfer-stock-item-dialog.component.scss']
 })
 export class TransferStockItemDialogComponent implements OnInit {
-  item: StockItem;
+  item: StockEntryItem;
   branches: Branch[];
   staffBranchId: string;
   isFetchingBranches: boolean = false;

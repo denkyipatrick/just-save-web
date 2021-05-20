@@ -1,4 +1,4 @@
-import { Stock } from './../models/stock';
+import { StockEntry } from '../models/stockentry';
 import { Order } from './../models/order';
 import { CartItem } from './../models/cartitem';
 import { Staff } from './../models/staff';
@@ -28,7 +28,7 @@ export class StaffService {
   }
 
   createBranchStock(data: any) {
-    return this.http.post<Stock>(`${this.constantsService.STOCKS_URL}`, data);
+    return this.http.post<StockEntry>(`${this.constantsService.STOCK_ENTRIES_URL}`, data);
   }
 
   createBranch(branch: Branch): Observable<Branch> {

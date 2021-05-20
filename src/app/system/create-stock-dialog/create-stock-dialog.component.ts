@@ -6,7 +6,7 @@ import { OkCancelDialogComponent } from './../../dialog/ok-cancel-dialog/ok-canc
 import { StaffService } from './../../services/staff.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Stock } from 'src/app/models/stock';
+import { StockEntry } from 'src/app/models/stockentry';
 
 @Component({
   selector: 'app-create-stock-dialog',
@@ -14,7 +14,7 @@ import { Stock } from 'src/app/models/stock';
   styleUrls: ['./create-stock-dialog.component.scss']
 })
 export class CreateStockDialogComponent implements OnInit {
-  @Output() stockCreated: EventEmitter<Stock>;
+  @Output() stockCreated: EventEmitter<StockEntry>;
 
   disabledBranchSelect: boolean;
 
@@ -91,8 +91,8 @@ export class CreateStockDialogComponent implements OnInit {
               this.dialogOpener.open(OkDialogComponent, {
                 disableClose: true,
                 data: {
-                  title: 'Close Opened Stock!',
-                  message: 'You already have an opened stock. Please close it first.'
+                  title: 'Close Opened Stock Entry!',
+                  message: 'You already have an opened stock entry. Please close it first.'
                 }
               })
               .componentInstance

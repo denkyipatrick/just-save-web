@@ -1,3 +1,4 @@
+import { StockItem } from './../../models/stockitem';
 import { FormGroup, FormControl } from '@angular/forms';
 import { BranchProduct } from './../../models/branchproduct';
 import { StaffService } from './../../services/staff.service';
@@ -16,6 +17,7 @@ export class SelectOrderProductQuantityDialogComponent implements OnInit {
   formErrorMessage: string;
   
   product: Product;
+  stockItem: StockItem;
   branchProduct: BranchProduct;
   selectedProductBranch: BranchProduct;
   productBranches: BranchProduct[];
@@ -34,14 +36,16 @@ export class SelectOrderProductQuantityDialogComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.product = this.data?.product;
+    this.product = this.stockItem?.product;
     this.branchProduct = this.data.branchProduct;
+
+    this.stockItem = this.data.stockItem;
 
     const staffBranchId = this.staffService.staff.staffBranch.branch.id;
 
     this.form = new FormGroup({
       quantity: new FormControl(),
-      priceSold: new FormControl(this.branchProduct.product.sellingPrice),
+      priceSold: new FormControl(this.stockItem.product.sellingPrice),
       selectedBranchId: new FormControl(
         this.branchProduct?.branch.id
       )
@@ -64,10 +68,10 @@ export class SelectOrderProductQuantityDialogComponent implements OnInit {
 
     const typedQuantity = this.form.value['quantity'];
 
-    if (typedQuantity > this.branchProduct.quantity) {
+    if (typedQuantity > this.stockItem.availableQuantity) {
       this.formErrorMessage = `${this.branchProduct?.branch.name} ` + 
       `branch does not have ${typedQuantity} of this product. ` + 
-      `This branch only has ${this.branchProduct.quantity}. ` +
+      `This branch only has ${this.stockItem.availableQuantity}. ` +
       `Try other branches or reduce the quantity.`;
       return;
     }
@@ -78,7 +82,7 @@ export class SelectOrderProductQuantityDialogComponent implements OnInit {
     // );
 
     const productQuantity = null;
-    this.branchProduct.product.quantity = null;
+    this.stockItem.product.quantity = null;
 
     // branchProduct.product = new Product(
     //   this.product.id, 
@@ -91,7 +95,8 @@ export class SelectOrderProductQuantityDialogComponent implements OnInit {
     // );
     
     this.accept.emit(
-      new CartItem(this.form.value['quantity'], this.form.value['priceSold'], this.branchProduct)
+      new CartItem(this.form.value['quantity'], this.form.value['priceSold'],
+      this.stockItem.id, this.stockItem)
     );
 
     this.dialogRef.close();
