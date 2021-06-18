@@ -86,6 +86,7 @@ export class SystemComponent implements OnInit {
       // localStorage.removeItem('companyId');
       // localStorage.removeItem('company');
       localStorage.removeItem('branchId');
+      sessionStorage.clear();
       this.router.navigate(['/out']);
     }, 2000);
   }

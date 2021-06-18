@@ -13,33 +13,52 @@ export class SearchAllBranchStockItemsDialogComponent implements OnInit {
   filteredStocks: Stock[];
   tableColumns: string[] = ['key', 'name', 'quantity'];
 
+  isRefreshing: boolean;
   isFetchingStocks: boolean;
   isErrorFetchingStocks: boolean;
 
   constructor(
     private companyService: CompanyService,
     private dialogRef: MatDialogRef<SearchAllBranchStockItemsDialogComponent>
-  ) { }
+  ) {
+    this.stocks = JSON.parse(sessionStorage.getItem('all-branch-search-dialog-stocks'));
+  }
 
   ngOnInit(): void {
-    this.fetchCompanyActiveStocks();
+    if (!this.stocks) {
+      return this.fetchCompanyActiveStocks();
+    }
+
+    this.filteredStocks = this.stocks;
+    this.refresh();
   }
 
   close() {
     this.dialogRef.close();
   }
 
+  refresh() {
+    this.isRefreshing = true;
+    this.fetchCompanyActiveStocks();
+  }
+
   fetchCompanyActiveStocks() {
-    this.isFetchingStocks = true;
+    if (!this.isRefreshing) {
+      this.isFetchingStocks = true;
+    }
+
     this.isErrorFetchingStocks = false;
 
     this.companyService.fetchAllBranchActiveStocks()
     .subscribe(stocks => {
+      this.isRefreshing = false;
       this.isFetchingStocks = false;
       this.stocks = stocks;
 
       this.filteredStocks = stocks;
+      sessionStorage.setItem('all-branch-search-dialog-stocks', JSON.stringify(stocks));
     }, error => {
+      this.isRefreshing = false;
       this.isFetchingStocks = false;
       this.isErrorFetchingStocks = true;
     });

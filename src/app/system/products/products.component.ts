@@ -32,11 +32,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
 
   isShowMultipleBranches: boolean;
   canStaffCreateProduct: boolean;
-
-  tableColumns: string[] = ['name', 'sellingPrice', 'quantity', 'actions'];
-  // tableColumns: string[] = [
-  //   'key', 'name', 'sellingPrice', 'quantity'
-  // ]
+  tableColumns: string[] = ['name', 'sellingPrice', 'quantity'];
   
   dataSource: MatTableDataSource<SearchableBranchStockItem>;
 
@@ -53,7 +49,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     private router: Router, private route: ActivatedRoute
   ) {
     this.staff = this.staffService.staff;
-    this.searchKey = sessionStorage.getItem('search-key');
+    this.searchKey = sessionStorage.getItem('search-key') || '';
     this.isShowMultipleBranches = JSON.parse(localStorage.getItem('show-products-from-all-branches'));
 
     this.canStaffCreateProduct = this.staffService.staff.roles
@@ -61,7 +57,6 @@ export class ProductsComponent implements OnInit, AfterViewInit {
 
     this.productSelected = new EventEmitter();
     this.activeStock = JSON.parse(sessionStorage.getItem('active-stock'));
-    // this.products = JSON.parse(sessionStorage.getItem('products'));
   }
 
   ngOnInit(): void {

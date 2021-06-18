@@ -35,9 +35,14 @@
                 </span>
             </mat-form-field>
         </span>
+        <span>
+            <mat-progress-bar mode="indeterminate"
+                [class.visible]="isFetchingProducts || isRefreshing"
+                [class.invisible]="!isFetchingProducts && !isRefreshing"></mat-progress-bar>
+        </span>
     </header>
 
-    <section style="height: 60vh; overflow-y: auto;">        
+    <section style="height: 60vh; overflow-y: auto;">
         <table tabindex="-1" mat-table [dataSource]="dataSource" class="w-full">
             <ng-container matColumnDef="key">
                 <th mat-header-cell *matHeaderCellDef>Product Lookup Key</th>

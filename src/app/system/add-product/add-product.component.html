@@ -17,7 +17,7 @@
                             <mat-form-field appearance="fill" class="w-full">
                                 <mat-label>Product Key / Lookup Key</mat-label>
                                 <input #lookupTextbox matInput required formControlName="lookupKey" 
-                                    class="uppercase"
+                                    class="uppercase" disabled
                                     (keyup)="lookupProduct(lookupTextbox.value)" />
                                 <mat-hint>
                                     Every product must have a unique key to prevent duplicates 

@@ -34,7 +34,7 @@ export class AddStockItemDialogComponent implements OnInit {
     this.closed = new EventEmitter();
     this.itemAdded = new EventEmitter();
     this.addNewProduct = new EventEmitter();
-    this.products = JSON.parse(sessionStorage.getItem('all-products'));
+    this.products = JSON.parse(sessionStorage.getItem('add-stock-item-dialog-products'));
     this.dataSource = new MatTableDataSource(this.products);
   }
 
@@ -42,10 +42,10 @@ export class AddStockItemDialogComponent implements OnInit {
     this.stockId = this.data.stockId;
 
     if(!this.products) {
-      this.fetchCompanyProducts();
-    } else {
-      this.refreshProducts();
+      return this.refreshProducts();
     }
+    
+    this.fetchCompanyProducts();
   }
 
   closeDialog() {
@@ -100,9 +100,9 @@ export class AddStockItemDialogComponent implements OnInit {
       this.isFetchingProducts = false;
 
       this.products = products;
-      // this.setupPaginator();
-      // this.dataSource.paginator = this.paginator;
-      sessionStorage.setItem('all-products', JSON.stringify(products));
+      this.dataSource = new MatTableDataSource(this.products);
+      sessionStorage.setItem('add-stock-item-dialog-products',
+        JSON.stringify(products));
     }, error => {
       this.isRefreshing = false;
       this.isFetchingProducts = false;

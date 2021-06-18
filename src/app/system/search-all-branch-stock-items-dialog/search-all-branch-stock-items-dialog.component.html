@@ -35,14 +35,19 @@
         </section>
 
         <section style="height: 60vh; overflow-y: auto;">
-            <ul class="space-y-6">
+            <mat-progress-bar [class.visible]="isFetchingStocks || isRefreshing"
+                [class.invisible]="!isFetchingStocks && !isRefreshing"
+                class="border border-transparent"
+                mode="indeterminate"></mat-progress-bar>
+
+            <ul *ngIf="stocks?.length" class="space-y-6">
                 <li *ngFor="let stock of filteredStocks">
                     <section>
                         <p class="text-base text-blue-700">
                             {{stock?.branchStock?.branch?.name}} Products
                         </p>
                         
-                        <table mat-table [dataSource]="stock.items" [fixedLayout]="false" matSort class="w-full">
+                        <table mat-table [dataSource]="stock.items" [fixedLayout]="true" matSort class="w-full">
                             <ng-container matColumnDef="key" class="invisible">
                                 <td mat-cell *matCellDef="let item" class="uppercase">{{item?.product?.lookupKey}}</td>
                             </ng-container>
@@ -57,7 +62,16 @@
                             <ng-container matColumnDef="quantity">
                                 <td mat-cell *matCellDef="let item" style="min-width: 120px;">
                                     <span class="font-medium">
-                                        {{item?.availableQuantity}} In Stock
+                                        <!-- {{item?.availableQuantity}} In Stock -->
+                                        <span *ngIf="item?.availableQuantity">
+                                            {{item?.availableQuantity}} In Stock
+                                        </span>
+                                        <span *ngIf="!item?.availableQuantity"
+                                            style="padding: 0 6px;"
+                                            class="text-red-700 font-medium rounded-lg
+                                            inline-block bg-red-300">
+                                            Out of Stock
+                                        </span>
                                     </span>
                                 </td>
                             </ng-container>

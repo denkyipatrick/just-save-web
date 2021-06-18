@@ -108,7 +108,7 @@ export class StockEntryDetailComponent implements OnInit {
         ));
         
         this.itemsDataSource = new MatTableDataSource(this.simpleStockItems);
-        sessionStorage.setItem('target-stock', JSON.stringify(this.stockEntry));
+        sessionStorage.setItem('target-stock-entry', JSON.stringify(this.stockEntry));
         return;
       }
       
@@ -135,7 +135,7 @@ export class StockEntryDetailComponent implements OnInit {
       this.searchQuery = '';
       this.itemsDataSource.filter = '';
 
-      sessionStorage.setItem('target-stock', JSON.stringify(this.stockEntry));
+      sessionStorage.setItem('target-stock-entry', JSON.stringify(this.stockEntry));
     });
   }
 
@@ -202,7 +202,7 @@ export class StockEntryDetailComponent implements OnInit {
         this. tableColumns = this.tableColumns.filter(item => item !== 'actions');
 
         this.stockEntry.isOpened = false;
-        sessionStorage.setItem('target-stock', JSON.stringify(this.stockEntry));
+        sessionStorage.setItem('target-stock-entry', JSON.stringify(this.stockEntry));
 
         this.dialogOpener.open(OkDialogComponent, {
           data: {
@@ -212,7 +212,37 @@ export class StockEntryDetailComponent implements OnInit {
         });
       }, error => {
         dialogRef.close();
-        console.error(error);
+
+        switch(error.status) {
+          case 0: {
+            this.snackBar.open("You are offline", "OK", {
+              duration: 5000
+            })
+            break;
+          }
+          case 400: {
+            for (const err of error.error.errors) {
+              if (err.param === 'has_no_items') {
+                this.dialogOpener.open(OkDialogComponent, {
+                  data: {
+                    title: 'Error',
+                    message: 'You cannot close an entry which has no items. Delete or add items.'
+                  }
+                });
+                break;
+              }
+            }
+            break;
+          }
+          default: {            
+            this.dialogOpener.open(OkDialogComponent, {
+              data: {
+                title: 'Error',
+                message: 'An unexpected error has occurred. Please try again.'
+              }
+            });
+          }
+        }
       });
     });
   }
@@ -233,12 +263,12 @@ export class StockEntryDetailComponent implements OnInit {
     sessionStorage.removeItem(SEARCH_KEY);
   }
 
-  deleteItem(item: StockEntryItem, e: Event) {
+  deleteItem(item: SimpleStockEntryItem, e: Event) {
     e.stopPropagation();
 
     this.dialogOpener.open(OkCancelDialogComponent, {
       data: {
-        title: `Remove ${item?.product?.name}?`,
+        title: `Remove "${item?.productName}"`,
         message: 'Do you want to remove this item? You cannot undo this operation.',
         okButtonText: 'REMOVE',
         cancelButtonText: 'CANCEL'
@@ -277,10 +307,14 @@ export class StockEntryDetailComponent implements OnInit {
   }
 
   deleteStock() {
+    const deleteMessage = this.stockEntry?.items?.length ? 
+    `All the items in this entry will also be removed. Are you sure?` : 
+    `Are you sure about this action?`;
+
     this.dialogOpener.open(OkCancelDialogComponent, {
       data: {
-        title: 'Delete Stock',
-        message: 'Are you sure about this action?',
+        title: `Delete Stock Entry`,
+        message: deleteMessage,
         okButtonText: 'YES',
         cancelButtonText: 'NO'
       }

@@ -1,7 +1,7 @@
 
 <section class="flex items-start space-x-4">
     <app-back-button [cancelEvent]="true" (clicked)="goBack()"></app-back-button>
-    <section class="w-full space-y-12">
+    <section class="w-full space-y-8">
         <header>
             <section class="flex items-center justify-between space-x-4">
                 <p class="text-3xl">Stock Entry Detail</p>
@@ -10,13 +10,13 @@
                         class="text-green-600 border
                         py-1 px-4 rounded-full text-center
                         font-medium bg-opacity-60">
-                        Stock entry is opened
+                        Opened
                     </p>
                     <p *ngIf="stockEntry && !stockEntry?.isOpened"
                         class="text-red-600 border bordr-red-500 
                         py-1 px-4 rounded-full text-center
                         font-medium bg-opacity-60">
-                        Stock entry is closed
+                        Closed
                     </p>
                     <button *ngIf="stockEntry?.isOpened" mat-raised-button
                         color="warn"
@@ -55,28 +55,37 @@
             <mat-spinner [diameter]="30"></mat-spinner>
         </section>
 
-        <section *ngIf="!isFetchingStockEntry && stockEntry" class="flex items-center space-x-16 pb-2 border-b">
-            <section class="flex items-start space-x-4">
-                <mat-icon>calendar_today</mat-icon>
-                <div>
-                    <p class="text-gray-500">Date Created</p>
-                    <p class="text-xl">{{stockEntry?.dateString}}</p>
-                </div>
+        <section *ngIf="!isFetchingStockEntry && stockEntry">
+            <section  class="flex items-center space-x-16 pb-2 border-b">
+                <section class="flex items-start space-x-4">
+                    <mat-icon>calendar_today</mat-icon>
+                    <div>
+                        <p class="text-gray-500">Date Created</p>
+                        <p class="text-xl">{{stockEntry?.dateString}}</p>
+                    </div>
+                </section>
+                <section class="flex items-start space-x-4">
+                    <mat-icon>style</mat-icon>
+                    <div>
+                        <p class="text-gray-500">Added Products</p>
+                        <p class="text-xl">{{stockEntry?.items?.length}}</p>
+                    </div>
+                </section>
+                <section class="flex items-start space-x-4">
+                    <mat-icon>meeting_room</mat-icon>
+                    <div>
+                        <p class="text-gray-500">Branch</p>
+                        <p class="text-sm font-medium">{{stockEntry?.branch?.name}}</p>
+                        <p class="text-xs text-gray-500">{{stockEntry?.branch?.address}}</p>
+                    </div>
+                </section>
             </section>
-            <section class="flex items-start space-x-4">
-                <mat-icon>style</mat-icon>
-                <div>
-                    <p class="text-gray-500">Added Products</p>
-                    <p class="text-xl">{{stockEntry?.items?.length}}</p>
-                </div>
-            </section>
-            <section class="flex items-start space-x-4">
-                <mat-icon>meeting_room</mat-icon>
-                <div>
-                    <p class="text-gray-500">Branch</p>
-                    <p class="text-sm font-medium">{{stockEntry?.branch?.name}}</p>
-                    <p class="text-xs text-gray-500">{{stockEntry?.branch?.address}}</p>
-                </div>
+            <section *ngIf="stockEntry?.items?.length" class="text-right mt-2">
+                <button *ngIf="stockEntry?.isOpened" mat-raised-button
+                    color="warn" (click)="deleteStock()">
+                    <mat-icon>delete</mat-icon>
+                    <span>DELETE ENTRY</span>
+                </button>
             </section>
         </section>
     

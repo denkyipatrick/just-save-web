@@ -126,6 +126,9 @@ export class AddProductComponent implements OnInit {
         .subscribe(() => {
           this.form.markAsUntouched();
           this.form.reset();
+          this.form.patchValue({
+            companyId: this.companyService.company.id,
+          })
         });
         
         dialogRef2.option3
