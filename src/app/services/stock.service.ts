@@ -1,3 +1,4 @@
+import { StockItem } from './../models/stockitem';
 import { Stock } from './../models/stock';
 import { StockEntry } from 'src/app/models/stockentry';
 import { StockEntryItem } from '../models/stockentryitem';
@@ -21,6 +22,11 @@ export class StockService {
 
   createStockItem(data: any) {
     return this.http.post<StockEntryItem>(`${this.constants.STOCK_ENTRY_ITEMS_URL}`, data);
+  }
+
+  updateStockItemQuantity(stockItemId: string, data: any) {
+    return this.http.patch<StockItem>(`${this.constants.STOCK_ITEMS_URL}/` + 
+    `${stockItemId}/edit-quantity`, data);
   }
 
   deleteStock(stockId: string) {

@@ -1,3 +1,5 @@
+import { MatDialog } from '@angular/material/dialog';
+import { StockItem } from './../../models/stockitem';
 import { MatPaginator } from '@angular/material/paginator';
 import { StockService } from './../../services/stock.service';
 import { SimpleStockItem } from './../../models/simplestockitem';
@@ -8,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { ActivatedRoute } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
+import { EditStockitemQuantityDialogComponent } from '../edit-stockitem-quantity-dialog/edit-stockitem-quantity-dialog.component';
 
 @Component({
   selector: 'app-stock-detail',
@@ -29,7 +32,8 @@ export class StockDetailComponent implements OnInit {
     'quantityStocked',
     'previousStockRemainingQuantity',
     'quantitySold',
-    'remainingQuantity'
+    'remainingQuantity',
+    'menu'
   ];
 
   paginator: MatPaginator;
@@ -39,6 +43,7 @@ export class StockDetailComponent implements OnInit {
     private stockService: StockService,
     private staffService: StaffService,
     private branchService: BranchService,
+    private dialogOpener: MatDialog,
     private activatedRoute: ActivatedRoute
   ) {
     this.stock = JSON.parse(sessionStorage.getItem('target-stock'));
@@ -57,9 +62,37 @@ export class StockDetailComponent implements OnInit {
     this.setupStock();
   }
 
+  showEditQuantityDialog(item: SimpleStockItem) {
+    let stockItem: StockItem = this.stock.items.find(sItem => sItem.id === item.id);
+
+    console.log(stockItem);
+
+    this.dialogOpener.open(EditStockitemQuantityDialogComponent, {
+      data: {
+        stockItem: stockItem
+      }
+    })
+    .componentInstance
+    .updated
+    .subscribe(updatedItem => {
+      for (const item of this.stock.items) {
+        if (item.id === updatedItem.id) {
+          item.quantityStocked = updatedItem.quantityStocked;
+          item.availableQuantity = updatedItem.availableQuantity;
+          break;
+        }
+      }
+
+      sessionStorage.setItem('target-stock', JSON.stringify(this.stock));
+      this.setupStock();
+    });
+  }
+
   setupStock() {
     this.stockDate = moment(this.stock.createdAt).format("Do MMM YYYY");
 
+    this.simpleStockItems = [];
+    
     this.stock.items.forEach(item => {
       this.simpleStockItems.push(
         new SimpleStockItem(

@@ -1,0 +1,84 @@
+<section style="width: 600px; max-width:  100%;"
+    class="space-y-4">
+    <header>
+        <section class="flex items-center justify-between">
+            <span>
+                <mat-icon>
+                    
+                </mat-icon>
+                <p class="text-xl">
+                    Edit Stock Item Quantity
+                </p>
+            </span>
+            <button mat-icon-button (click)="close()"
+                class="bg-red-300 text-red-600">
+                <mat-icon>close</mat-icon>
+            </button>
+        </section>
+    </header>
+
+    <section>
+        <section>
+            <section class="flex items-center justify-between">
+                <div>
+                    <p class="text-xs">Product Name</p>
+                    <p class="text-lg font-medium">{{stockItem?.product?.name}}</p>
+                </div>
+                <div>
+                    <p class="text-right">Edit Type</p>
+                    <button mat-button [matMenuTriggerFor]="menu" class="border">
+                        <span>{{editType}}</span>
+                        <mat-icon>arrow_drop_down</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="editType = 'Add'">Add</button>
+                        <button mat-menu-item (click)="editType = 'Subtract'">Subtract</button>
+                    </mat-menu>
+                </div>
+            </section>
+
+            <section>
+                <form [formGroup]="quantityForm" (ngSubmit)="changeQuantity()">
+                    <section>
+                        <mat-form-field appearance="outline" class="w-full">
+                            <mat-label>Type Quantity</mat-label>
+                            <input #quantityBox matInput type="number"
+                                formControlName="quantity"
+                                autocomplete="off" />
+                        </mat-form-field>
+                    </section>
+
+                    <section class="space-y-4">
+                        <div class="flex items-start justify-between space-x-4">
+                            <!-- <div *ngIf="quantityBox?.value">
+                                <p class="w-9/12">
+                                    You are <span>{{editType?.toLowerCase()}}ing</span> 
+                                    {{quantityBox.value}} to 
+                                    {{stockItem?.availableQuantity}} {{stockItem?.product?.name}}
+                                </p>
+                                <p>
+                                    New Quantity: {{Number.parseInt(quantityBox.value) + stockItem?.availableQuantity}}
+                                </p>
+                            </div> -->
+                            <span class="mr-auto"></span>
+                            <button mat-raised-button color="primary"
+                                [disabled]="isWorking">
+                                SAVE &nbsp; <mat-icon>arrow_forward</mat-icon>
+                            </button>
+                        </div>
+                        <div>
+                            <p class="text-xs font-medium text-red-600">
+                                {{errorMessage}}
+                            </p>
+                            <ul>
+                                <li *ngFor="let msg of validationErrorMessages">
+                                    {{msg}}
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </form>
+            </section>
+        </section>
+    </section>
+</section>

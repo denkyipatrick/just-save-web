@@ -119,6 +119,7 @@ import { EditStockitemQuantityDialogComponent } from './edit-stockitem-quantity-
     MatFormFieldModule,
     MatProgressBarModule,
     MatInputModule,
+    MatMenuModule,
     DialogModule,
     MatSortModule,
     MatChipsModule,
