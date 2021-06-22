@@ -63,6 +63,7 @@ import { StockEntriesComponent } from './stock-entries/stock-entries.component';
 import { CurrentStockComponent } from './current-stock/current-stock.component';
 import { SearchAllBranchStockItemsDialogComponent } from './search-all-branch-stock-items-dialog/search-all-branch-stock-items-dialog.component';
 import { EditStockitemQuantityDialogComponent } from './edit-stockitem-quantity-dialog/edit-stockitem-quantity-dialog.component';
+import { DailySalesDetailComponent } from './daily-sales-detail/daily-sales-detail.component';
 
 @NgModule({
   declarations: [
@@ -100,7 +101,8 @@ import { EditStockitemQuantityDialogComponent } from './edit-stockitem-quantity-
     StockEntriesComponent,
     CurrentStockComponent,
     SearchAllBranchStockItemsDialogComponent,
-    EditStockitemQuantityDialogComponent
+    EditStockitemQuantityDialogComponent,
+    DailySalesDetailComponent
   ],
   imports: [
     CommonModule,

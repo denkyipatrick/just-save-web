@@ -1,0 +1,93 @@
+<section class="flex items-start space-x-4  my-4">
+    <app-back-button></app-back-button>
+    
+    <section class="space-y-6 w-full">
+        <header>
+            <section class="space-y-8">
+                <p class="text-4xl">{{date}} Sales</p>
+
+                <section class="grid grid-cols-2 gap-4">
+                    <div class="font-medium">
+                        <p class="text-xs text-gray-500">Total Items Sold</p>
+                        <p class="text-5xl text-blue-600 font-light">{{totalItems}}</p>
+                    </div>
+                    <div class="font-medium">
+                        <p class="text-xs text-gray-500">Total Amount</p>
+                        <p class="text-5xl font-light text-blue-600">GHC {{totalAmount?.toFixed(2)}}</p>
+                    </div>
+                </section>
+
+                <section>
+                    <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Search Order by time or staff name</mat-label>
+                        <input #searchBox matInput autocomplete="off"
+                            (keyup)="searchOrder(searchBox.value)"/>
+                        <span matPrefix>
+                            <mat-icon>search</mat-icon>
+                        </span>
+                    </mat-form-field>
+                </section>
+            </section>
+        </header>
+
+        <section>
+            <ul class="space-y-8">
+                <li *ngFor="let order of filteredCustomOrders" class="space-y-2">
+                    <div class="flex items-center space-x-4">
+                        <p class="font-medium text-lg">{{order?.simpleDate}}</p>
+                        <p>
+                            <span class="text-gray-700">Total Items:</span>&nbsp;
+                            <span class="font-medium text-black">{{order?.items?.length}}</span>
+                        </p>
+                        <p>
+                            <span class="text-gray-700">Amount:</span>&nbsp;
+                            <span class="font-medium text-black">
+                                GHC {{order?.totalOrderAmount?.toFixed(2)}}
+                            </span>
+                        </p>
+                        <p>
+                            <span>Staff:</span>&nbsp;
+                            <span class="text-purple-800 font-medium">
+                                {{order?.staff?.firstName}} {{order?.staff?.lastName}}
+                            </span>
+                        </p>
+                        <span style="margin-right: auto;"></span>
+                        <button mat-icon-button class="bg-gray-200" (click)="viewOrder(order)">
+                            <mat-icon>arrow_forward</mat-icon>
+                        </button>
+                    </div>
+                    
+                    <table mat-table [dataSource]="order?.items" [fixedLayout]="false" 
+                        class="w-full text-gray-700 mat-elevation-z1">
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef>Product Name</th>
+                            <td mat-cell *matCellDef="let orderItem" class="w-2/5">{{orderItem?.product?.name}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="itemPrice">
+                            <th mat-header-cell *matHeaderCellDef>Order Price</th>
+                            <td mat-cell *matCellDef="let orderItem" class="">
+                                <span class="font-medium text-gray-800">GHC</span> 
+                                <!-- {{orderItem?.orderItemSellingPrice?.toFixed(2)}} -->
+                                {{(orderItem?.salePrice || orderItem?.orderItemSellingPrice)?.toFixed(2)}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="quantity">
+                            <th mat-header-cell *matHeaderCellDef>Quantity Ordered</th>
+                            <td mat-cell *matCellDef="let orderItem" class="">{{orderItem?.quantityOrdered}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="totalItemAmount">
+                            <th mat-header-cell *matHeaderCellDef>Total Item Amount</th>
+                            <td mat-cell *matCellDef="let orderItem" class="">
+                                <span class="font-medium text-gray-800">GHC</span> 
+                                {{(orderItem?.quantityOrdered * 
+                                    (orderItem?.salePrice || orderItem?.orderItemSellingPrice))?.toFixed(2)}}
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+                        <tr mat-row *matRowDef="let orderItem; columns: tableColumns;"></tr>
+                    </table>
+                </li>
+            </ul>
+        </section>
+    </section>
+</section>

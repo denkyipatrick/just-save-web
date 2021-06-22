@@ -20,17 +20,23 @@ export class OrdersComponent implements OnInit {
   isErrorFetchingOrders: boolean;
 
   tableColumns: string[];
+  table2Columns: string[];
   dataSource: MatTableDataSource<Order>;
+  dataSource2: MatTableDataSource<any>;
   
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  
+  orderGroups: Map<string, Order[]> = new Map();
+  dataSourceInput: any = [];
 
   constructor(
     private companyService: CompanyService,
     private staffService: StaffService,
     private router: Router,
     private route: ActivatedRoute
-  ) {    
+  ) {
+    this.table2Columns = ['date', 'totalItems', 'totalAmount', 'action'];
     this.tableColumns = ['id', 'served', 'items', 'branch', 'date', 'action'];
     this.orders = JSON.parse(sessionStorage.getItem('orders'));
   }
@@ -54,13 +60,25 @@ export class OrdersComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  searchOrderDay(key: string) {
+    this.dataSource2.filter = key;
+  }
+
   viewOrder(order: Order) {
     sessionStorage.setItem('target-order', JSON.stringify(order));
     this.router.navigate(['./', order.id], { relativeTo: this.route })
   }
 
+  viewDailySale(date) {
+    sessionStorage.setItem('target-sales-day', date)
+    sessionStorage.setItem('day-orders', JSON.stringify(this.orderGroups.get(date)))
+
+    this.router.navigate(['./', date], { relativeTo: this.route })
+  }
+
   refreshOrders() {
     this.isRefreshing = true;
+    this.groupOrdersIntoDates();
     this.setupPaginator();
     this.fetchOrders();
   }
@@ -92,6 +110,7 @@ export class OrdersComponent implements OnInit {
         return order;
       });
 
+      this.groupOrdersIntoDates();
       this.setupPaginator();
 
       sessionStorage.setItem('orders', JSON.stringify(orders));
@@ -100,6 +119,51 @@ export class OrdersComponent implements OnInit {
       this.isFetchingOrders = false;
       this.isErrorFetchingOrders = true;
     });
+  }
+
+  groupOrdersIntoDates() {
+    const dates = [];
+    this.dataSourceInput = [];
+
+    this.orders.forEach(order => {
+      const formattedOrderDate = moment(order.createdAt).format("Do MMMM YYYY");
+
+      if (!this.orderGroups.has(formattedOrderDate)) {
+        dates.push(formattedOrderDate)
+        this.orderGroups.set(formattedOrderDate, null)
+      }
+
+    });
+
+    for (let key of this.orderGroups.keys()) {
+      const orders = this.orders.filter(order => {
+        if (moment(order.createdAt).format("Do MMMM YYYY") == key) {
+          return order;
+        }
+      });
+
+      this.orderGroups.set(key, orders);
+    }
+
+    this.orderGroups.forEach((orders, key) => {
+      let totalItems = 0;
+      let totalAmount = 0;
+
+      orders.forEach(order => {
+        totalItems += order.items.length;
+        order.items.forEach(item => {
+          totalAmount += item.salePrice || item.orderItemSellingPrice
+        })
+      });
+
+      this.dataSourceInput.push({
+        date: key,
+        totalItems: totalItems,
+        totalAmount: totalAmount
+      });
+    });
+
+    this.dataSource2 = new MatTableDataSource(this.dataSourceInput);
   }
 
   fetchCompanyOrders() {
@@ -115,12 +179,14 @@ export class OrdersComponent implements OnInit {
       this.isFetchingOrders = false;
 
       this.orders = orders.map(order => {
+        const orderDateCreated = new Date(order.createdAt);
         order.maskedId = order.id.substring(order.id.lastIndexOf('-'), 5);
-        order.simpleDate = moment(new Date(order.createdAt)).format("Do MMMM YYYY hh:mm a");
+        order.simpleDate = moment(orderDateCreated).format("Do MMMM YYYY hh:mm a");
 
         return order;
       });
 
+      this.groupOrdersIntoDates();
       this.setupPaginator();
 
       sessionStorage.setItem('orders', JSON.stringify(orders));

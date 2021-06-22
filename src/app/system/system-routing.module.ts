@@ -1,3 +1,4 @@
+import { DailySalesDetailComponent } from './daily-sales-detail/daily-sales-detail.component';
 import { CurrentStockComponent } from './current-stock/current-stock.component';
 import { StockEntryDetailComponent } from './stock-entry-detail/stock-entry-detail.component';
 import { StockEntriesComponent } from './stock-entries/stock-entries.component';
@@ -32,6 +33,8 @@ const routes: Routes = [
     { path: 'products', component: ProductsComponent },
     { path: 'orders', component: OrdersComponent },
     { path: 'orders/:orderId', component: OrderDetailComponent },
+    { path: 'daily-sales', component: OrdersComponent },
+    { path: 'daily-sales/:date', component: DailySalesDetailComponent },
     { path: 'products/:id', component: ProductDetailComponent },
     { path: 'add-product', component: AddProductComponent },
     { path: 'new-order', component: NewOrderComponent },
