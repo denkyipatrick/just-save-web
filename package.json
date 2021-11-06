@@ -4,7 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve & ngtw watch",
+    "start-branch": "ng serve --configuration=branch & ngtw watch",
     "build": "ngtw build --purge && ng build --prod",
+    "branch-build": "ngtw build --purge && ng build --prod --configuration=branch",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

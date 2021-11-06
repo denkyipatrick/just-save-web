@@ -1,9 +1,9 @@
 <section class="mb-8">
     <section class="flex items-start space-x-4">
         <app-back-button></app-back-button> &nbsp;         
-        <section class="w-full h-full space-y-6">
+        <section class="w-full h-full space-y-4">
             <header class="flex items-center justify-between">
-                <p class="text-3xl font-light">New Order</p>
+                <p class="text-3xl">New Order</p>
             </header>
 
             <section style="max-height: 400px; padding: 1px;" 
@@ -19,60 +19,85 @@
                         (keyup)="searchProduct(searchField.value)"
                         autocomplete="off" />
                     <span matPrefix>
-                        <mat-icon>search</mat-icon>
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                        height="24px"
+                        viewBox="0 0 24 24"
+                        width="24px"
+                        fill="#000000">
+                        <path d="M0 0h24v24H0V0z" fill="none"/>
+                        <path d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                      </svg>
                     </span>
-                    <span matSuffix>
-                        <button mat-icon-button (click)="searchField.value = ''">
-                            <mat-icon>close</mat-icon>
-                        </button>
+                    <span matSuffix *ngIf="searchField.value">
+                      <button mat-icon-button (click)="searchField.value = '';clearTextField()">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                          height="24px"
+                          class="mx-auto"
+                          viewBox="0 0 24 24"
+                          width="24px"
+                          fill="#000000">
+                          <path d="M0 0h24v24H0V0z"
+                            fill="none"/>
+                          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                        </svg>
+                      </button>
                     </span>
                 </mat-form-field>
 
-                <div *ngIf="searchField.value" class="bg-white w-full absolute top-full
-                    mat-elevation-z4 py-4 z-10">
+                <div class="bg-white w-full top-full
+                    border shadow-sm rounded-md py-4 z-10">
                     <div class="px-4">
-                        <p>Select a product</p>
+                        <p class="text-lg font-medium">Select a product</p>
+                        <p class="text-sm text-gray-700">
+                          Click on a product to add it to your selected items.
+                        </p>
                     </div>
-                    <div style="max-height: 55vh; overflow-y: auto;">
-                        <table mat-table [dataSource]="dataSource" class="w-full">
-                            <ng-container matColumnDef="key">
-                                <th mat-header-cell *matHeaderCellDef>Lookup Key</th>
-                                <td mat-cell *matCellDef="let searchableProduct" class="uppercase">
-                                    {{searchableProduct?.productLookupKey}}
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="name">
-                                <th mat-header-cell *matHeaderCellDef>Name</th>
-                                <td mat-cell *matCellDef="let searchableProduct">
-                                    <p style="margin: 0; font-size: .8rem; margin-right: 1rem;" 
-                                        class="font-medium text-gray-800">
-                                        {{searchableProduct?.productName}}
-                                    </p>
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="sellingPrice">
-                                <th mat-header-cell *matHeaderCellDef>Unit Price</th>
-                                <td mat-cell *matCellDef="let searchableProduct" style="min-width: 120px;">
-                                    <span class="text-gray-600 font-medium">GHC </span> 
-                                    <span class="font-medium text-gray-900">
-                                        {{searchableProduct?.productSellingPrice?.toFixed(2)}}
-                                    </span>
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="quantity">
-                                <th mat-header-cell *matHeaderCellDef>In Stock</th>
-                                <td mat-cell *matCellDef="let searchableProduct" style="min-width: 120px;">
-                                    <span class="font-medium">
-                                        {{searchableProduct?.quantity}}
-                                    </span>
-                                </td>
-                            </ng-container>
-                        
-                            <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
-                            <tr mat-row *matRowDef="let searchableProduct; columns: tableColumns;" 
-                                class="body-row" style="cursor: pointer;"
-                                (click)="onProductSelected(searchableProduct)"></tr>
-                        </table>
+                    <div style="max-height: 200px; overflow-y: auto;">
+                      <table *ngIf="isBranchBuild" mat-table
+                        [dataSource]="dataSource" class="w-full">
+                        <ng-container matColumnDef="key">
+                          <th mat-header-cell *matHeaderCellDef>Lookup Key</th>
+                          <td mat-cell *matCellDef="let product" class="uppercase">
+                            {{product?.lookupKey}}
+                          </td>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                          <th mat-header-cell *matHeaderCellDef>Name</th>
+                          <td mat-cell *matCellDef="let product">
+                            <p style="margin: 0; font-size: .8rem; margin-right: 1rem;" 
+                              class="font-medium text-gray-800">
+                              {{product?.name}}
+                            </p>
+                          </td>
+                        </ng-container>
+                        <ng-container matColumnDef="sellingPrice">
+                            <th mat-header-cell *matHeaderCellDef>Unit Price</th>
+                            <td mat-cell *matCellDef="let product" style="min-width: 120px;">
+                                <span class="text-gray-600 font-medium">GHC </span> 
+                                <span class="font-medium text-gray-900">
+                                    {{product?.sellingPrice?.toFixed(2)}}
+                                </span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="quantity">
+                          <th mat-header-cell *matHeaderCellDef>In Stock</th>
+                          <td mat-cell *matCellDef="let product" style="min-width: 120px;">
+                            <span *ngIf="product?.quantity > 0" class="font-medium">
+                              {{product?.quantity}}
+                            </span>
+                            <span *ngIf="product?.quantity === 0"
+                              class="text-red-700 bg-red-300 p-1 rounded-md">
+                              Out of stock
+                            </span>
+                          </td>
+                        </ng-container>
+                      
+                        <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+                        <tr mat-row *matRowDef="let product; columns: tableColumns;" 
+                          class="body-row" style="cursor: pointer;"
+                          (click)="onBranchBuildProductSelected(product.id)">
+                        </tr>
+                      </table>
                     </div>
                 </div>
             </section>
@@ -86,110 +111,70 @@
                         <p class="text-gray-400">The items you select will show here...</p>
                     </div>
                 </section>
+
                 <section *ngIf="cartItems?.length" class="">
                     <mat-card>
                         <mat-card-content>
                             <header class="mb-8">
                                 <span class="flex items-center justify-between space-x-6">
-                                    <p class="text-2xl">Selected Items</p>
-                                    <button mat-raised-button color="primary"
-                                        (click)="startOrder()">
-                                        START ORDER 
-                                        <mat-icon>chevron_right</mat-icon>
-                                    </button>
+                                    <p class="text-2xl font-medium text-gray-800">
+                                      Selected Items
+                                    </p>
+                                    <div>
+                                      <button mat-button color="primary"
+                                          (click)="clearCartItems()"
+                                          class="bg-gray-100">
+                                          <!-- <mat-icon>chevron_right</mat-icon> -->
+                                          <svg xmlns="http://www.w3.org/2000/svg"
+                                            height="24px"
+                                            class="inline-block text-blue-800 fill-current"
+                                            viewBox="0 0 24 24"
+                                            width="24px"
+                                            fill="#FFF">
+                                            <path d="M0 0h24v24H0V0z"
+                                              fill="none"/>
+                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                                          </svg>
+                                          CLEAR ITEMS
+                                      </button>&nbsp;
+                                      <button mat-raised-button color="primary"
+                                          (click)="startOrder()">
+                                          START ORDER 
+                                          <svg xmlns="http://www.w3.org/2000/svg"
+                                            height="24px"
+                                            class="inline-block text-white fill-current"
+                                            viewBox="0 0 24 24"
+                                            width="24px"
+                                            fill="#FFF">
+                                            <path d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                                          </svg>
+                                      </button>
+                                    </div>
                                 </span>
                             </header>
 
                             <div class="flex items-center space-x-4 uppercase">
                                 <p class="w-1/4">Name</p>
                                 <p class="w-1/4 text-center">Quantity</p>
+                                <!-- <p class="w-1/4">Unit Price</p> -->
                                 <p class="w-1/4">Amount</p>
                                 <p class="w-1/5">Actions</p>
                             </div>
                             <ul>
                                 <li *ngFor="let item of cartItems">
-                                    <div class="flex items-center space-x-4 border-b 
-                                        py-2 text-gray-700">
-                                        <div class="w-1/4 text-xs">
-                                            <p>{{item?.stockItem?.product?.name}}</p>
-                                            <p class="font-medium text-red-600">
-                                                GHC {{(item?.stockItem?.product?.sellingPrice)?.toFixed(2)}}
-                                            </p>
-                                            <p *ngIf="item?.stockItem?.product?.sellingPrice !== item?.soldPrice" 
-                                                class="font-medium text-red-600">
-                                                Selling At: GHC {{(item?.soldPrice)?.toFixed(2)}}
-                                            </p>
-                                        </div>
-                                        <p class="w-1/4 text-center">{{item?.quantity}}</p>
-                                        <p class="w-1/4">
-                                            <span class="text-gray-800 font-medium">GHC</span> 
-                                            {{(item?.soldPrice * item?.quantity)?.toFixed(2)}}
-                                        </p>
-                                        <div [class.showQuantityBox_stop_working]="item.id ===
-                                            selectedCartItemIdMenu" 
-                                            class="w-1/5 flex items-center relative">
-                                            <div class="quantityBox hidden absolute top-0 right-32 bg-white z-10
-                                                shadow-lg py-2 px-4 border rounded-t-md"
-                                                style="min-width: 300px; height: auto;">
-                                                <div class="flex items-center justify-between">
-                                                    <span>
-                                                        <p class="font-medium text-xs">Change Quantity</p>
-                                                        <p>Available Quantity: {{item?.stockItem?.quantity}}</p>
-                                                    </span>
-
-                                                    <button mat-icon-button class="text-xs"
-                                                        (click)="closeQuantityDialog()">
-                                                        <mat-icon>close</mat-icon>
-                                                    </button>
-                                                </div>
-                                                <div class="flex items-center justify-between">
-                                                    <mat-form-field appearance="fill" 
-                                                        class="text-xs w-2/3">
-                                                        <mat-label>New Quantity</mat-label>
-                                                        <input matInput type="number" 
-                                                            #quantityTextbox
-                                                            (keyup)="changeQuantity(quantityTextbox.value, item)"
-                                                            [value]="item?.quantity" autocomplete="off" />
-                                                    </mat-form-field>
-                                                    
-                                                    <span class="flex items-center space-x-2 -mt-4">
-                                                        <button mat-icon-button 
-                                                            (click)="quantityTextbox.value = quantityTextbox.value - 1">
-                                                            <mat-icon>remove</mat-icon>
-                                                        </button>
-                                                        <button mat-icon-button
-                                                            (click)="quantityTextbox.value = +quantityTextbox.value + 1">
-                                                            <mat-icon>add</mat-icon>
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <button mat-icon-button 
-                                                (click)="deleteCartItem(item)"
-                                                class="bg-gray">
-                                                <mat-icon>delete</mat-icon>
-                                            </button>
-                                            <button mat-icon-button [matMenuTriggerFor]="itemMenu">
-                                                <mat-icon>more_vert</mat-icon>
-                                            </button>
-
-                                            <mat-menu #itemMenu>
-                                                <button mat-menu-item 
-                                                    (click)="cartItemChangeQuantityMenuSelected(item.id)">
-                                                    <mat-icon>edit</mat-icon> Change Quantity
-                                                </button>
-                                            </mat-menu>
-                                        </div>
-                                    </div>
+                                  <app-order-cart-item [item]="item"
+                                    (priceChanged)="cartItemPriceChanged($event)">
+                                  </app-order-cart-item>
                                 </li>
                             </ul>
-                            
+
                             <section class="my-4">
                                 <div class="text-lg flex items-center">
                                     <p class="text-gray-500 font-normal">
                                         Total Order Amount: 
                                         <span class="text-gray-800 font-medium">
-                                            GHC {{orderTotalAmount?.toFixed(2)}}
+                                          GHC {{orderTotalAmount?.toFixed(2)}}
                                         </span>
                                     </p>                                    
                                 </div>

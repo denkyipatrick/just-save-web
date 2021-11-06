@@ -8,8 +8,18 @@ const routes: Routes = [
   { path: 'out', component: SignOutComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'start', component: StartScreenComponent },
-  { path: 'setup', loadChildren: () => import('./setup/setup.module').then(m => m.SetupModule) },
-  { path: 'system', loadChildren: () => import('./system/system.module').then(m => m.SystemModule) },
+  { path: 'setup', loadChildren: () =>
+    import('./setup/setup.module').then(m => m.SetupModule) },
+
+  { path: 'system', loadChildren: () =>
+    import('./system/system.module').then(m => m.SystemModule) },
+
+  { path: 'branches/:branchId', loadChildren: () =>
+    import('./system/system.module').then(m => m.SystemModule) },
+
+  { path: 'branch', loadChildren: () =>
+    import('./branch/branch.module').then(m => m.BranchModule) },
+
   { path: '', redirectTo: 'start', pathMatch: 'full' }
 ];
 

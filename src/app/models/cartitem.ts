@@ -2,14 +2,15 @@ import { StockItem } from './stockitem';
 import { BranchProduct } from './branchproduct';
 
 export class CartItem {
-    id: string;
 
     constructor(
+        public id: any,
         public quantity: number,
         public soldPrice: number,
-        public stockItemId: string,
-        public stockItem?: StockItem
+        public costPrice?: number,
+        public productName?: string,
+        public sellingPrice?: number,
+        public branchProductAvailableQuantity?: number
     ) {
-        this.id = this.stockItem?.product?.id;
     }
 }

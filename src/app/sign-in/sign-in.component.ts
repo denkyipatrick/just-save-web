@@ -1,3 +1,5 @@
+import { Branch } from './../models/branch';
+import { environment } from './../../environments/environment.prod';
 import { BranchService } from './../services/branch.service';
 import { Company } from './../models/company';
 import { CompanyService } from './../services/company.service';
@@ -41,11 +43,12 @@ export class SignInComponent implements OnInit {
     this.appName = this.utilityService.appName;
     this.appSlogan = this.utilityService.appSlogan;
 
-    this.company = JSON.parse(localStorage.getItem('company'));
+    this.company = JSON.parse(localStorage.getItem('branch-setup-company'));
     this.appName = this.company?.name;
   }
 
   ngOnInit(): void {
+    console.log(environment);
   }
 
   signIn(): void {
@@ -62,18 +65,53 @@ export class SignInComponent implements OnInit {
 
     this.staffService.signIn(this.form.value)
     .subscribe(staff => {
+      let branch: Branch = null;
       this.staffService.staff = staff;
-      this.staffService.branchId = staff?.staffBranch?.branch?.id;
-      this.branchService.branchId = staff?.staffBranch?.branch?.id;
+      localStorage.setItem('staff', JSON.stringify(staff));
+      console.log(environment.isBranchBuild, environment.production);
+
+      if (environment.isBranchBuild) {
+        branch = JSON.parse(localStorage.getItem('setup-branch'));
+        localStorage.setItem('logged-in-staff', JSON.stringify(staff));
+      } else { // isOnlineBuild
+        branch = staff.staffBranch.branch;
+        this.staffService.branchId = staff?.staffBranch?.branch?.id;
+        this.branchService.branchId = staff?.staffBranch?.branch?.id;
+
+        localStorage.setItem('branchId', staff?.staffBranch?.branch?.id);
+        sessionStorage.setItem('branchId', staff?.staffBranch?.branch?.id);
+        sessionStorage.setItem('staff', JSON.stringify(staff));
+      }
+
+      localStorage.setItem('branch', JSON.stringify(branch));
+      localStorage.setItem('branch-id', branch.id);
+
       // this.companyService.companyId = staff?.staffBranch?.branch?.company?.id;
 
       // localStorage.setItem('company', JSON.stringify(staff.staffBranch.branch.company));
       // localStorage.setItem('companyId', JSON.stringify(staff.staffBranch.branch.company.id));
-      localStorage.setItem('branchId', staff?.staffBranch?.branch?.id);
-      sessionStorage.setItem('branchId', staff?.staffBranch?.branch?.id);
-      localStorage.setItem('staff', JSON.stringify(staff));
-      sessionStorage.setItem('staff', JSON.stringify(staff));
-      this.router.navigate(['system/products']);
+
+      // localStorage.setItem('branchId', staff?.staffBranch?.branch?.id);
+      // sessionStorage.setItem('branchId', staff?.staffBranch?.branch?.id);
+      // localStorage.setItem('staff', JSON.stringify(staff));
+      // sessionStorage.setItem('staff', JSON.stringify(staff));
+
+      // if (environment.isBranchBuild) {
+      //   localStorage.setItem('logged-in-staff', JSON.stringify(staff));
+      //   this.router.navigate(['/branch']);
+      // } else {
+      //   localStorage.setItem('branchId', staff?.staffBranch?.branch?.id);
+      //   sessionStorage.setItem('branchId', staff?.staffBranch?.branch?.id);
+      //   localStorage.setItem('staff', JSON.stringify(staff));
+      //   sessionStorage.setItem('staff', JSON.stringify(staff));
+
+      //   this.router.navigate(['system/products']);
+      // }
+
+      console.log(branch);
+      
+      this.router.navigate([`branches/${branch.id}/products`]);
+
       dialogRef.close();
     }, error => {
       dialogRef.close();

@@ -1,3 +1,5 @@
+import { ProductDetailsComponent } from './product-details/product-details.component';
+import { StockEntryDetailComponent } from './stock-entry-detail/stock-entry-detail.component';
 import { LoaderModule } from './../loader/loader.module';
 import { AddStaffComponent } from './add-staff/add-staff.component';
 import { StaffListComponent } from './staff-list/staff-list.component';
@@ -32,7 +34,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProductsComponent } from './products/products.component';
 import { UsersComponent } from './users/users.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
-import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { AddProductComponent } from './add-product/add-product.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DialogModule } from '../dialog/dialog.module';
@@ -58,12 +59,13 @@ import { AddStockItemDialogComponent } from './add-stock-item-dialog/add-stock-i
 import { AddStockItemQuantityDialogComponent } from './add-stock-item-quantity-dialog/add-stock-item-quantity-dialog.component';
 import { ThreeButtonDialogComponent } from './three-button-dialog/three-button-dialog.component';
 import { OrderReceiptDialogComponent } from './order-receipt-dialog/order-receipt-dialog.component';
-import { StockEntryDetailComponent } from './stock-entry-detail/stock-entry-detail.component';
 import { StockEntriesComponent } from './stock-entries/stock-entries.component';
 import { CurrentStockComponent } from './current-stock/current-stock.component';
 import { SearchAllBranchStockItemsDialogComponent } from './search-all-branch-stock-items-dialog/search-all-branch-stock-items-dialog.component';
 import { EditStockitemQuantityDialogComponent } from './edit-stockitem-quantity-dialog/edit-stockitem-quantity-dialog.component';
 import { DailySalesDetailComponent } from './daily-sales-detail/daily-sales-detail.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { OrderCartItemComponent } from './sales/order-cart-item/order-cart-item.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +74,7 @@ import { DailySalesDetailComponent } from './daily-sales-detail/daily-sales-deta
     ProductsComponent,
     UsersComponent,
     UserDetailComponent,
-    ProductDetailComponent,
+    ProductDetailsComponent,
     AddProductComponent,
     StaffListComponent,
     AddStaffComponent,
@@ -102,12 +104,14 @@ import { DailySalesDetailComponent } from './daily-sales-detail/daily-sales-deta
     CurrentStockComponent,
     SearchAllBranchStockItemsDialogComponent,
     EditStockitemQuantityDialogComponent,
-    DailySalesDetailComponent
+    DailySalesDetailComponent,
+    OrderCartItemComponent
   ],
   imports: [
     CommonModule,
     StaffModule,
     LoaderModule,
+    MatTooltipModule,
     CustomComponentsModule,
     MatTableModule,
     MatButtonModule,

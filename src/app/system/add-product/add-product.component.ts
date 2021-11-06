@@ -1,7 +1,7 @@
 import { StockEntry } from 'src/app/models/stockentry';
 import { OkDialogComponent } from './../../dialog/ok-dialog/ok-dialog.component';
 import { CompanyService } from './../../services/company.service';
-import { BranchService } from './../../services/branch.service';
+import { BranchService } from './../services/branch.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UtilityService } from './../../services/utility.service';
 import { PleaseWaitDialogComponent } from './../../dialog/please-wait-dialog/please-wait-dialog.component';
@@ -31,16 +31,17 @@ export class AddProductComponent implements OnInit {
     private staffService: StaffService,
     private dialogOpener: MatDialog,
     private matSnackBar: MatSnackBar,
+    private branchService: BranchService,
     private route: ActivatedRoute,
     private router: Router
     ) {
     this.form = new FormGroup({
       name: new FormControl(),
-      companyId: new FormControl(this.companyService.company.id),
       lookupKey: new FormControl(),
       unitPrice: new FormControl(),
       costPrice: new FormControl(),
-      sellingPrice: new FormControl()
+      sellingPrice: new FormControl(),
+      branchId: new FormControl(localStorage.getItem('branch-id'))
     });
 
     this.existingProducts = JSON.parse(sessionStorage.getItem('products')) || [];
@@ -94,21 +95,29 @@ export class AddProductComponent implements OnInit {
         disableClose: true
       });
 
-      this.companyService.createProduct(this.form.value)
-      .subscribe(product => {
+      this.branchService.createProduct({
+        branchId: this.form.value.branchId,
+        productName: this.form.value.name,
+        productLookupKey: this.form.value.lookupKey,
+        productUnitPrice: this.form.value.unitPrice,
+        productCostPrice: this.form.value.costPrice,
+        productSellingPrice: this.form.value.sellingPrice
+      })
+      .subscribe(branchProduct => {
         dialogRef.close();
 
-        const products: Product[] = JSON.parse(sessionStorage.getItem('all-products')) || [];
+        // const products: Product[] = JSON.parse(sessionStorage.getItem('all-products')) || [];
 
-        if (!products.find(prod => prod.lookupKey === this.form.value['lookupKey'])) {
-          products.push(product);
-          sessionStorage.setItem('all-products', JSON.stringify(products));
-        }
+        // if (!products.find(prod => prod.lookupKey === this.form.value['lookupKey'])) {
+        //   products.push(branchProduct?.product);
+        //   sessionStorage.setItem('all-products', JSON.stringify(products));
+        // }
 
         const dialogRef2 = this.dialogOpener.open(ThreeButtonDialogComponent, {
           data: {
             title: 'Product Added Successfully',
-            message: `You have successfully created ${product?.name || 'the product.'} ` + 
+            message: `You have successfully created ` + 
+            `${branchProduct?.product?.name || 'the product.'} ` + 
             `You can view its details, create a new product or view all products.`,
             option1ButtonText: 'VIEW PRODUCTS',
             option2ButtonText: 'ADD NEW',
@@ -119,50 +128,192 @@ export class AddProductComponent implements OnInit {
 
         dialogRef2.option1
         .subscribe(() => {
-          this.router.navigate(['/system/products/'], { relativeTo: this.route });
+          this.router.navigate(
+            ['/system/products/'],
+            { relativeTo: this.route }
+          );
         });
         
-        dialogRef2.option2
-        .subscribe(() => {
-          this.form.markAsUntouched();
-          this.form.reset();
-          this.form.patchValue({
-            companyId: this.companyService.company.id,
-          })
-        });
+        // dialogRef2.option2
+        // .subscribe(() => {
+        //   this.form.markAsUntouched();
+        //   this.form.reset();
+        //   this.form.patchValue({
+        //     companyId: this.companyService.company.id,
+        //   })
+        // });
         
         dialogRef2.option3
         .subscribe(() => {
-          this.router.navigate(['/system/products/', product.id], { relativeTo: this.route });
-        });
+          this.router.navigate([
+            '/system/products/',
+            branchProduct?.id
+          ], { relativeTo: this.route });
+        });        
       }, error => {
         dialogRef.close();
         console.error(error);
-
-        switch (error.status) {
-          case 0: {
-            break;
-          }
-          case 400: {
-            this.dialogOpener.open(OkDialogComponent, {
-              data: {
-                title: 'Product Already Part of This Stock',
-                message: `${this.form.value.name} is already added to this stock.`,
-                okButtonText: 'OK'
-              }
-            });
-            break;
-          }
-          case 500: {
-            break;
-          }
-          default: {
-
-          }
-        }
       });
+
+      // this.companyService.createProduct(this.form.value)
+      // .subscribe(product => {
+      //   dialogRef.close();
+
+      //   const products: Product[] = JSON.parse(sessionStorage.getItem('all-products')) || [];
+
+      //   if (!products.find(prod => prod.lookupKey === this.form.value['lookupKey'])) {
+      //     products.push(product);
+      //     sessionStorage.setItem('all-products', JSON.stringify(products));
+      //   }
+
+      //   const dialogRef2 = this.dialogOpener.open(ThreeButtonDialogComponent, {
+      //     data: {
+      //       title: 'Product Added Successfully',
+      //       message: `You have successfully created ${product?.name || 'the product.'} ` + 
+      //       `You can view its details, create a new product or view all products.`,
+      //       option1ButtonText: 'VIEW PRODUCTS',
+      //       option2ButtonText: 'ADD NEW',
+      //       option3ButtonText: 'VIEW'
+      //     }
+      //   })
+      //   .componentInstance;
+
+      //   dialogRef2.option1
+      //   .subscribe(() => {
+      //     this.router.navigate(['/system/products/'], { relativeTo: this.route });
+      //   });
+        
+      //   dialogRef2.option2
+      //   .subscribe(() => {
+      //     this.form.markAsUntouched();
+      //     this.form.reset();
+      //     this.form.patchValue({
+      //       companyId: this.companyService.company.id,
+      //     })
+      //   });
+        
+      //   dialogRef2.option3
+      //   .subscribe(() => {
+      //     this.router.navigate(['/system/products/', product.id], { relativeTo: this.route });
+      //   });
+      // }, error => {
+      //   dialogRef.close();
+      //   console.error(error);
+
+      //   switch (error.status) {
+      //     case 0: {
+      //       break;
+      //     }
+      //     case 400: {
+      //       this.dialogOpener.open(OkDialogComponent, {
+      //         data: {
+      //           title: 'Product Already Part of This Stock',
+      //           message: `${this.form.value.name} is already added to this stock.`,
+      //           okButtonText: 'OK'
+      //         }
+      //       });
+      //       break;
+      //     }
+      //     case 500: {
+      //       break;
+      //     }
+      //     default: {
+
+      //     }
+      //   }
+      // });
     });
 
   }
+
+
+  // saveProduct(): void {
+  //   if (this.form.invalid) { return; }
+
+  //   this.dialogOpener.open(OkCancelDialogComponent, {
+  //     data: {
+  //       title: 'Add Product',
+  //       message: 'Are you sure you want to add this product to your store?',
+  //       okButtonText: 'YES',
+  //       cancelButtonText: 'NO'
+  //     }
+  //   })
+  //   .componentInstance
+  //   .ok
+  //   .subscribe(() => {
+  //     const dialogRef = this.dialogOpener.open(PleaseWaitDialogComponent, {
+  //       disableClose: true
+  //     });
+
+  //     this.companyService.createProduct(this.form.value)
+  //     .subscribe(product => {
+  //       dialogRef.close();
+
+  //       const products: Product[] = JSON.parse(sessionStorage.getItem('all-products')) || [];
+
+  //       if (!products.find(prod => prod.lookupKey === this.form.value['lookupKey'])) {
+  //         products.push(product);
+  //         sessionStorage.setItem('all-products', JSON.stringify(products));
+  //       }
+
+  //       const dialogRef2 = this.dialogOpener.open(ThreeButtonDialogComponent, {
+  //         data: {
+  //           title: 'Product Added Successfully',
+  //           message: `You have successfully created ${product?.name || 'the product.'} ` + 
+  //           `You can view its details, create a new product or view all products.`,
+  //           option1ButtonText: 'VIEW PRODUCTS',
+  //           option2ButtonText: 'ADD NEW',
+  //           option3ButtonText: 'VIEW'
+  //         }
+  //       })
+  //       .componentInstance;
+
+  //       dialogRef2.option1
+  //       .subscribe(() => {
+  //         this.router.navigate(['/system/products/'], { relativeTo: this.route });
+  //       });
+        
+  //       dialogRef2.option2
+  //       .subscribe(() => {
+  //         this.form.markAsUntouched();
+  //         this.form.reset();
+  //         this.form.patchValue({
+  //           companyId: this.companyService.company.id,
+  //         })
+  //       });
+        
+  //       dialogRef2.option3
+  //       .subscribe(() => {
+  //         this.router.navigate(['/system/products/', product.id], { relativeTo: this.route });
+  //       });
+  //     }, error => {
+  //       dialogRef.close();
+  //       console.error(error);
+
+  //       switch (error.status) {
+  //         case 0: {
+  //           break;
+  //         }
+  //         case 400: {
+  //           this.dialogOpener.open(OkDialogComponent, {
+  //             data: {
+  //               title: 'Product Already Part of This Stock',
+  //               message: `${this.form.value.name} is already added to this stock.`,
+  //               okButtonText: 'OK'
+  //             }
+  //           });
+  //           break;
+  //         }
+  //         case 500: {
+  //           break;
+  //         }
+  //         default: {
+
+  //         }
+  //       }
+  //     });
+  //   });
+
+  // }
 
 }

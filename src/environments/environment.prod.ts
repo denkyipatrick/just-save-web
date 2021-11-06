@@ -1,4 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://lollandscreditunion.com:4900/api'
+  isBranchBuild: true,
+  apiUrl: 'http://localhost:4910/api'
+  // apiUrl: 'https://lollandscreditunion.com:4900/api'
 };

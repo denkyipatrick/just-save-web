@@ -1,92 +1,86 @@
 
-<div class="space-y-6 w-full xl:w-3/5">
-    <span class="flex items-center space-x-4">
-        <app-back-button></app-back-button>
-        <p class="text-3xl font-light">Staff Details</p>
-    </span>
+<div class="space-y-6 w-full">
+  <span class="flex items-start space-x-4">
+    <app-back-button></app-back-button>
 
-    <section class="space-y-2 border-b-2 pb-4">
-        <!-- <p class="text-xl font-light text-blue-600">Basic</p> -->
-        <span class="flex items-center justify-between space-x-4 mb-8">
-            <p class="text-xl font-light text-blue-600">Basic</p>
-            <button *ngIf="canViewerEditName"
+    <section class="w-full">
+      <section class="space-y-2 border-b-2 pb-4">
+        <p class="text-3xl font-light">Staff Details</p>
+          <!-- <p class="text-xl font-light text-blue-600">Basic</p> -->
+        
+  
+        <section>
+          <div>
+            <form 
+                *ngIf="isShowNameForm"
+                [formGroup]="form" 
+                (ngSubmit)="changeName()"
+                class="bg-gray-100 p-4 my-4 font-medium rounded-md">
+                <p>Change staff name</p>
+                <section class="flex space-x-4">
+                    <mat-form-field class="w-full">
+                        <mat-label>First Name</mat-label>
+                        <input matInput required formControlName="firstName" />
+                        <mat-error>Enter your first name</mat-error>
+                    </mat-form-field>
+                    
+                    <mat-form-field class="w-full">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput required formControlName="lastName" />
+                        <mat-error>Enter your last name</mat-error>
+                    </mat-form-field>
+                </section>
+
+                <section class="text-center">
+                    <button mat-raised-button class="primary-color">
+                        CHANGE NAME
+                    </button>
+                </section>
+            </form>
+          </div>
+          <div class="flex items-center justify-between space-x-4 mb-8">
+            <span>
+              <p class="text-xl">{{targetStaff?.firstName}} {{targetStaff?.lastName}}</p>
+              <p class="">@{{targetStaff?.username}}</p>
+            </span>
+            <button *ngIf="true || canViewerEditName"
                 mat-raised-button
                 (click)="toggleShowNameForm()">
                 <span>EDIT</span> &nbsp;
                 <mat-icon>edit</mat-icon>
             </button>
-        </span>
-
-        <section>
-            <div>
-                <form 
-                    *ngIf="isShowNameForm"
-                    [formGroup]="form" 
-                    (ngSubmit)="changeName()"
-                    class="bg-gray-100 p-4 my-4 font-medium rounded-md">
-                    <p>Change staff name</p>
-                    <section class="flex space-x-4">
-                        <mat-form-field class="w-full">
-                            <mat-label>First Name</mat-label>
-                            <input matInput required formControlName="firstName" />
-                            <mat-error>Enter your first name</mat-error>
-                        </mat-form-field>
-                        
-                        <mat-form-field class="w-full">
-                            <mat-label>Last Name</mat-label>
-                            <input matInput required formControlName="lastName" />
-                            <mat-error>Enter your last name</mat-error>
-                        </mat-form-field>
-                    </section>
-
-                    <section class="text-center">
-                        <button mat-raised-button class="primary-color">
-                            CHANGE NAME
-                        </button>
-                    </section>
-                </form>
-            </div>
-            <div>
-                <p class="">@{{targetStaff?.username}}</p>
-                <p class="text-xl">{{targetStaff?.firstName}} {{targetStaff?.lastName}}</p>
-            </div>
+          </div>
         </section>
+      </section>
+      
+      <section class="space-y-2 pb-4">
+          <span class="flex items-center justify-between space-x-4 mb-8">
+              <p class="text-xl font-light text-blue-600">Roles</p>
+              <button *ngIf="doesLoggedInStaffHasEditRole"
+                  mat-raised-button
+                  (click)="editRole()">
+                  <span>EDIT</span> &nbsp;
+                  <mat-icon>edit</mat-icon>
+              </button>
+          </span>
+          <section>
+              <ul class="grid grid-cols-2 gap-8">
+                  <li *ngFor="let roleGroup of roleGroups">
+                      <p class="capitalize font-medium" style="margin-bottom: .5rem;">
+                          {{roleGroup?.group}} Management
+                      </p>
+                      <ul class="space-y-2">
+                          <li *ngFor="let role of roleGroup?.roles">
+                              <span class="flex items-center space-x-2">
+                                  <mat-icon class="text-green-600">verified</mat-icon> 
+                                  <p class="text-gray-600 font-base text-xs">{{role?.displayName}}</p>
+                              </span>
+                          </li>
+                      </ul>
+                  </li>
+              </ul>
+          </section>
+      </section>
     </section>
-
-    <section class="space-y-2 border-b-2 pb-4">
-        <p class="text-xl font-light text-blue-600">Branch</p>
-        <section>
-            <p class="text-xl">{{targetStaff?.staffBranch?.branch?.name}}</p>
-            <p class="">{{targetStaff?.staffBranch?.branch?.address}}</p>
-        </section>
-    </section>
-    
-    <section class="space-y-2 pb-4">
-        <span class="flex items-center justify-between space-x-4 mb-8">
-            <p class="text-xl font-light text-blue-600">Roles</p>
-            <button *ngIf="doesLoggedInStaffHasEditRole"
-                mat-raised-button
-                (click)="editRole()">
-                <span>EDIT</span> &nbsp;
-                <mat-icon>edit</mat-icon>
-            </button>
-        </span>
-        <section>
-            <ul class="grid grid-cols-2 gap-8">
-                <li *ngFor="let roleGroup of roleGroups">
-                    <p class="capitalize font-medium" style="margin-bottom: .5rem;">
-                        {{roleGroup?.group}} Management
-                    </p>
-                    <ul class="space-y-2">
-                        <li *ngFor="let role of roleGroup?.roles">
-                            <span class="flex items-center space-x-2">
-                                <mat-icon class="text-green-600">verified</mat-icon> 
-                                <p class="text-gray-600 font-base text-xs">{{role?.displayName}}</p>
-                            </span>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </section>
-    </section>
+  </span>
 </div>

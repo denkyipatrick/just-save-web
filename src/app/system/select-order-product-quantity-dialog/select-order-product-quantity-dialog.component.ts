@@ -94,10 +94,12 @@ export class SelectOrderProductQuantityDialogComponent implements OnInit {
     //   this.product.sellingPrice
     // );
     
-    this.accept.emit(
-      new CartItem(this.form.value['quantity'], this.form.value['priceSold'],
-      this.stockItem.id, this.stockItem)
-    );
+    // this.accept.emit(
+    //   new CartItem(
+    //     this.form.value['quantity'],
+    //     this.form.value['priceSold']
+    //   )
+    // );
 
     this.dialogRef.close();
   }

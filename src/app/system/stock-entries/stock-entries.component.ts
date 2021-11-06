@@ -1,7 +1,7 @@
 import { OkDialogComponent } from './../../dialog/ok-dialog/ok-dialog.component';
 import { CreateStockDialogComponent } from './../create-stock-dialog/create-stock-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { BranchService } from './../../services/branch.service';
+import { BranchService } from './../services/branch.service';
 import { StaffService } from './../../services/staff.service';
 import { CompanyService } from './../../services/company.service';
 import { StockEntry } from './../../models/stockentry';
@@ -18,24 +18,25 @@ export class StockEntriesComponent implements OnInit {
   stockEntries: StockEntry[] = [];
   isRefreshing: boolean = false;
   isFetchingStocks: boolean;
+  isErrorFetchingEntries: boolean;
 
   tableColumns: string[] = ['date', 'status', 'branch', 'items', 'view'];
 
   constructor(
     private companyService: CompanyService,
-    private staffService: StaffService,
     private branchService: BranchService,
+    private staffService: StaffService,
     private dialogOpener: MatDialog,
     private route: ActivatedRoute,
     private router: Router
     ) {
-    this.stockEntries = JSON.parse(sessionStorage.getItem('stock-entry-list')) || [];
+    // this.stockEntries = JSON.parse(sessionStorage.getItem('stock-entry-list')) || [];
     
-    if (this.stockEntries.length) {
-      this.isRefreshing = true;
-    } else {
-      this.isFetchingStocks = true;
-    }
+    // if (this.stockEntries.length) {
+    //   this.isRefreshing = true;
+    // } else {
+    //   this.isFetchingStocks = true;
+    // }
   }
 
   ngOnInit(): void {
@@ -43,7 +44,7 @@ export class StockEntriesComponent implements OnInit {
       return this.refreshStocks();
     }
 
-    this.fetchStocks();
+    this.fetchStockEntries();
   }
 
   viewStock(stockEntry: StockEntry) {
@@ -51,17 +52,34 @@ export class StockEntriesComponent implements OnInit {
     this.router.navigate(['./', stockEntry.id], { relativeTo: this.route });
   }
 
-  fetchStocks() {
-    if (this.staffService.staff.isAdmin) {
-      this.fetchCompanyStock();
-    } else {
-      this.fetchBranchStock();
+  fetchStockEntries() {
+    if (!this.isRefreshing) {
+      this.isFetchingStocks = true;
     }
+
+    this.isErrorFetchingEntries = false;
+
+    this.branchService.fetchStockEntries()
+    .subscribe(stockEntries => {
+      this.isRefreshing = false;
+
+      this.isFetchingStocks = false;
+      this.stockEntries = stockEntries.map(stock => {
+        stock.dateString = moment(new Date(stock.createdAt)).format("Do MMMM YYYY");
+        return stock;
+      });
+    }, error => {
+      this.isRefreshing = false;
+      this.isFetchingStocks = false;
+      this.isErrorFetchingEntries = true;
+
+      console.error(error);
+    });
   }
 
   refreshStocks() {
     this.isRefreshing = true;
-    this.fetchStocks();
+    this.fetchStockEntries();
   }
 
   fetchCompanyStock() {
@@ -91,7 +109,7 @@ export class StockEntriesComponent implements OnInit {
       this.isFetchingStocks = true;
     }
 
-    this.branchService.fetchBranchStockEntryHistory(this.staffService.staff.staffBranch.branch.id)
+    this.branchService.fetchStockEntries()
     .subscribe(stocks => {
       this.isRefreshing = false;
 

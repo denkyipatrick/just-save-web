@@ -6,9 +6,10 @@ export class BranchProduct {
     product: Product;
 
     constructor(
-        public branchId: string,
-        public productId: string,
-        public quantity: number = 10
-        ) {
+      public id: any,
+      public branchId: string,
+      public productId: string,
+      public quantity: number = 10
+      ) {
     }
 }

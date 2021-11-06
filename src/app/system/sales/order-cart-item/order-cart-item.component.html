@@ -1,0 +1,99 @@
+
+<div class="flex items-center space-x-4 border-b 
+  py-2 text-gray-700">
+  <div class="w-1/4 text-xs">
+      <p class="font-medium text-sm">{{item?.productName}}</p>
+      <p class="font-medium text-red-600">
+          GHC {{(item?.sellingPrice)?.toFixed(2)}}
+      </p>
+      <!-- <p *ngIf="item?.sellingPrice !== item?.soldPrice" 
+          class="font-medium text-red-600">
+          Selling At: GHC {{(item?.soldPrice)?.toFixed(2)}}
+      </p> -->
+  </div>
+  <!-- <div class="w-1/4 text-center">
+    <mat-form-field appearance="outline" style="width: 100px;">
+      <input matInput [value]="item?.sellingPrice" />
+    </mat-form-field>
+  </div> -->
+  <div class="w-1/4 text-center">
+    <mat-form-field appearance="outline" style="width: 60px;">
+      <input matInput [value]="item?.quantity" />
+    </mat-form-field>
+    <!-- <p class="w-1/4 text-center">{{item?.quantity}}</p> -->
+  </div>
+  <div class="w-1/4">
+    <span class="text-gray-800 font-medium">GHC</span> &nbsp;
+    <mat-form-field appearance="outline"
+      style="width: 100px;">
+      <input #priceField matInput
+        [value]="(item?.soldPrice * item?.quantity)?.toFixed(2)"
+        (change)="changePrice(priceField.value)" />
+    </mat-form-field>
+  </div>
+  <div>
+    <button mat-icon-button 
+      class="bg-gray">
+      <mat-icon>delete</mat-icon>
+  </button>
+  </div>
+  <!-- <p class="w-1/4">
+      <span class="text-gray-800 font-medium">GHC</span> 
+      {{(item?.soldPrice * item?.quantity)?.toFixed(2)}}
+  </p> -->
+  <!-- <div [class.showQuantityBox_stop_working]="item.id ===
+      selectedCartItemIdMenu" 
+      class="w-1/5 flex items-center relative">
+      <div class="quantityBox hidden absolute top-0 right-32 bg-white z-10
+          shadow-lg py-2 px-4 border rounded-t-md"
+          style="min-width: 300px; height: auto;">
+          <div class="flex items-center justify-between">
+              <span>
+                  <p class="font-medium text-xs">Change Quantity</p>
+                  <p>Available Quantity: {{item?.stockItem?.quantity}}</p>
+              </span>
+
+              <button mat-icon-button class="text-xs"
+                  (click)="closeQuantityDialog()">
+                  <mat-icon>close</mat-icon>
+              </button>
+          </div>
+          <div class="flex items-center justify-between">
+              <mat-form-field appearance="fill" 
+                  class="text-xs w-2/3">
+                  <mat-label>New Quantity</mat-label>
+                  <input matInput type="number" 
+                      #quantityTextbox
+                      (keyup)="changeQuantity(quantityTextbox.value, item)"
+                      [value]="item?.quantity" autocomplete="off" />
+              </mat-form-field>
+              
+              <span class="flex items-center space-x-2 -mt-4">
+                  <button mat-icon-button 
+                      (click)="quantityTextbox.value = quantityTextbox.value - 1">
+                      <mat-icon>remove</mat-icon>
+                  </button>
+                  <button mat-icon-button
+                      (click)="quantityTextbox.value = +quantityTextbox.value + 1">
+                      <mat-icon>add</mat-icon>
+                  </button>
+              </span>
+          </div>
+      </div>
+      <button mat-icon-button 
+          (click)="deleteCartItem(item)"
+          class="bg-gray">
+          <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="itemMenu">
+          <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #itemMenu>
+          <button mat-menu-item 
+              (click)="cartItemChangeQuantityMenuSelected(item.id)">
+              <mat-icon>edit</mat-icon> Change Quantity
+          </button>
+      </mat-menu>
+  </div> -->
+</div>

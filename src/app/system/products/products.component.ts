@@ -1,8 +1,10 @@
+import { SearchableProduct } from './../../models/searchableproduct';
+import { BranchProduct } from './../../models/branchproduct';
 import { MatDialog } from '@angular/material/dialog';
 import { StockItem } from './../../models/stockitem';
 import { SearchableBranchStockItem } from './../../models/searchablebranchstockitem';
 import { Stock } from './../../models/stock';
-import { BranchService } from './../../services/branch.service';
+import { BranchService } from './../services/branch.service';
 import { Staff } from 'src/app/models/staff';
 import { CompanyService } from './../../services/company.service';
 import { StaffService } from './../../services/staff.service';
@@ -13,6 +15,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { SearchAllBranchStockItemsDialogComponent } from '../search-all-branch-stock-items-dialog/search-all-branch-stock-items-dialog.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-products',
@@ -20,6 +23,9 @@ import { SearchAllBranchStockItemsDialogComponent } from '../search-all-branch-s
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit, AfterViewInit {
+  // WHETHER THIS IS RUNNING ON A LOCAL NETWORK
+  isBranchBuild = environment.isBranchBuild;
+
   products: Product[] = [];
   searchKey: string;
   staff: Staff;
@@ -35,6 +41,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   tableColumns: string[] = ['name', 'sellingPrice', 'quantity'];
   
   dataSource: MatTableDataSource<SearchableBranchStockItem>;
+  localBranchDataSource: MatTableDataSource<SearchableProduct>;
 
   @Output() productSelected: EventEmitter<Product>
 
@@ -44,32 +51,36 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   constructor(
     private dialogOpener: MatDialog,
     private staffService: StaffService,
-    private branchService: BranchService,
     private companyService: CompanyService,
+    private branchService: BranchService,
     private router: Router, private route: ActivatedRoute
   ) {
     this.staff = this.staffService.staff;
     this.searchKey = sessionStorage.getItem('search-key') || '';
-    this.isShowMultipleBranches = JSON.parse(localStorage.getItem('show-products-from-all-branches'));
+    this.isShowMultipleBranches = JSON.parse(
+      localStorage.getItem('show-products-from-all-branches')
+    );
 
-    this.canStaffCreateProduct = this.staffService.staff.roles
-      .find(role => role.id === 'add-product') ? true : false;
+    this.canStaffCreateProduct = true 
+    // this.staffService.staff.roles
+    //   .find(role => role.id === 'add-product') ? true : false;
 
     this.productSelected = new EventEmitter();
     this.activeStock = JSON.parse(sessionStorage.getItem('active-stock'));
   }
 
   ngOnInit(): void {
-    if (this.activeStock) {
-      this.setupPaginator();
+    console.log(this.isBranchBuild);
+    // if (this.activeStock) {
+    //   this.setupPaginator();
 
-      if (this.searchKey) {
-        return this.searchProduct(this.searchKey);
-      }
+    //   if (this.searchKey) {
+    //     return this.searchProduct(this.searchKey);
+    //   }
 
-      this.refreshProducts();
-      return;
-    }
+    //   this.refreshProducts();
+    //   return;
+    // }
     
     this.fetchProducts();
   }
@@ -111,12 +122,32 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   }
 
   viewProduct(searchableBranchStockItem: SearchableBranchStockItem): void {
-    this.router.navigate(['./', searchableBranchStockItem.productId], { relativeTo: this.route });
+    this.router.navigate(
+      ['./', searchableBranchStockItem.productId],
+      { relativeTo: this.route }
+    );
+  }
+  
+  viewLocalBuildProduct(productId: any): void {
+    this.router.navigate(
+      ['./', productId],
+      { relativeTo: this.route }
+    );
   }
 
   searchProduct(query: string): void {
-    this.dataSource.filter = query;
+    this.isBranchBuild ? this.searchLocalBuildProduct(query) : 
+      this.searchOnlineBuildProduct(query);
+    
     sessionStorage.setItem('search-key', query);
+  }
+
+  searchLocalBuildProduct(query: string): void {
+    this.localBranchDataSource.filter = query;
+  }
+  
+  searchOnlineBuildProduct(query: string): void {
+    this.localBranchDataSource.filter = query;
   }
 
   clearSearchField(input: HTMLInputElement) {
@@ -135,7 +166,47 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   }
 
   fetchProducts(): void {
-    this.fetchBranchProducts();
+    if (!this.isRefreshing) {
+      this.isFetchingProducts = true;
+    }
+
+    this.isErrorFetchingProducts = false;
+
+    this.branchService.fetchProducts()
+    .subscribe(branchProducts => {
+      const searchableProducts = branchProducts.map(branchProduct => {
+        return new SearchableProduct(
+          branchProduct.id,
+          branchProduct.product.lookupKey,
+          branchProduct.product.name,
+          branchProduct.product.sellingPrice,
+          branchProduct.quantity
+        );
+      });
+
+      this.localBranchDataSource = 
+      new MatTableDataSource(searchableProducts);
+      this.localBranchDataSource.paginator = this.paginator;
+      this.localBranchDataSource.sort = this.sort;
+
+      // if (environment.isBranchBuild) {
+      //   this.localBranchDataSource = 
+      //     new MatTableDataSource(branchProducts);
+        
+      //   this.localBranchDataSource.paginator = this.paginator;
+      //   this.localBranchDataSource.sort = this.sort;
+      // }
+      // console.log(branchProducts);
+
+      // this.activeStock = stock;
+      this.isRefreshing = false;
+      this.isFetchingProducts = false;
+      // this.setupPaginator();
+      // sessionStorage.setItem('active-stock', JSON.stringify(this.activeStock));
+    }, error => {
+      this.isRefreshing = false;
+      this.isFetchingProducts = false;
+    });
   }
 
   fetchBranchProducts(): void {
@@ -145,18 +216,18 @@ export class ProductsComponent implements OnInit, AfterViewInit {
 
     this.isErrorFetchingProducts = false;
 
-    this.branchService.fetchActiveStock(this.staffService.staff.staffBranch.branch.id)
-    .subscribe(stock => {
-      this.activeStock = stock;
-      this.isRefreshing = false;
-      this.isFetchingProducts = false;
-      this.setupPaginator();
-      sessionStorage.setItem('active-stock', JSON.stringify(this.activeStock));
+    // this.branchService.fetchActiveStock(this.staffService.staff.staffBranch.branch.id)
+    // .subscribe(stock => {
+    //   this.activeStock = stock;
+    //   this.isRefreshing = false;
+    //   this.isFetchingProducts = false;
+    //   this.setupPaginator();
+    //   sessionStorage.setItem('active-stock', JSON.stringify(this.activeStock));
     
-    }, error => {
-      this.isRefreshing = false;
-      this.isFetchingProducts = false;
-    });
+    // }, error => {
+    //   this.isRefreshing = false;
+    //   this.isFetchingProducts = false;
+    // });
   }
 
   fetchCompanyProducts(): void {

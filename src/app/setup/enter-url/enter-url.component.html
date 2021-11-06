@@ -1,0 +1,13 @@
+<section>
+  <form [formGroup]="form" (ngSubmit)="saveUrl()">
+    <p class="text-xl font-medium">Enter Local Server Url:</p>
+    <mat-form-field appearance="outline"
+      class="w-full block">
+      <mat-label>Example: http://www.local-server-url.com</mat-label>
+      <input matInput formControlName="url" />
+      <mat-error>Enter the url</mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary">CONTINUE</button>
+  </form>
+</section>

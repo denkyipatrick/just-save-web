@@ -1,0 +1,69 @@
+
+<section>
+  <section *ngIf="isFetchingCompany"
+    class="flex flex-col items-center space-y-6">
+    <mat-spinner [diameter]="40"></mat-spinner>
+    <p>Preparing, Please Wait...</p>
+  </section>
+
+  <section>
+    <p>{{errorMessage}}</p>
+  </section>
+
+  <section *ngIf="company">
+    <svg xmlns="http://www.w3.org/2000/svg"
+      height="120px"
+      viewBox="0 0 24 24"
+      width="120px" fill="#000000"
+      class="text-green-600 fill-current">
+      <path d="M0 0h24v24H0V0z" fill="none"/>
+      <path d="M11.19 1.36l-7 3.11C3.47 4.79 3 5.51 3 6.3V11c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V6.3c0-.79-.47-1.51-1.19-1.83l-7-3.11c-.51-.23-1.11-.23-1.62 0zm-1.9 14.93L6.7 13.7c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L10 14.17l5.88-5.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-6.59 6.59c-.38.39-1.02.39-1.41 0z"/>
+    </svg>
+    <p>{{company?.name}}</p>
+    <a mat-raised-button color="primary"
+      routerLink="../choose-branch">
+      <span class="flex items-center space-x-4">
+        <span>CONTINUE</span>
+        <svg xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 0 24 24"
+          width="24px"
+          fill="#FFF">
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+        </svg>
+      </span>
+    </a>
+  </section>
+  
+  <section style="width: 600px;" class="mx-auto relative">
+    <section class="">
+        <span class="flex items-center justify-start space-x-8 mb-8">
+            <mat-icon class="text-blue-700">verified</mat-icon> &nbsp; &nbsp; 
+            <p class="font-medium text-lg text-gray-600" style="margin: 0;">
+                Welcome To
+            </p>
+
+        </span>
+    </section>
+
+    <section class="text-left">
+        <div class="border-b-2 mb-8">
+            <p class="text-gray-900 text-4xl  antialiased">
+                {{company?.name}}
+            </p>
+        </div>
+        
+    </section>
+
+    <section class="flex items-center justify-between">        
+        <div class="text-left">
+            <p style="margin: 0" class="text-gray-500 text-xs">Public ID</p>
+            <p class="text-gray-900 font-medium antialiased">
+                {{company?.publicId}}
+            </p>
+        </div>
+        <a routerLink="../select-branch" class="setup-button w-auto">NEXT</a>
+    </section>
+  </section>
+</section>

@@ -1,0 +1,91 @@
+
+<section class="grid md:grid-cols-2 gap-8">
+  <section class="border-r-2">
+      <section class="">
+          <span class="flex items-center justify-start space-x-8 mb-8">
+              <mat-icon class="text-blue-700">verified</mat-icon> &nbsp; &nbsp; 
+              <p class="font-medium text-lg text-gray-600" style="margin: 0;">
+                  Welcome To
+              </p>    
+          </span>
+      </section>
+  
+      <section class="text-left">
+          <div class="">
+              <p class="text-gray-900 text-3xl  antialiased">
+                  {{company?.name}}
+              </p>
+              <p style="margin: 0" class="text-gray-500 text-xs">Public ID</p>
+              <p class="text-gray-900 font-medium antialiased">
+                  {{company?.publicId}}
+              </p>
+          </div>            
+      </section>
+      
+  </section>
+
+  <section class="text-left">
+      <header>
+          <p class="text-xl">Select Branch</p>
+          <p class="text-sm text-gray-600">
+              Kindly be informed that you can only use this 
+              installation in a single branch. Select the name of 
+              this branch below.
+          </p>
+      </header>
+
+      <section class="mt-4">
+          <form [formGroup]="form" 
+            (ngSubmit)="branchSelected()"
+            class="block md:flex items-center justify-between
+              flex-wrap md:flex-nowrap md:space-x-4">
+            <mat-form-field appearance="outline" class="w-full" style="font-size: .85rem;">
+                <mat-label>Select Installation Branch</mat-label>
+                <mat-select formControlName="branchId">
+                    <mat-option *ngFor="let branch of branches" [value]="branch?.id">
+                        {{branch?.name}}, 
+                        <span class='text-xs text-gray-400'>{{branch?.address}}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-raised-button color="primary"
+              class="py-3 text-white" 
+              [class.disabled]="!enableNextButton"
+              style="width: 120px; margin-top: -20px;
+                padding-top: .4rem;
+                padding-bottom: .4rem;">
+              <span class="flex items-center justify-between">
+                <span>NEXT</span>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 0 24 24"
+                  width="24px"
+                  fill="#FFF">
+                  <path d="M0 0h24v24H0z" fill="none"/>
+                  <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                </svg>
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" class="fill-current"
+                  height="24px"
+                  viewBox="0 0 24 24"
+                  width="24px"
+                  fill="#000000">
+                  <path d="M0 0h24v24H0z"
+                    fill="none"/>
+                  <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                </svg> -->
+              </span>
+            </button>
+          </form>
+
+          <!-- <span class="block mt-10">
+              <p class="text-base">New Branch</p>
+              <p class="text-gray-500 text-sm">
+                  You cannot create a new branch from this page.<br />
+                  Contact your <span class="text-black font-medium">Administrator</span> 
+                  to create a new branch and then pick it from the 
+                  list of branches above.
+              </p>
+          </span> -->
+      </section>
+  </section>
+</section>

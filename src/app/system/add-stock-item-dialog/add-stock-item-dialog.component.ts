@@ -1,3 +1,5 @@
+import { BranchProduct } from './../../models/branchproduct';
+import { BranchService } from './../services/branch.service';
 import { CompanyService } from './../../services/company.service';
 import { AddStockItemQuantityDialogComponent } from './../add-stock-item-quantity-dialog/add-stock-item-quantity-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -19,7 +21,7 @@ export class AddStockItemDialogComponent implements OnInit {
   stockId: string;
   products: Product[];
   dataSource: MatTableDataSource<Product>;
-  tableColumns: string[] = ['key', 'name', 'unitPrice'];
+  tableColumns: string[] = ['name', 'unitPrice'];
 
   isRefreshing: boolean;
   isFetchingProducts: boolean;
@@ -27,6 +29,7 @@ export class AddStockItemDialogComponent implements OnInit {
 
   constructor(
     private companyService: CompanyService,
+    private branchService: BranchService,
     private dialogRef: MatDialogRef<AddStockItemDialogComponent>,
     private dialogOpener: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -34,17 +37,17 @@ export class AddStockItemDialogComponent implements OnInit {
     this.closed = new EventEmitter();
     this.itemAdded = new EventEmitter();
     this.addNewProduct = new EventEmitter();
-    this.products = JSON.parse(sessionStorage.getItem('add-stock-item-dialog-products'));
-    this.dataSource = new MatTableDataSource(this.products);
+    // this.products = JSON.parse(sessionStorage.getItem('add-stock-item-dialog-products'));
+    // this.dataSource = new MatTableDataSource(this.branchProducts);
   }
 
   ngOnInit(): void {
     this.stockId = this.data.stockId;
 
-    if(!this.products) {
-      return this.refreshProducts();
-    }
-    
+    // if(!this.branchProducts) {
+    //   return this.refreshProducts();
+    // }
+
     this.fetchCompanyProducts();
   }
 
@@ -94,15 +97,15 @@ export class AddStockItemDialogComponent implements OnInit {
 
     this.isErrorFetchingProducts = false;
 
-    this.companyService.fetchCompanyProducts()
+    this.branchService.fetchCompanyProducts()
     .subscribe(products => {
       this.isRefreshing = false;
       this.isFetchingProducts = false;
 
       this.products = products;
       this.dataSource = new MatTableDataSource(this.products);
-      sessionStorage.setItem('add-stock-item-dialog-products',
-        JSON.stringify(products));
+      // sessionStorage.setItem('add-stock-item-dialog-products',
+      //   JSON.stringify(products));
     }, error => {
       this.isRefreshing = false;
       this.isFetchingProducts = false;

@@ -1,3 +1,4 @@
+import { RoutesService } from './routes.service';
 import { StockItem } from './../models/stockitem';
 import { Stock } from './../models/stock';
 import { StockEntry } from 'src/app/models/stockentry';
@@ -12,28 +13,39 @@ import { Injectable } from '@angular/core';
 export class StockService {
 
   constructor(
-    private constants: ConstantsService,
-    private http: HttpClient
+    private http: HttpClient,
+    private routesService: RoutesService
   ) { }
 
   fetchStock(stockId: string) {
-    return this.http.get<Stock>(`${this.constants.STOCKS_URL}/${stockId}`);
+    return this.http.get<Stock>(
+      `${this.routesService.STOCKS_URL}/${stockId}`
+    );
   }
 
   createStockItem(data: any) {
-    return this.http.post<StockEntryItem>(`${this.constants.STOCK_ENTRY_ITEMS_URL}`, data);
+    return this.http.post<StockEntryItem>(
+      `${this.routesService.STOCK_ENTRY_ITEMS_URL}`, data
+    );
   }
 
   updateStockItemQuantity(stockItemId: string, data: any) {
-    return this.http.patch<StockItem>(`${this.constants.STOCK_ITEMS_URL}/` + 
-    `${stockItemId}/edit-quantity`, data);
+    return this.http.patch<StockItem>(
+      `${this.routesService.STOCK_ITEMS_URL}/` +
+      `${stockItemId}/edit-quantity`,
+      data
+    );
   }
 
   deleteStock(stockId: string) {
-    return this.http.delete<StockEntry>(`${this.constants.STOCK_ENTRIES_URL}/${stockId}`);
+    return this.http.delete<StockEntry>(
+      `${this.routesService.STOCK_ENTRIES_URL}/${stockId}`
+    );
   }
 
   removeStockItem(itemId: string) {
-    return this.http.delete<StockEntryItem>(`${this.constants.STOCK_ENTRY_ITEMS_URL}/${itemId}`);
+    return this.http.delete<StockEntryItem>(
+      `${this.routesService.STOCK_ENTRY_ITEMS_URL}/${itemId}`
+    );
   }
 }

@@ -26,6 +26,10 @@ export class StartScreenComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // this.startSetupProcess();
+  }
+
+  startSetupProcess() {
     if (!this.company) {
       this.showSetupSection = true;
     } else {

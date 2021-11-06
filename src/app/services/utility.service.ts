@@ -1,3 +1,4 @@
+import { RoutesService } from './routes.service';
 import { Observable } from 'rxjs';
 import { CompanyService } from './company.service';
 import { Product } from './../models/product';
@@ -15,7 +16,7 @@ export class UtilityService {
   appSlogan = 'Manage and sell bicycle parts';
 
   constructor(
-    private constants: ConstantsService,
+    private routesService: RoutesService,
     private companyService: CompanyService,
     private http: HttpClient) {
     this.appSlogan = 'Store Management System';
@@ -24,10 +25,10 @@ export class UtilityService {
   }
 
   fetchSystemRoles(): Observable<Role[]> {
-    return this.http.get<Role[]>(`${this.constants.ROLES_URL}`);
+    return this.http.get<Role[]>(`${this.routesService.ROLES_URL}`);
   }
 
   fetchBranches(): Observable<Branch[]> {
-    return this.http.get<Branch[]>(`${this.constants.BRANCHES_URL}`);
+    return this.http.get<Branch[]>(`${this.routesService.BRANCHES_URL}`);
   }
 }

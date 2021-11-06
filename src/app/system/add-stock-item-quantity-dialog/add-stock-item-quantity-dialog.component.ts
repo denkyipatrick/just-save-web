@@ -52,33 +52,33 @@ export class AddStockItemQuantityDialogComponent implements OnInit {
   createStockItem() {
     if (this.form.invalid) { return; }
 
-    this.dialogOpener.open(OkCancelDialogComponent, {
-      data: {
-        title: 'Add Stock Item',
-        message: `Are you sure you want to add ` + 
-        `${this.form.value['quantity']} "${this.product.name}" to this stock?`,
-        okButtonText: 'YES',
-        cancelButtonText: 'NO'
-      }
-    })
-    .componentInstance
-    .ok
-    .subscribe(() => {
+    // this.dialogOpener.open(OkCancelDialogComponent, {
+    //   data: {
+    //     title: 'Add Stock Item',
+    //     message: `Are you sure you want to add ` + 
+    //     `${this.form.value['quantity']} "${this.product.name}" to this stock?`,
+    //     okButtonText: 'YES',
+    //     cancelButtonText: 'NO'
+    //   }
+    // })
+    // .componentInstance
+    // .ok
+    // .subscribe(() => {
 
-      this.isCreatingStockItem = true;
-      this.stockService.createStockItem(this.form.value)
-      .subscribe(stockItem => {
-        this.isCreatingStockItem = false;
-        this.itemCreated.emit(stockItem);
+    this.isCreatingStockItem = true;
+    this.stockService.createStockItem(this.form.value)
+    .subscribe(stockItem => {
+      this.isCreatingStockItem = false;
+      this.itemCreated.emit(stockItem);
 
-        this.snackBar.open(`${stockItem.quantity} ${this.product.name} added.`, 'CLOSE', {
-          duration: 5000
-        });
-        this.dialogRef.close();
-      }, error => {
-        this.isCreatingStockItem = false;
+      this.snackBar.open(`${stockItem.quantity} ${this.product.name} added.`, 'CLOSE', {
+        duration: 5000
       });
+      this.dialogRef.close();
+    }, error => {
+      this.isCreatingStockItem = false;
     });
+    // });
   }
 
 }

@@ -1,6 +1,6 @@
 
-<section class="flex items-start justify-between space-x-8 px-4">
-    <section style="width: 500px;" class="border-r-2">
+<section class="grid md:grid-cols-2 gap-8">
+    <section class="border-r-2">
         <section class="">
             <span class="flex items-center justify-start space-x-8 mb-8">
                 <mat-icon class="text-blue-700">verified</mat-icon> &nbsp; &nbsp; 
@@ -24,7 +24,7 @@
         
     </section>
 
-    <section style="width: 500px;" class="text-left">
+    <section class="text-left">
         <header>
             <p class="text-xl">Select or Create Branch</p>
             <p class="text-sm text-gray-600">
@@ -36,21 +36,38 @@
 
         <section class="mt-4">
             <form [formGroup]="form" 
-                (ngSubmit)="branchSelected()"
-                class="flex items-center justify-between space-x-4">
-                <mat-form-field appearance="outline" class="w-full" style="font-size: .85rem;">
-                    <mat-label>Select Installation Branch</mat-label>
-                    <mat-select formControlName="branchId">
-                        <mat-option *ngFor="let branch of branches" [value]="branch?.id">
-                            {{branch?.name}}, 
-                            <span class='text-xs text-gray-400'>{{branch?.address}}</span>
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <button matRipple 
-                    class="setup-button py-3" 
-                    [class.disabled]="!enableNextButton"
-                    style="margin-top: -20px; width: 100px;">NEXT</button>
+              (ngSubmit)="branchSelected()"
+              class="block md:flex items-center justify-between
+                flex-wrap md:flex-nowrap md:space-x-4">
+              <mat-form-field appearance="outline" class="w-full" style="font-size: .85rem;">
+                  <mat-label>Select Installation Branch</mat-label>
+                  <mat-select formControlName="branchId">
+                      <mat-option *ngFor="let branch of branches" [value]="branch?.id">
+                          {{branch?.name}}, 
+                          <span class='text-xs text-gray-400'>{{branch?.address}}</span>
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+              <button mat-raised-button color="primary"
+                class="py-3 text-white" 
+                [class.disabled]="!enableNextButton"
+                style="margin-top: -20px;
+                  padding-top: .4rem;
+                  padding-bottom: .4rem;">
+                <span class="flex items-center">
+                  <span>NEXT</span>
+                  <img src="../../../assets/svg/arrow_forward.svg" />
+                  <!-- <svg xmlns="http://www.w3.org/2000/svg" class="fill-current"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    fill="#000000">
+                    <path d="M0 0h24v24H0z"
+                      fill="none"/>
+                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                  </svg> -->
+                </span>
+              </button>
             </form>
 
             <span class="block mt-10">

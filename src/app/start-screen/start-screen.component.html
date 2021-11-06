@@ -3,6 +3,14 @@
     class="bg-gray-100 flex items-center justify-center">
 
     <section>
+      <p>Welcome!</p>
+      <a mat-raised-button color="primary"
+        routerLink="/setup/enter-url">
+        START SETUP
+      </a>
+    </section>
+
+    <section>
         <div *ngIf="fetchingCompany" style="height: 30px;">
             <p class="text-center">Loading Please Wait...</p>
             <mat-progress-bar mode="indeterminate" [value]="80"></mat-progress-bar>

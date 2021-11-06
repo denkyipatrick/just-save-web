@@ -24,7 +24,14 @@
       <div class="p-4 bg-gray-100">
         <div class="flex items-start justify-between">
           <span class="flex items-start space-x-6">
-            <mat-icon style="font-size: 2.5rem;">account_circle</mat-icon>
+            <svg xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="black"
+              width="48px"
+              height="48px">
+              <path d="M0 0h24v24H0z" fill="none"/>
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+            </svg>
             <span>
               <p class="m-0 font-medium" style="margin: 0;">
                 {{staff?.firstName}} {{staff?.lastName}}
@@ -38,16 +45,49 @@
             </span>
           </span>
           <button mat-icon-button [matMenuTriggerFor]="profileMenu">
-            <mat-icon>keyboard_arrow_down</mat-icon>
+            <svg xmlns="http://www.w3.org/2000/svg"
+              class="mx-auto"
+              height="24px"
+              viewBox="0 0 24 24"
+              width="24px"
+              fill="#000000">
+              <path d="M24 24H0V0h24v24z" fill="none" opacity=".87"/>
+              <path d="M15.88 9.29L12 13.17 8.12 9.29c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l4.59 4.59c.39.39 1.02.39 1.41 0l4.59-4.59c.39-.39.39-1.02 0-1.41-.39-.38-1.03-.39-1.42 0z"/>
+            </svg>
           </button>
 
           <mat-menu #profileMenu>
             <a mat-menu-item routerLink="settings/personal">
-              <mat-icon>settings</mat-icon>
+              <svg xmlns="http://www.w3.org/2000/svg"
+                enable-background="new 0 0 24 24"
+                class="inline-block mr-2"
+                height="24px"
+                viewBox="0 0 24 24"
+                width="24px"
+                fill="#000000">
+                <rect fill="none" height="24" width="24"/>
+                <path d="M19.5,12c0-0.23-0.01-0.45-0.03-0.68l1.86-1.41c0.4-0.3,0.51-0.86,0.26-1.3l-1.87-3.23c-0.25-0.44-0.79-0.62-1.25-0.42 l-2.15,0.91c-0.37-0.26-0.76-0.49-1.17-0.68l-0.29-2.31C14.8,2.38,14.37,2,13.87,2h-3.73C9.63,2,9.2,2.38,9.14,2.88L8.85,5.19 c-0.41,0.19-0.8,0.42-1.17,0.68L5.53,4.96c-0.46-0.2-1-0.02-1.25,0.42L2.41,8.62c-0.25,0.44-0.14,0.99,0.26,1.3l1.86,1.41 C4.51,11.55,4.5,11.77,4.5,12s0.01,0.45,0.03,0.68l-1.86,1.41c-0.4,0.3-0.51,0.86-0.26,1.3l1.87,3.23c0.25,0.44,0.79,0.62,1.25,0.42 l2.15-0.91c0.37,0.26,0.76,0.49,1.17,0.68l0.29,2.31C9.2,21.62,9.63,22,10.13,22h3.73c0.5,0,0.93-0.38,0.99-0.88l0.29-2.31 c0.41-0.19,0.8-0.42,1.17-0.68l2.15,0.91c0.46,0.2,1,0.02,1.25-0.42l1.87-3.23c0.25-0.44,0.14-0.99-0.26-1.3l-1.86-1.41 C19.49,12.45,19.5,12.23,19.5,12z M12.04,15.5c-1.93,0-3.5-1.57-3.5-3.5s1.57-3.5,3.5-3.5s3.5,1.57,3.5,3.5S13.97,15.5,12.04,15.5z"/>
+              </svg>
               <span>Account Settings</span>
             </a>
             <button (click)="signOut()" mat-menu-item>
-              <mat-icon>power_off</mat-icon>  
+              <svg xmlns="http://www.w3.org/2000/svg"
+                enable-background="new 0 0 24 24"
+                class="inline-block mr-2"
+                height="24px"
+                viewBox="0 0 24 24"
+                width="24px"
+                fill="#000000">
+                <g>
+                  <path d="M0,0h24v24H0V0z" fill="none"/>
+                </g>
+                <g>
+                  <g>
+                    <path d="M5,5h6c0.55,0,1-0.45,1-1v0c0-0.55-0.45-1-1-1H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h6c0.55,0,1-0.45,1-1v0 c0-0.55-0.45-1-1-1H5V5z"/>
+                    <path d="M20.65,11.65l-2.79-2.79C17.54,8.54,17,8.76,17,9.21V11h-7c-0.55,0-1,0.45-1,1v0c0,0.55,0.45,1,1,1h7v1.79 c0,0.45,0.54,0.67,0.85,0.35l2.79-2.79C20.84,12.16,20.84,11.84,20.65,11.65z"/>
+                  </g>
+                </g>
+              </svg>
               <span>Sign Out</span>
             </button>
           </mat-menu>
@@ -56,11 +96,22 @@
 
       <div class="p-2">
         <ul class="left-nav">
-          <li *ngIf="isMakeOrder" class="mt-2 mb-4">
-            <a routerLink="new-order" mat-raised-button 
+          <li class="mt-2 mb-4">
+            <a routerLink="new-order" mat-raised-button
+              style="padding-top: .6rem; padding-bottom: .6rem;"
               class="w-full text-lefts primary-button-color">
-              <mat-icon>add</mat-icon> &nbsp;
-              <span class="inline-block text-left">NEW ORDER</span>
+              <span class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  class="text-white fill-current"
+                  height="24px"
+                  viewBox="0 0 24 24"
+                  width="24px"
+                  fill="#000000">
+                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                    <path d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"/>
+                </svg>
+                <span class="inline-block text-left">NEW ORDER</span>
+              </span>
             </a>
           </li>
         </ul>
@@ -70,26 +121,50 @@
           <mat-expansion-panel expanded>
             <mat-expansion-panel-header>
               <mat-panel-title>
-                <mat-icon class="mat-icon-outlined">apartment</mat-icon> &nbsp;
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  class="inline-block mr-2 text-gray-800 fill-current"
+                  height="24px"
+                  viewBox="0 0 24 24"
+                  width="24px"
+                  fill="#000000">
+                  <path d="M0 0h24v24H0V0z" fill="none"/>
+                  <path d="M12 7V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2h-8zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm9 12h-7v-2h2v-2h-2v-2h2v-2h-2V9h7c.55 0 1 .45 1 1v8c0 .55-.45 1-1 1zm-1-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+                </svg>
                 <span>Management</span>
               </mat-panel-title>
             </mat-expansion-panel-header>
             <ul class="left-nav">
               <li *ngIf="isShowDashboard">
                 <a mat-button routerLink="dashboard" routerLinkActive="active">
-                  <mat-icon>dashboard</mat-icon> &nbsp; 
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="inline-block mr-2 text-gray-800 fill-current"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    fill="#000000">
+                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                    <path d="M4 13h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1zm0 8h6c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1zm10 0h6c.55 0 1-.45 1-1v-8c0-.55-.45-1-1-1h-6c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1zM13 4v4c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1h-6c-.55 0-1 .45-1 1z"/>
+                  </svg>
                   <span>Dashboard</span>
                 </a>
               </li>
-              <li *ngIf="canViewBranches">
+              <!-- <li *ngIf="isBranchBuild">
                 <a mat-button routerLink="branches" routerLinkActive="active">
                   <mat-icon>meeting_room</mat-icon> &nbsp;
                   <span>Branches</span>
                 </a>
-              </li>
-              <li *ngIf="isViewStaffs">
-                <a mat-button routerLink="staff" routerLinkActive="active">
-                  <mat-icon>group</mat-icon> &nbsp;
+              </li> -->
+              <li *ngIf="true || isViewStaffs">
+                <a mat-button routerLink="staffs" routerLinkActive="active">
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="inline-block mr-2 text-gray-800 fill-current"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    fill="#000000">
+                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V18c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-1.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05.02.01.03.03.04.04 1.14.83 1.93 1.94 1.93 3.41V18c0 .35-.07.69-.18 1H22c.55 0 1-.45 1-1v-1.5c0-2.33-4.67-3.5-7-3.5z"/>
+                  </svg>
                   <span>Staff Members</span>
                 </a>
               </li>
@@ -99,7 +174,22 @@
           <mat-expansion-panel expanded>
             <mat-expansion-panel-header>
               <mat-panel-title>
-                <mat-icon class="material-icons-outlined">inventory_outline</mat-icon> &nbsp;
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  class="inline-block mr-2 text-gray-800 fill-current"
+                  height="24px"
+                  viewBox="0 0 24 24"
+                  width="24px"
+                  fill="#000000">
+                  <g>
+                    <rect fill="none" height="24" width="24"/>
+                  </g>
+                  <g>
+                    <g>
+                      <path d="M5,5h2v1c0,1.1,0.9,2,2,2h6c1.1,0,2-0.9,2-2V5h2v5h2V5c0-1.1-0.9-2-2-2h-4.18C14.4,1.84,13.3,1,12,1S9.6,1.84,9.18,3H5 C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h6v-2H5V5z M12,3c0.55,0,1,0.45,1,1s-0.45,1-1,1s-1-0.45-1-1S11.45,3,12,3z"/>
+                      <path d="M21.75,12.25c-0.41-0.41-1.09-0.41-1.5,0L15.51,17l-2.26-2.25c-0.41-0.41-1.08-0.41-1.5,0l0,0c-0.41,0.41-0.41,1.09,0,1.5 l3.05,3.04c0.39,0.39,1.02,0.39,1.41,0l5.53-5.54C22.16,13.34,22.16,12.66,21.75,12.25z"/>
+                    </g>
+                  </g>
+                </svg>
                 <span>Inventory</span>
               </mat-panel-title>
             </mat-expansion-panel-header>
@@ -110,21 +200,54 @@
                   <span>Current Stock</span>
                 </a>
               </li> -->
-              <li *ngIf="isViewProducts">
+              <li *ngIf="true || isViewProducts">
                 <a mat-button routerLink="products" routerLinkActive="active">
-                  <mat-icon class="material-icons-outlined">style</mat-icon> &nbsp;
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="inline-block mr-2 text-gray-800 fill-current"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    fill="#000000">
+                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                    <path d="M2.53 19.65l1.34.56v-9.03l-2.43 5.86c-.41 1.02.08 2.19 1.09 2.61zm19.5-3.7L17.07 3.98c-.31-.75-1.04-1.21-1.81-1.23-.26 0-.53.04-.79.15L7.1 5.95c-.75.31-1.21 1.03-1.23 1.8-.01.27.04.54.15.8l4.96 11.97c.31.76 1.05 1.22 1.83 1.23.26 0 .52-.05.77-.15l7.36-3.05c1.02-.42 1.51-1.59 1.09-2.6zm-9.2 3.8L7.87 7.79l7.35-3.04h.01l4.95 11.95-7.35 3.05z"/>
+                    <circle cx="11" cy="9" r="1"/>
+                    <path d="M5.88 19.75c0 1.1.9 2 2 2h1.45l-3.45-8.34v6.34z"/>
+                  </svg>
                   <span>Products</span>
                 </a>
               </li>
-              <li *ngIf="staff?.isAdmin">
+              <li *ngIf="staff?.isAdmin" class="hidden">
                 <a mat-button routerLink="stock-history" routerLinkActive="active">
-                  <mat-icon class="material-icons-outlined">history</mat-icon> &nbsp;
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="inline-block mr-2 text-gray-800 fill-current"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    fill="#000000">
+                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                    <path d="M13.26 3C8.17 2.86 4 6.95 4 12H2.21c-.45 0-.67.54-.35.85l2.79 2.8c.2.2.51.2.71 0l2.79-2.8c.31-.31.09-.85-.36-.85H6c0-3.9 3.18-7.05 7.1-7 3.72.05 6.85 3.18 6.9 6.9.05 3.91-3.1 7.1-7 7.1-1.61 0-3.1-.55-4.28-1.48-.4-.31-.96-.28-1.32.08-.42.42-.39 1.13.08 1.49C9 20.29 10.91 21 13 21c5.05 0 9.14-4.17 9-9.26-.13-4.69-4.05-8.61-8.74-8.74zm-.51 5c-.41 0-.75.34-.75.75v3.68c0 .35.19.68.49.86l3.12 1.85c.36.21.82.09 1.03-.26.21-.36.09-.82-.26-1.03l-2.88-1.71v-3.4c0-.4-.34-.74-.75-.74z"/>
+                  </svg>
                   <span>Stock History</span>
                 </a>
               </li>
               <li>
                 <a mat-button routerLink="stock-entries" routerLinkActive="active">
-                  <mat-icon class="material-icons-outlined">arrow_downward</mat-icon> &nbsp;
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="inline-block mr-2 text-gray-800 fill-current"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    fill="#000000">
+                    <g>
+                      <rect fill="none" height="24" width="24"/>
+                    </g>
+                    <g>
+                      <g>
+                        <path d="M20,2H4C3,2,2,2.9,2,4v3.01C2,7.73,2.43,8.35,3,8.7V20c0,1.1,1.1,2,2,2h14c0.9,0,2-0.9,2-2V8.7c0.57-0.35,1-0.97,1-1.69V4 C22,2.9,21,2,20,2z M19,20H5V9h14V20z M20,7H4V4h16V7z"/>
+                        <rect height="2" width="6" x="9" y="12"/>
+                      </g>
+                    </g>
+                  </svg>
                   <span>Stock Entries</span>
                 </a>
               </li>
@@ -134,7 +257,20 @@
           <mat-expansion-panel expanded>
             <mat-expansion-panel-header>
               <mat-panel-title>
-                <mat-icon>point_of_sale</mat-icon> &nbsp;
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  class="inline-block mr-2 text-gray-800 fill-current"
+                  height="24px"
+                  viewBox="0 0 24 24"
+                  width="24px"
+                  fill="#000000">
+                  <g>
+                    <rect fill="none" height="24" width="24"/>
+                  </g>
+                  <g>
+                  <g/>
+                  <path d="M15,18.5c-2.51,0-4.68-1.42-5.76-3.5H15l1-2H8.58c-0.05-0.33-0.08-0.66-0.08-1s0.03-0.67,0.08-1H15l1-2H9.24 C10.32,6.92,12.5,5.5,15,5.5c1.61,0,3.09,0.59,4.23,1.57L21,5.3C19.41,3.87,17.3,3,15,3c-3.92,0-7.24,2.51-8.48,6H3l-1,2h4.06 C6.02,11.33,6,11.66,6,12s0.02,0.67,0.06,1H3l-1,2h4.52c1.24,3.49,4.56,6,8.48,6c2.31,0,4.41-0.87,6-2.3l-1.78-1.77 C18.09,17.91,16.62,18.5,15,18.5z"/>
+                  </g>
+                </svg>
                 <span>Sales</span>
               </mat-panel-title>
             </mat-expansion-panel-header>
@@ -142,7 +278,15 @@
             <ul class="left-nav">
               <li>
                 <a mat-button routerLink="daily-sales" routerLinkActive="active">
-                  <mat-icon>history</mat-icon> &nbsp; 
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="inline-block mr-2 text-gray-800 fill-current"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    fill="#000000">
+                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                    <path d="M13.26 3C8.17 2.86 4 6.95 4 12H2.21c-.45 0-.67.54-.35.85l2.79 2.8c.2.2.51.2.71 0l2.79-2.8c.31-.31.09-.85-.36-.85H6c0-3.9 3.18-7.05 7.1-7 3.72.05 6.85 3.18 6.9 6.9.05 3.91-3.1 7.1-7 7.1-1.61 0-3.1-.55-4.28-1.48-.4-.31-.96-.28-1.32.08-.42.42-.39 1.13.08 1.49C9 20.29 10.91 21 13 21c5.05 0 9.14-4.17 9-9.26-.13-4.69-4.05-8.61-8.74-8.74zm-.51 5c-.41 0-.75.34-.75.75v3.68c0 .35.19.68.49.86l3.12 1.85c.36.21.82.09 1.03-.26.21-.36.09-.82-.26-1.03l-2.88-1.71v-3.4c0-.4-.34-.74-.75-.74z"/>
+                  </svg>
                   <span>Sales History</span>
                 </a>
               </li>

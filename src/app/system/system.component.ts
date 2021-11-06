@@ -1,11 +1,13 @@
+import { BranchService } from './services/branch.service';
 import { CompanyService } from './../services/company.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PleaseWaitDialogComponent } from './../dialog/please-wait-dialog/please-wait-dialog.component';
 import { StaffService } from './../services/staff.service';
 import { UtilityService } from './../services/utility.service';
 import { Component, OnInit } from '@angular/core';
 import { Staff } from '../models/staff';
 import { MatDialog } from '@angular/material/dialog';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-system',
@@ -13,6 +15,9 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./system.component.scss']
 })
 export class SystemComponent implements OnInit {
+  branchId: any;
+
+
   staff: Staff;
   appName: string;
   appSlogan: string;
@@ -22,35 +27,38 @@ export class SystemComponent implements OnInit {
   canViewBranches: boolean;
   isViewProducts: boolean;
   isShowDashboard: boolean;
+  isBranchBuild = environment.isBranchBuild || false;
 
   constructor(
     private companyService: CompanyService,
+    private branchService: BranchService,
     private staffService: StaffService,
     private utilityService: UtilityService,
     private dialogOpener: MatDialog,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
     ) {
-    this.staff = this.staffService.staff;
-    this.appName = this.companyService.company.name;
+    this.staff = JSON.parse(localStorage.getItem('staff')); // this.staffService.staff;
+    this.appName = this.branchService.company.name;
     this.appSlogan = this.utilityService.appSlogan;
 
-    if (this.staff.roles.find(role => role.id === 'make-order')) {
+    if (this.staff?.roles.find(role => role.id === 'make-order')) {
       this.isMakeOrder = true;
     }
 
-    if (this.staff.roles.find(role => role.id === 'view-dashboard')) {
+    if (this.staff?.roles.find(role => role.id === 'view-dashboard')) {
       this.isShowDashboard = true;
     }
 
-    if (this.staff.roles.find(role => role.id === 'view-staff')) {
+    if (this.staff?.roles.find(role => role.id === 'view-staff')) {
       this.isViewStaffs = true;
     }
 
-    if (this.staff.roles.find(role => role.id === 'view-product')) {
+    if (this.staff?.roles.find(role => role.id === 'view-product')) {
       this.isViewProducts = true;
     }
 
-    if (this.staff.roles.find(role => role.id === 'view-branch')) {
+    if (this.staff?.roles.find(role => role.id === 'view-branch')) {
       this.canViewBranches = true;
     }
 
@@ -59,6 +67,9 @@ export class SystemComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.branchId = params['branchId']
+    });
   }
 
   signOut(): void {
@@ -71,8 +82,8 @@ export class SystemComponent implements OnInit {
       // localStorage.setItem('staff', JSON.stringify(staff));
       // sessionStorage.setItem('staff', JSON.stringify(staff));
       
-    // this.companyId = localStorage.getItem('companyId');
-    // this.company = JSON.parse(localStorage.getItem('company'));
+      // this.companyId = localStorage.getItem('companyId');
+      // this.company = JSON.parse(localStorage.getItem('company'));
 
       localStorage.removeItem('staff');
       sessionStorage.removeItem('staff');

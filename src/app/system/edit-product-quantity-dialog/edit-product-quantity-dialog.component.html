@@ -1,66 +1,86 @@
-
-<div style="min-width: 600px; max-width: 700px;" class="">
-    <div class="flex items-start justify-between space-x-4">
-        <span>
-            <p style="margin-bottom: .2rem;" 
-                class="text-gray-700 font-medium">
-                Branch:  <span class="text-blue-700">{{branchProduct?.branch?.name}}</span>
-            </p>
-            <p class="text-lg" style="margin-bottom: 0;">Edit Your Branch Quantity For </p>
-        </span>
-        <button mat-button color="warn" (click)="close()" tabindex="-1">
-            <mat-icon>close</mat-icon> &nbsp; 
-            <span>CLOSE</span>
-        </button>
-    </div>
-    <section class="my-4">
-        <p class="text-base font-medium" style="margin-bottom: 0;">{{branchProduct?.product?.name}}</p>
-        <p class="text-xs text-gray-600">
-            LookupKey: <span class="text-gray-900 font-medium">{{branchProduct?.product?.lookupKey}}</span>, 
-            Unit Price: <span class="text-gray-900 font-medium">
-                ¢{{branchProduct?.product?.sellingPrice?.toFixed(2)}}
-            </span>, 
-            Branch Quantity: <span class="text-gray-900 font-medium">{{branchProduct?.quantity}}</span>
-        </p>
-    </section>
-
-    <section>
-        <section class="flex items-center justify-between space-x-6">
-            <mat-form-field appearance="fill" class="w-full">
-                <mat-label>Change Quantity</mat-label>
-                <input #quantityBox 
-                    matInput 
-                    required 
-                    type="number" [value]="productQuantity" 
-                    (keyup)="quantityTyped(quantityBox.value)"/>
-                <mat-hint>
-                    Use the plus and minus buttons to increase or decrease quantity. 
-                    Or you can type the figure you want directly.
-                </mat-hint>
-            </mat-form-field>
-            <div style="width: 110px; margin-top: -15px;" class="flex justify-between">
-                <button mat-icon-button class="bg-gray-200" (click)="decrementQuantity()">
-                    <mat-icon>remove</mat-icon>
-                </button> &nbsp; 
-                <button mat-icon-button class="bg-gray-200" (click)="incrementQuantity()">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </div>
-
-        </section>
-
-        <section class="mt-8 flex items-center justify-between space-x-4">
-            <p class="w-9/12 font-medium text-xs"
-                style="color: rgb(236, 75, 75);">
-                {{networkErrorMessage}}
-            </p>
-            <button color="warn" 
-                mat-raised-button
-                (click)="updateQuantity(quantityBox.value)"
-                [disabled]="(productQuantity == branchProduct?.quantity) || updatingQuantity">
-                UPDATE QUANTITY
+<section style="width: 600px; max-width:  100%;"
+    class="space-y-4">
+    <header>
+        <section class="flex items-center justify-between">
+            <span>
+                <mat-icon>
+                </mat-icon>
+                <p class="text-xl">
+                    Edit Stock Item Quantity
+                </p>
+            </span>
+            <button mat-icon-button (click)="close()"
+                class="bg-red-300 text-red-600">
+                <mat-icon>close</mat-icon>
             </button>
         </section>
-    </section>
-</div>
+    </header>
 
+    <section>
+        <section>
+            <section class="flex items-center justify-between">
+                <div>
+                    <p class="text-xs">Product Name</p>
+                    <p class="text-lg font-medium">
+                      {{branchProduct?.product?.name}}
+                    </p>
+                </div>
+                <div>
+                    <p class="text-right">Edit Type</p>
+                    <button mat-button [matMenuTriggerFor]="menu" class="border">
+                        <span>{{editType}}</span>
+                        <mat-icon>arrow_drop_down</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="editType = 'add'">Add</button>
+                        <button mat-menu-item (click)="editType = 'subtract'">Subtract</button>
+                    </mat-menu>
+                </div>
+            </section>
+
+            <section>
+                <form [formGroup]="quantityForm" (ngSubmit)="changeQuantity()">
+                    <section>
+                        <mat-form-field appearance="outline"
+                          class="w-full text-lg">
+                            <mat-label>Type Quantity</mat-label>
+                            <input #quantityBox matInput type="number"
+                                formControlName="quantity"
+                                autocomplete="off" />
+                        </mat-form-field>
+                    </section>
+
+                    <section class="space-y-4">
+                        <div class="flex items-start justify-between space-x-4">
+                            <!-- <div *ngIf="quantityBox?.value">
+                                <p class="w-9/12">
+                                    You are <span>{{editType?.toLowerCase()}}ing</span> 
+                                    {{quantityBox.value}} to 
+                                    {{stockItem?.availableQuantity}} {{stockItem?.product?.name}}
+                                </p>
+                                <p>
+                                    New Quantity: {{Number.parseInt(quantityBox.value) + stockItem?.availableQuantity}}
+                                </p>
+                            </div> -->
+                            <span class="mr-auto"></span>
+                            <button mat-raised-button color="primary"
+                                [disabled]="isWorking">
+                                SAVE &nbsp; <mat-icon>arrow_forward</mat-icon>
+                            </button>
+                        </div>
+                        <div>
+                          <p class="text-xs font-medium text-red-600">
+                            {{errorMessage}}
+                          </p>
+                          <ul>
+                            <li *ngFor="let msg of validationErrorMessages">
+                              {{msg}}
+                            </li>
+                          </ul>
+                        </div>
+                    </section>
+                </form>
+            </section>
+        </section>
+    </section>
+</section>

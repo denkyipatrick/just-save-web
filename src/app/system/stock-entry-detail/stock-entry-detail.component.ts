@@ -1,16 +1,16 @@
-import { CompanyService } from './../../services/company.service';
-import { BranchService } from './../../services/branch.service';
-import { StaffService } from './../../services/staff.service';
-import { StockService } from './../../services/stock.service';
-import { AddStockItemDialogComponent } from './../add-stock-item-dialog/add-stock-item-dialog.component';
-import { TransferStockItemDialogComponent } from './../transfer-stock-item-dialog/transfer-stock-item-dialog.component';
-import { StockItemTransfer } from './../../models/stockitemtransfer';
-import { OkDialogComponent } from './../../dialog/ok-dialog/ok-dialog.component';
+import { CompanyService } from '../../services/company.service';
+import { BranchService } from '../services/branch.service';
+import { StaffService } from '../../services/staff.service';
+import { StockService } from '../../services/stock.service';
+import { AddStockItemDialogComponent } from '../../system/add-stock-item-dialog/add-stock-item-dialog.component';
+import { TransferStockItemDialogComponent } from '../../system/transfer-stock-item-dialog/transfer-stock-item-dialog.component';
+import { StockItemTransfer } from '../../models/stockitemtransfer';
+import { OkDialogComponent } from '../../dialog/ok-dialog/ok-dialog.component';
 import { SimpleStockEntryItem } from '../../models/simplestockentryitem';
-import { StockEntryItem } from './../../models/stockentryitem';
-import { StockEntry } from './../../models/stockentry';
-import { OkCancelDialogComponent } from './../../dialog/ok-cancel-dialog/ok-cancel-dialog.component';
-import { PleaseWaitDialogComponent } from './../../dialog/please-wait-dialog/please-wait-dialog.component';
+import { StockEntryItem } from '../../models/stockentryitem';
+import { StockEntry } from '../../models/stockentry';
+import { OkCancelDialogComponent } from '../../dialog/ok-cancel-dialog/ok-cancel-dialog.component';
+import { PleaseWaitDialogComponent } from '../../dialog/please-wait-dialog/please-wait-dialog.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -50,19 +50,19 @@ export class StockEntryDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
   ) {
-    this.stockEntry = JSON.parse(sessionStorage.getItem('target-stock-entry'));
+    // this.stockEntry = JSON.parse(sessionStorage.getItem('target-stock-entry'));
   }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.stockEntryId = params['id'];
 
-      if (this.stockEntry) {
-        this.setupStockItemsTable();
-        return this.isFetchingStockEntry = false;
-      }
+      // if (this.stockEntry) {
+      //   this.setupStockItemsTable();
+      //   return this.isFetchingStockEntry = false;
+      // }
       
-      this.fetchStock();
+      this.fetchStockEntry();
     });
   }
 
@@ -71,7 +71,7 @@ export class StockEntryDetailComponent implements OnInit {
       this.tableColumns.push('actions');
     }
 
-    this.stockEntry.items.forEach(item => {
+    this.stockEntry?.items.forEach(item => {
       this.simpleStockItems.push(new SimpleStockEntryItem(
         item.id, item?.product?.name, item?.product?.lookupKey, item.quantity
       ));
@@ -182,8 +182,9 @@ export class StockEntryDetailComponent implements OnInit {
   closeStock() {
     this.dialogOpener.open(OkCancelDialogComponent, {
       data: {
-        title: 'Close Stock',
-        message: 'You cannot add any items to a closed stock. Do you want to continue?',
+        title: 'Close Entry',
+        message: 'You cannot add any items to a closed stock entry. ' + 
+        'Do you wish to continue?',
         okButtonText: 'YES',
         cancelButtonText: 'NO'
       }
@@ -195,14 +196,13 @@ export class StockEntryDetailComponent implements OnInit {
         disableClose: true
       });
 
-      this.branchService.closeBranchStock(this.stockEntry.id)
-      .subscribe(stock => {
+      this.branchService.closeStockEntry(this.stockEntry.id)
+      .subscribe(stockEntry => {
+        this. tableColumns = this.tableColumns.filter(item => item !== 'actions');
         dialogRef.close();
 
-        this. tableColumns = this.tableColumns.filter(item => item !== 'actions');
-
         this.stockEntry.isOpened = false;
-        sessionStorage.setItem('target-stock-entry', JSON.stringify(this.stockEntry));
+        // sessionStorage.setItem('target-stock-entry', JSON.stringify(this.stockEntry));
 
         this.dialogOpener.open(OkDialogComponent, {
           data: {
@@ -226,7 +226,8 @@ export class StockEntryDetailComponent implements OnInit {
                 this.dialogOpener.open(OkDialogComponent, {
                   data: {
                     title: 'Error',
-                    message: 'You cannot close an entry which has no items. Delete or add items.'
+                    message: 'You cannot close an entry which has ' + 
+                    'no items. Delete or add items.'
                   }
                 });
                 break;
@@ -246,7 +247,7 @@ export class StockEntryDetailComponent implements OnInit {
       });
     });
   }
-  
+
   viewItem(item: SimpleStockEntryItem): void {
     const stockItem = this.stockEntry.items.find(ssItem => ssItem.id === item.id);
     this.router.navigate(['/system/products/', stockItem.product.id], { relativeTo: this.route });
@@ -351,15 +352,15 @@ export class StockEntryDetailComponent implements OnInit {
     });
   }
 
-  fetchStock() {
+  fetchStockEntry() {
     this.isFetchingStockEntry = true;
 
-    this.companyService.fetchStock(this.stockEntryId)
-    .subscribe(stock => {
+    this.branchService.fetchStockEntry(this.stockEntryId)
+    .subscribe(stockEntry => {
       this.isFetchingStockEntry = false;
-      stock.dateString = new Date(stock?.createdAt).toDateString();
+      stockEntry.dateString = new Date(stockEntry?.createdAt).toDateString();
 
-      this.stockEntry = stock;
+      this.stockEntry = stockEntry;
       this.setupStockItemsTable();
     }, error => {
       this.isFetchingStockEntry = false;

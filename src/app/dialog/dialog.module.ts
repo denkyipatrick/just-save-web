@@ -1,3 +1,4 @@
+import { ThreeButtonDialogComponent } from './three-button-dialog/three-button-dialog.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -11,6 +12,7 @@ import { PleaseWaitDialogComponent } from './please-wait-dialog/please-wait-dial
   declarations: [
     OkCancelDialogComponent,
     OkDialogComponent,
+    ThreeButtonDialogComponent,
     PleaseWaitDialogComponent
   ],
   imports: [
@@ -20,7 +22,9 @@ import { PleaseWaitDialogComponent } from './please-wait-dialog/please-wait-dial
     MatProgressSpinnerModule
   ],
   exports: [
-    OkCancelDialogComponent, OkDialogComponent
+    OkCancelDialogComponent,
+    OkDialogComponent,
+    ThreeButtonDialogComponent
   ]
 })
 export class DialogModule { }

@@ -1,0 +1,23 @@
+
+<section style="width: 600px; max-width: 100%;">
+    <p class="text-lg">{{data?.title || 'Dialog Title'}}</p>
+    <p>
+        {{data?.message || 'Lorem ipsum dolor sit amet consectetur, 
+        adipisicing elit. Nulla, dignissimos reiciendis, 
+        totam dicta amet laborum, suscipit minima quo 
+        magni vel alias enim ipsum accusantium incidunt 
+        facilis asperiores itaque excepturi hic.'}}
+    </p>
+
+    <div class="text-right space-x-4">
+        <button mat-button (click)="callOption1()">
+            {{data?.option1ButtonText || 'CLOSE'}}
+        </button>
+        <button mat-button (click)="callOption2()">
+            {{data?.option2ButtonText || 'CANCEL'}}
+        </button>
+        <button mat-button (click)="callOption3()">
+            {{data?.option3ButtonText || 'OK'}}
+        </button>
+    </div>
+</section>

@@ -1,3 +1,4 @@
+import { BranchService } from './../services/branch.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Branch } from './../../models/branch';
 import { CompanyService } from './../../services/company.service';
@@ -16,6 +17,7 @@ import { StockEntry } from 'src/app/models/stockentry';
 export class CreateStockDialogComponent implements OnInit {
   @Output() stockCreated: EventEmitter<StockEntry>;
 
+  branch: Branch = JSON.parse(localStorage.getItem('branch'));
   disabledBranchSelect: boolean;
 
   form: FormGroup;
@@ -24,49 +26,24 @@ export class CreateStockDialogComponent implements OnInit {
   isErrorCreating: boolean = false;
 
   constructor(
-    private companyService: CompanyService,
+    private branchService: BranchService,
     private staffService: StaffService,
     private dialogOpener: MatDialog,
     private dialogRef: MatDialogRef<CreateStockDialogComponent>
   ) {
-      this.dialogRef.disableClose = true;
-      this.stockCreated = new EventEmitter();
-      this.branches = JSON.parse(sessionStorage.getItem('branches'));
+    this.dialogRef.disableClose = true;
+    this.stockCreated = new EventEmitter();
 
-      this.form = new FormGroup({
-        companyId: new FormControl(this.companyService.company.id),
-        branchId: new FormControl({
-          value: this.staffService.staff?.staffBranch?.branch?.id,
-          // disabled: this.staffService.staff?.staffBranch?.branch?.id ? true : false
-        })
-      });
+    this.form = new FormGroup({
+      branchId: new FormControl(this.branch.id)
+    });
   }
 
   ngOnInit(): void {
-    this.disabledBranchSelect = true;
-    if (!this.branches) {
-      this.fetchBranches();
-    }
   }
 
   close() {
     this.dialogRef.close();
-  }
-
-  fetchBranches() {
-    this.disabledBranchSelect = false;
-    this.companyService.fetchBranches()
-    .subscribe(branches => {
-      if (!this.staffService.staff.isAdmin) {
-        this.branches = branches.filter(branch => branch.id ===
-          this.staffService.staff.staffBranch.branch.id);
-      } else {
-        this.branches = branches
-      }
-      
-      this.form.patchValue({branchId: this.branches[0].id});
-    }, error => {
-    });
   }
 
   createStock() {
@@ -75,11 +52,11 @@ export class CreateStockDialogComponent implements OnInit {
     console.log(this.form.value);
 
     this.isCreating = true;
-    
-    this.staffService.createBranchStock(this.form.value)
-    .subscribe(stock => {
+
+    this.branchService.createStockEntry(this.form.value)
+    .subscribe(stockEntry => {
       this.isCreating = false;
-      this.stockCreated.emit(stock);
+      this.stockCreated.emit(stockEntry);
       this.dialogRef.close();
     }, error => {
       this.isCreating = false;

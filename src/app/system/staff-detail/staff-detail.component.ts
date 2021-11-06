@@ -1,3 +1,4 @@
+import { BranchService } from './../services/branch.service';
 import { PleaseWaitDialogComponent } from './../../dialog/please-wait-dialog/please-wait-dialog.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { RoleGroup } from './../../models/rolegroup';
@@ -30,6 +31,7 @@ export class StaffDetailComponent implements OnInit {
 
   constructor(
     private staffService: StaffService,
+    private branchService: BranchService,
     private dialogOpener: MatDialog,
     private snackBar: MatSnackBar,
     private activatedRoute: ActivatedRoute
@@ -43,21 +45,21 @@ export class StaffDetailComponent implements OnInit {
         firstName: new FormControl()
       });
 
-      if (this.loggedInStaff.roles.find(role => role.id === 'edit-staff-role')) {
-        this.doesLoggedInStaffHasEditRole = true;
-      }
+      // if (this.loggedInStaff.roles.find(role => role.id === 'edit-staff-role')) {
+      //   this.doesLoggedInStaffHasEditRole = true;
+      // }
 
-      if (this.loggedInStaff.roles.find(role => role.id === 'edit-staff-name')) {
-        this.canViewerEditName = true;
-      }
+      // if (this.loggedInStaff.roles.find(role => role.id === 'edit-staff-name')) {
+      //   this.canViewerEditName = true;
+      // }
     }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       this.usernameRouteParameter = params.username;
+      
+      this.fetchStaff();
     });
-
-    this.fetchStaff();
   }
 
   toggleShowNameForm(): void {
@@ -165,10 +167,11 @@ export class StaffDetailComponent implements OnInit {
   }
 
   fetchStaff(): void {
-    this.staffService.fetchStaff(this.usernameRouteParameter)
+    this.branchService.fetchStaff(this.usernameRouteParameter)
     .subscribe(staff => {
+      console.log(staff);
       this.targetStaff = staff;
-      this.processStaffRoles();
+      // this.processStaffRoles();
 
       // this.targetStaffRoleGroups = this.targetStaff.roles.map(role => role.group)
       //   .filter((group, index, self) => self.indexOf(group) === index);
@@ -181,6 +184,15 @@ export class StaffDetailComponent implements OnInit {
       // });
     }, error => {
       console.error(error);
+      switch(error.status) {
+        case 0:
+          break;
+        case 404:
+          break;
+        case 500:
+          break;
+        default:
+      }
     });
   }
 

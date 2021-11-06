@@ -1,0 +1,5 @@
+<p>products works!</p>
+<a routerLink="../create-product" mat-raised-button color="primary">Create Product</a>
+<app-product-list [dataSource]="products"
+  (productSelected)="productSelected($event)">
+</app-product-list>

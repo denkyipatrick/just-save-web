@@ -5,10 +5,18 @@
     class="mat-elevation-z2 border-t border-l border-r rounded-tl-md rounded-tr-md">
     <header>
         <section class="p-4 flex items-center justify-between space-x-4">
-            <p class="text-4xl font-light">Daily Sales History</p>
+            <p class="text-4xl">Daily Sales History</p>
             <button mat-raised-button (click)="refreshOrders()"
                 [disabled]="isRefreshing">
-                <mat-icon>refresh</mat-icon>&nbsp;
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  class="inline-block mr-2 text-gray-800 fill-current"
+                  viewBox="0 0 24 24"
+                  width="24px"
+                  fill="#000000">
+                  <path d="M0 0h24v24H0V0z" fill="none"/>
+                  <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                </svg>
                 <span>REFRESH</span>
             </button>
         </section>        
@@ -17,29 +25,41 @@
         </mat-progress-bar>
 
         <section class="mx-4">
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Search Sales history by date</mat-label>
                 <input #searchBox matInput autocomplete="off"
                     (keyup)="searchOrderDay(searchBox.value)" />
                 <span matPrefix>
-                    <mat-icon>search</mat-icon>
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    class="text-gray-800 fill-current"
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    fill="#000000">
+                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                    <path d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                  </svg>
                 </span>
             </mat-form-field>
         </section>
     </header>
 
     <section>
-        <table mat-table [dataSource]="dataSource2" class="w-full">
+        <table mat-table [dataSource]="dataSource2"
+         [fixedLayout]="false" class="w-full">
             <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef>Date</th>
+                <th mat-header-cell *matHeaderCellDef
+                  class="text-gray-800 font-medium">Date</th>
                 <td mat-cell *matCellDef="let dayOrder">{{dayOrder?.date}}</td>
             </ng-container>
             <ng-container matColumnDef="totalItems">
-                <th mat-header-cell *matHeaderCellDef>Total Items</th>
+                <th mat-header-cell *matHeaderCellDef
+                  class="text-gray-800 font-medium">Items</th>
                 <td mat-cell *matCellDef="let dayOrder">{{dayOrder?.totalItems}}</td>
             </ng-container>
             <ng-container matColumnDef="totalAmount">
-                <th mat-header-cell *matHeaderCellDef>Total Amount</th>
+                <th mat-header-cell *matHeaderCellDef
+                  class="text-gray-800 font-medium">Amount</th>
                 <td mat-cell *matCellDef="let dayOrder">
                     <span class="font-medium text-gray-900">GHC</span>&nbsp; 
                     <span class="font-medium text-gray-700">{{dayOrder?.totalAmount?.toFixed(2)}}</span>
@@ -48,9 +68,17 @@
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let dayOrder" class="text-right">
-                    <button mat-icon-button>
-                        <mat-icon>chevron_right</mat-icon>
-                    </button>
+                  <button mat-icon-button>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                      height="24px"
+                      class="text-gray-800 fill-current mx-auto"
+                      viewBox="0 0 24 24"
+                      width="24px"
+                      fill="#000000">
+                      <path d="M0 0h24v24H0V0z" fill="none"/>
+                      <path d="M9.29 6.71c-.39.39-.39 1.02 0 1.41L13.17 12l-3.88 3.88c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l4.59-4.59c.39-.39.39-1.02 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01z"/>
+                    </svg>
+                  </button>
                 </td>
             </ng-container>
 

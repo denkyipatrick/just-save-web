@@ -1,3 +1,5 @@
+import { BranchService } from './../services/branch.service';
+import { BranchOrder } from './../../models/branchorder';
 import { StaffService } from './../../services/staff.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Order } from './../../models/order';
@@ -15,6 +17,7 @@ import * as moment from 'moment';
 })
 export class OrdersComponent implements OnInit {
   orders: Order[];
+  branchOrders: BranchOrder[];
   isRefreshing: boolean = false;
   isFetchingOrders: boolean;
   isErrorFetchingOrders: boolean;
@@ -23,14 +26,15 @@ export class OrdersComponent implements OnInit {
   table2Columns: string[];
   dataSource: MatTableDataSource<Order>;
   dataSource2: MatTableDataSource<any>;
-  
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
-  orderGroups: Map<string, Order[]> = new Map();
+
+  orderGroups: Map<string, BranchOrder[]> = new Map();
   dataSourceInput: any = [];
 
   constructor(
+    private branchService: BranchService,
     private companyService: CompanyService,
     private staffService: StaffService,
     private router: Router,
@@ -38,7 +42,7 @@ export class OrdersComponent implements OnInit {
   ) {
     this.table2Columns = ['date', 'totalItems', 'totalAmount', 'action'];
     this.tableColumns = ['id', 'served', 'items', 'branch', 'date', 'action'];
-    this.orders = JSON.parse(sessionStorage.getItem('orders'));
+    // this.orders = JSON.parse(sessionStorage.getItem('orders'));
   }
 
   ngOnInit(): void {
@@ -84,26 +88,18 @@ export class OrdersComponent implements OnInit {
   }
 
   fetchOrders() {
-    if (this.staffService.staff.isAdmin) {
-      this.fetchCompanyOrders();
-    } else {
-      this.fetchBranchOrders();
-    }
-  }
-
-  fetchBranchOrders() {
     if (!this.isRefreshing) {
       this.isFetchingOrders = true;
     }
 
     this.isErrorFetchingOrders = false;
 
-    this.staffService.fetchBranchOrders(this.staffService.staff.staffBranch.branch.id)
-    .subscribe(orders => {
+    this.branchService.fetchOrders()
+    .subscribe(branchOrders => {
       this.isRefreshing = false;
       this.isFetchingOrders = false;
 
-      this.orders = orders.map(order => {
+      this.branchOrders = branchOrders.map(order => {
         order.maskedId = order.id.substring(order.id.lastIndexOf('-'), 5);
         order.simpleDate = moment(new Date(order.createdAt)).format("Do MMMM YYYY hh:mm a");
 
@@ -113,7 +109,7 @@ export class OrdersComponent implements OnInit {
       this.groupOrdersIntoDates();
       this.setupPaginator();
 
-      sessionStorage.setItem('orders', JSON.stringify(orders));
+      sessionStorage.setItem('orders', JSON.stringify(branchOrders));
     }, error => {
       this.isRefreshing = false;
       this.isFetchingOrders = false;
@@ -125,8 +121,8 @@ export class OrdersComponent implements OnInit {
     const dates = [];
     this.dataSourceInput = [];
 
-    this.orders.forEach(order => {
-      const formattedOrderDate = moment(order.createdAt).format("Do MMMM YYYY");
+    this.branchOrders.forEach(branchOrder => {
+      const formattedOrderDate = moment(branchOrder.createdAt).format("Do MMMM YYYY");
 
       if (!this.orderGroups.has(formattedOrderDate)) {
         dates.push(formattedOrderDate)
@@ -136,7 +132,7 @@ export class OrdersComponent implements OnInit {
     });
 
     for (let key of this.orderGroups.keys()) {
-      const orders = this.orders.filter(order => {
+      const orders = this.branchOrders.filter(order => {
         if (moment(order.createdAt).format("Do MMMM YYYY") == key) {
           return order;
         }

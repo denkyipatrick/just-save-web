@@ -8,20 +8,30 @@
                 <section class="flex items-center space-x-4">
                     <p *ngIf="stockEntry && stockEntry?.isOpened"
                         class="text-green-600 border
-                        py-1 px-4 rounded-full text-center
+                        py-1 px-4 rounded-md text-center
                         font-medium bg-opacity-60">
                         Opened
                     </p>
                     <p *ngIf="stockEntry && !stockEntry?.isOpened"
-                        class="text-red-600 border bordr-red-500 
-                        py-1 px-4 rounded-full text-center
-                        font-medium bg-opacity-60">
-                        Closed
+                      class="text-red-600 border bordr-red-500 
+                      py-1 px-4 rounded-full text-center
+                      font-medium bg-opacity-60">
+                      Closed
                     </p>
-                    <button *ngIf="stockEntry?.isOpened" mat-raised-button
-                        color="warn"
-                        (click)="closeStock()">
-                        CLOSE STOCK ENTRY
+                    <button *ngIf="stockEntry?.isOpened && stockEntry?.items?.length"
+                      mat-raised-button
+                      class="text-white bg-gray-800"
+                      (click)="closeStock()">
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                        height="24px"
+                        class="inline-block text-white fill-current"
+                        viewBox="0 0 24 24"
+                        width="24px"
+                        fill="#000000">
+                        <path d="M0 0h24v24H0V0z" fill="none"/>
+                        <path d="M6 18h12c.55 0 1 .45 1 1s-.45 1-1 1H6c-.55 0-1-.45-1-1s.45-1 1-1zm5.01-4.1c-.78.77-2.04.77-2.82-.01L6 11.7c-.55-.55-.54-1.44.03-1.97.54-.52 1.4-.5 1.92.02L9.6 11.4l6.43-6.43c.54-.54 1.41-.54 1.95 0l.04.04c.54.54.54 1.42-.01 1.96l-7 6.93z"/>
+                      </svg>
+                      CLOSE STOCK ENTRY
                     </button>
                 </section>
             </section>
@@ -32,7 +42,23 @@
             <div style="width: 100px; height: 100px; border-radius: 100%;"
                 class="mx-auto border flex items-center
                 justify-center text-center bg-gray-100">
-                <mat-icon>inventory_2</mat-icon>                
+                <!-- inventory_2 icon -->
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  enable-background="new 0 0 24 24"
+                  class="text-gray-800 fill-current mr-2 mx-auto inline-block"
+                  height="24px"
+                  viewBox="0 0 24 24"
+                  width="24px" fill="#000000">
+                  <g>
+                    <rect fill="none" height="24" width="24"/>
+                  </g>
+                  <g>
+                    <g>
+                      <path d="M20,2H4C3,2,2,2.9,2,4v3.01C2,7.73,2.43,8.35,3,8.7V20c0,1.1,1.1,2,2,2h14c0.9,0,2-0.9,2-2V8.7c0.57-0.35,1-0.97,1-1.69V4 C22,2.9,21,2,20,2z M19,20H5V9h14V20z M20,7H4V4h16V7z"/>
+                      <rect height="2" width="6" x="9" y="12"/>
+                    </g>
+                  </g>
+                </svg>
             </div>
 
             <p class="font-medium">
@@ -43,7 +69,17 @@
                 <a routerLink=".." 
                     mat-raised-button color="primary" 
                     class="uppercase">
-                    <mat-icon>arrow_back</mat-icon>&nbsp;
+                    <!-- arrow_back icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                      height="24px"
+                      class="text-gray-800 fill-current mr-2 mx-auto inline-block"
+                      viewBox="0 0 24 24"
+                      width="24px"
+                      fill="#000000">
+                      <path d="M0 0h24v24H0z"
+                      fill="none"/>
+                      <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                    </svg>
                     View Stock Entry List
                 </a>
             </div>
@@ -58,33 +94,67 @@
         <section *ngIf="!isFetchingStockEntry && stockEntry">
             <section  class="flex items-center space-x-16 pb-2 border-b">
                 <section class="flex items-start space-x-4">
-                    <mat-icon>calendar_today</mat-icon>
-                    <div>
-                        <p class="text-gray-500">Date Created</p>
-                        <p class="text-xl">{{stockEntry?.dateString}}</p>
-                    </div>
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="text-gray-800 fill-current"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    fill="#000000">
+                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                    <path d="M20 3h-1V2c0-.55-.45-1-1-1s-1 .45-1 1v1H7V2c0-.55-.45-1-1-1s-1 .45-1 1v1H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 18H5c-.55 0-1-.45-1-1V8h16v12c0 .55-.45 1-1 1z"/>
+                  </svg>
+                  <div>
+                    <p class="text-gray-500">Date Created</p>
+                    <p class="text-xl">{{stockEntry?.dateString}}</p>
+                  </div>
                 </section>
                 <section class="flex items-start space-x-4">
-                    <mat-icon>style</mat-icon>
-                    <div>
-                        <p class="text-gray-500">Added Products</p>
-                        <p class="text-xl">{{stockEntry?.items?.length}}</p>
-                    </div>
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="text-gray-800 fill-current"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    fill="#000000">
+                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                    <path d="M2.53 19.65l1.34.56v-9.03l-2.43 5.86c-.41 1.02.08 2.19 1.09 2.61zm19.5-3.7L17.07 3.98c-.31-.75-1.04-1.21-1.81-1.23-.26 0-.53.04-.79.15L7.1 5.95c-.75.31-1.21 1.03-1.23 1.8-.01.27.04.54.15.8l4.96 11.97c.31.76 1.05 1.22 1.83 1.23.26 0 .52-.05.77-.15l7.36-3.05c1.02-.42 1.51-1.59 1.09-2.6zM7.88 8.75c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-2 11c0 1.1.9 2 2 2h1.45l-3.45-8.34v6.34z"/>
+                  </svg>
+                  <div>
+                    <p class="text-gray-500">Added Products</p>
+                    <p class="text-xl">{{stockEntry?.items?.length}}</p>
+                  </div>
                 </section>
                 <section class="flex items-start space-x-4">
-                    <mat-icon>meeting_room</mat-icon>
-                    <div>
-                        <p class="text-gray-500">Branch</p>
-                        <p class="text-sm font-medium">{{stockEntry?.branch?.name}}</p>
-                        <p class="text-xs text-gray-500">{{stockEntry?.branch?.address}}</p>
-                    </div>
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="text-gray-800 fill-current"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    fill="#000000">
+                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                    <path d="M12 7V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2h-8zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm9 12h-7v-2h2v-2h-2v-2h2v-2h-2V9h7c.55 0 1 .45 1 1v8c0 .55-.45 1-1 1zm-1-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+                  </svg>
+                  <div>
+                    <p class="text-gray-500">Branch</p>
+                    <p class="text-sm font-medium">{{stockEntry?.branch?.name}}</p>
+                    <p class="text-xs text-gray-500">{{stockEntry?.branch?.address}}</p>
+                  </div>
                 </section>
             </section>
             <section *ngIf="stockEntry?.items?.length" class="text-right mt-2">
                 <button *ngIf="stockEntry?.isOpened" mat-raised-button
-                    color="warn" (click)="deleteStock()">
-                    <mat-icon>delete</mat-icon>
-                    <span>DELETE ENTRY</span>
+                    color="warn" (click)="deleteStock()">                    
+                    <span class="flex items-center space-x-2">
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                        class="text-white fill-current"
+                        height="24px"
+                        viewBox="0 0 24 24"
+                        width="24px"
+                        fill="#000000">
+                        <path d="M0 0h24v24H0V0z" fill="none"/>
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v10zM18 4h-2.5l-.71-.71c-.18-.18-.44-.29-.7-.29H9.91c-.26 0-.52.11-.7.29L8.5 4H6c-.55 0-1 .45-1 1s.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1z"/>
+                      </svg>
+                      <span>DELETE ENTRY</span>
+                    </span>
                 </button>
             </section>
         </section>
@@ -94,71 +164,124 @@
                 <div style="width: 100px; height: 100px; border-radius: 100%;"
                     class="mx-auto border flex items-center
                     justify-center text-center bg-gray-100">
-                    <mat-icon>style</mat-icon>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                      height="24px"
+                      viewBox="0 0 24 24"
+                      width="24px"
+                      fill="#000000">
+                      <path d="M0 0h24v24H0V0z" fill="none"/>
+                      <path d="M2.53 19.65l1.34.56v-9.03l-2.43 5.86c-.41 1.02.08 2.19 1.09 2.61zm19.5-3.7L17.07 3.98c-.31-.75-1.04-1.21-1.81-1.23-.26 0-.53.04-.79.15L7.1 5.95c-.75.31-1.21 1.03-1.23 1.8-.01.27.04.54.15.8l4.96 11.97c.31.76 1.05 1.22 1.83 1.23.26 0 .52-.05.77-.15l7.36-3.05c1.02-.42 1.51-1.59 1.09-2.6zM7.88 8.75c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-2 11c0 1.1.9 2 2 2h1.45l-3.45-8.34v6.34z"/>
+                    </svg>
                 </div>
                 <p class="font-medium">You have no items in this stock entry.</p>
                 <div class="space-x-4">
                     <button mat-raised-button color="warn"
+                      style="padding-top: .5rem; padding-bottom: .5rem;"
                         (click)="deleteStock()">
-                        <mat-icon>delete</mat-icon>&nbsp;
-                        <span>DELETE STOCK ENTRY</span>
+                        <span class="flex items-center space-x-2">
+                          <!-- bin icon -->
+                          <svg xmlns="http://www.w3.org/2000/svg"
+                            class="text-white fill-current"
+                            height="24px"
+                            viewBox="0 0 24 24"
+                            width="24px"
+                            fill="#000000">
+                            <path d="M0 0h24v24H0V0z" fill="none"/>
+                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v10zM18 4h-2.5l-.71-.71c-.18-.18-.44-.29-.7-.29H9.91c-.26 0-.52.11-.7.29L8.5 4H6c-.55 0-1 .45-1 1s.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1z"/>
+                          </svg>
+                          <span>DELETE STOCK ENTRY</span>
+                        </span>
                     </button>
                     
                     <button *ngIf="stockEntry?.isOpened" (click)="showAddItemDialog()"
                         mat-raised-button color="primary" 
+                        style="padding-top: .5rem; padding-bottom: .5rem;"
                         class="uppercase">
-                        <mat-icon>add</mat-icon>&nbsp;
-                        Add New Item
+                        <span class="flex items-center space-x-2">
+                          <!-- add icon -->
+                          <svg xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            class="text-white fill-current"
+                            viewBox="0 0 24 24"
+                            width="24px"
+                            fill="#000000">
+                              <path d="M0 0h24v24H0V0z" fill="none"/>
+                              <path d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"/>
+                          </svg>
+                          <span>ADD NEW ITEM</span>
+                        </span>
                     </button>
-
-                    <!-- <a *ngIf="stockEntry?.isOpened" routerLink="add-product" 
-                        mat-raised-button color="primary" 
-                        class="uppercase">
-                        <mat-icon>add</mat-icon>&nbsp;
-                        Add Stock Item
-                    </a> -->
                 </div>
             </section>
 
-            <section *ngIf="!isFetchingStockEntry && stockEntry?.items?.length" class="mat-elevation-z4 rounded-md">
-                <header class="p-4 flex items-start
-                    justify-between space-x-4">
-                    <div>
-                        <p class="text-lg">Stocked Products</p>
+            <section *ngIf="!isFetchingStockEntry && stockEntry?.items?.length"
+              class="border shadow-sm rounded-md">
+                <header class="p-4">
+                  <div class="w-1/2 flex items-center space-x-4">
+                    <p class="text-xl">Products</p>
+                    <button *ngIf="stockEntry?.isOpened" (click)="showAddItemDialog()"
+                      mat-raised-button color="primary" 
+                      class="uppercase">
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                        height="24px"
+                        class="text-white fill-current mr-2 inline-block"
+                        viewBox="0 0 24 24"
+                        width="24px"
+                        fill="#000000">
+                        <path d="M0 0h24v24H0V0z" fill="none"/>
+                        <path d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"/>              
+                      </svg>
+                      Add Item
+                    </button>
+                  </div>
 
-                        <mat-form-field *ngIf="stockEntry?.items?.length > 8" appearance="outline"
-                            style="font-size: .8rem;">
-                            <mat-label>Search Products</mat-label>
-                            <input #searchBox matInput autocomplete="off" [value]="searchQuery" 
-                                (keyup)="searchProduct(searchBox.value)"/>
-                            <span matPrefix>
-                                <mat-icon>search</mat-icon>
-                            </span>
-                            <span *ngIf="searchBox.value" matSuffix>
-                                <button mat-icon-button (click)="clearSearchBox(searchBox)">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </span>
-                        </mat-form-field>
-                    </div>
-
-                    <div class="text-right">
-                        <div>
-                            <button *ngIf="stockEntry?.isOpened" (click)="showAddItemDialog()"
-                                mat-raised-button color="primary" 
-                                class="uppercase">
-                                <mat-icon>add</mat-icon>&nbsp;
-                                Add Item
-                            </button>
-                        </div>
-                    </div>
+                  <mat-form-field *ngIf="stockEntry?.items?.length > 8"
+                      appearance="outline"
+                      class="w-full"
+                      style="font-size: .8rem; width: 100%;">
+                      <mat-label>Search Products</mat-label>
+                      <input #searchBox matInput autocomplete="off"
+                        [value]="searchQuery" 
+                          (keyup)="searchProduct(searchBox.value)"/>
+                      <span matPrefix>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                          height="24px"
+                          class="text-gray-800 fill-current mr-2 inline-block mb-4"
+                          viewBox="0 0 24 24"
+                          width="24px"
+                          fill="#000000">
+                          <path d="M0 0h24v24H0V0z" fill="none"/>
+                          <path d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                        </svg>
+                      </span>
+                      <span *ngIf="searchBox.value" matSuffix>
+                        <button mat-icon-button (click)="clearSearchBox(searchBox)">
+                          <svg xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            class="text-gray-800 fill-current mx-auto"
+                            viewBox="0 0 24 24"
+                            width="24px"
+                            fill="#000000">
+                            <path d="M0 0h24v24H0V0z"
+                              fill="none"/>
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                          </svg>
+                        </button>
+                      </span>
+                  </mat-form-field>
                 </header>
                 
                 <table mat-table [dataSource]="itemsDataSource" [fixedLayout]="false" 
                     matSort class="w-full">
                     <ng-container matColumnDef="key">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Lookup Key</th>
-                        <td mat-cell *matCellDef="let item" class="uppercase">{{item?.productLookupKey}}</td>
+                        <th mat-header-cell *matHeaderCellDef
+                          mat-sort-header>
+                          Lookup Key
+                        </th>
+                        <td mat-cell *matCellDef="let item"
+                          class="uppercase">
+                          {{item?.productLookupKey}}
+                        </td>
                     </ng-container>
                     <ng-container matColumnDef="name">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
@@ -170,7 +293,7 @@
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="quantity">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity Stocked</th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity Added</th>
                         <td mat-cell *matCellDef="let item" style="min-width: 120px;">
                             <span class="font-medium">
                                 {{item?.quantityStocked || 0}}
@@ -183,28 +306,44 @@
                             <div *ngIf="stockEntry?.isOpened" class="flex items-center justify-start">
                                 <button mat-icon-button [matMenuTriggerFor]="rowMenu"
                                     (click)="showRowMenu($event)">
-                                    <mat-icon>more_vert</mat-icon>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                      height="24px"
+                                      class="text-gray-800 fill-current inline-block"
+                                      viewBox="0 0 24 24"
+                                      width="24px"
+                                      fill="#000000">
+                                      <path d="M0 0h24v24H0V0z"fill="none"/>
+                                      <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                                    </svg>
                                 </button>
                                 <mat-spinner *ngIf="item.isDeleting" [diameter]="20"></mat-spinner>
                             </div>
                             <mat-menu #rowMenu>
                                 <button mat-menu-item (click)="deleteItem(item, $event)">
-                                    <mat-icon>delete</mat-icon>
-                                    <span>Delete</span>
+                                  <svg xmlns="http://www.w3.org/2000/svg"
+                                    height="24px"
+                                    class="text-gray-800 fill-current mr-2 inline-block"
+                                    viewBox="0 0 24 24"
+                                    width="24px"
+                                    fill="#000000">
+                                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v10zM18 4h-2.5l-.71-.71c-.18-.18-.44-.29-.7-.29H9.91c-.26 0-.52.11-.7.29L8.5 4H6c-.55 0-1 .45-1 1s.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1z"/>
+                                  </svg>
+                                  <span>Remove Product</span>
                                 </button>
                             </mat-menu>
                         </td>
                     </ng-container>
-                
+
                     <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
                     <tr mat-row *matRowDef="let item; columns: tableColumns;" 
-                        class="body-row" style="cursor: pointer;"
-                        [class.opacity-50]="item.isDeleting"
-                        (click)="viewItem(item)"></tr>
+                      class="body-row"
+                      [class.opacity-50]="item.isDeleting">
+                    </tr>
                 </table>
-                <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 1000]"
+                <!-- <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 1000]"
                     showFirstLastButtons>
-                </mat-paginator>
+                </mat-paginator> -->
             </section>
         </section>
     </section>
