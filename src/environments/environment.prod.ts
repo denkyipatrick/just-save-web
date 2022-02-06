@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://lollandscreditunion.com:4900/api'
+  apiUrl: 'http://justsave.onevnet.com:4900/api'
 };
